@@ -1,0 +1,9 @@
+{
+  "display_name": "repo-to-resume",
+  "from": "update",
+  "hasInstall": true,
+  "name": "repo-to-resume",
+  "ns": "ent",
+  "skill_id": 15338,
+  "version": "1.0.2"
+}
