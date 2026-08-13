@@ -1,0 +1,40 @@
+{
+  "manifest": {
+    "schema_version": "1.1",
+    "mode": "SELF_PROJECT",
+    "auto_confirmed": true,
+    "current_artifacts": {
+      "project_analysis": "project-analysis.md",
+      "business_chains": "business-chains.md",
+      "contribution_map": "contribution-map.md",
+      "enhancement_plan": "enhancement-plan.md",
+      "resume": "resume.md",
+      "claim_grill_report": "claim-grill-report.md",
+      "learning_path": "learning-path.md",
+      "interview_scripts": "interview-scripts.md",
+      "quality_gate_report": "quality-gate-report.md"
+    },
+    "code_mutation": {"authorized": false, "scope": []},
+    "project": {"name": "go-payment", "scan_scope": ".", "excluded_paths": []},
+    "business_chains": [{"id": "CHAIN-001", "name": "支付确认", "domain_type": "BUSINESS", "code_locations": ["internal/payment.go"], "consumer": "订单服务", "value_score": 9}],
+    "contributions": [{"id": "CONTRIBUTION-001", "chain_id": "CHAIN-001", "role": "独立实现", "source_type": "SELF_PROJECT", "mastery_level": "L3", "risk": "LOW"}],
+    "enhancement_tasks": [{"id": "TASK-001", "chain_id": "CHAIN-001", "claim_ids": ["CLAIM-001"], "mode": "REPRODUCED", "status": "COMPLETED", "solution_options": ["幂等键", "唯一约束"], "execution_steps": ["复现重复回调"], "failure_injection": ["重复请求"], "validation_methods": ["运行幂等测试"], "completion_evidence": ["internal/payment_test.go"], "interview_gate": ["解释幂等边界"]}],
+    "claims": [{"id": "CLAIM-001", "text": "实现支付确认幂等", "resume_text": "为支付确认链路实现幂等校验并覆盖重复请求", "source_type": "SELF_PROJECT", "role": "独立实现", "mastery_level": "L3", "risk": "LOW", "chain_id": "CHAIN-001", "evidence_ids": ["EVIDENCE-001"], "status": "READY", "grill_status": "GREEN", "is_core": true}],
+    "evidence": [{"id": "EVIDENCE-001", "type": "CODE", "value": "internal/payment_test.go", "risk": "LOW"}],
+    "grill_results": [{"claim_id": "CLAIM-001", "status": "GREEN", "rounds": 1, "layers": ["事实确认", "个人角色", "技术实现", "方案对比", "数据与验证", "边界与复盘"]}],
+    "learning_gaps": [{"claim_id": "CLAIM-001", "task": "复盘并发边界", "success_criteria": "说明事务与唯一约束取舍"}],
+    "risk_flags": [],
+    "quality_status": "INTERVIEW_READY"
+  },
+  "files": {
+    "project-analysis.md": "# Go 支付服务分析",
+    "business-chains.md": "# 业务链路\nCHAIN-001 支付确认到订单服务",
+    "contribution-map.md": "# 贡献\n独立实现",
+    "enhancement-plan.md": "# 增强计划\nTASK-001 幂等复现",
+    "resume.md": "# Go 支付服务\n为支付确认链路实现幂等校验并覆盖重复请求\nCLAIM-001",
+    "claim-grill-report.md": "# 拷打\nCLAIM-001 GREEN",
+    "learning-path.md": "# 学习路径\nCLAIM-001 复盘并发边界",
+    "interview-scripts.md": "# 面试材料\n15秒\n30秒\n2分钟\n深挖",
+    "quality-gate-report.md": "# 质量门禁\nINTERVIEW_READY"
+  }
+}

@@ -5,15 +5,11 @@
 ## 输入
 
 - `evidence-manifest.json`
-- `project-analysis.md`
-- `business-chains.md`
-- `contribution-map.md`
-- `enhancement-plan.md`（如存在）
-- `resume.md`
-- `claim-grill-report.md`
-- `learning-path.md`
-- `interview-scripts.md`（如存在）
-- `interview-report.md`（如存在）
+- manifest 的 `current_artifacts` 指向的当前产物
+
+运行门禁前，完整模式要求 `project_analysis`、`business_chains`、`contribution_map`、`resume`、`claim_grill_report`、`learning_path` 和 `interview_scripts`；`enhancement_plan`、`learning_interactive`、`interview_report` 按流程是否执行决定。`UNDERSTAND_ONLY` 只要求 `project_analysis`、`business_chains` 和 `learning_path`。门禁完成后写入新报告并更新 `current_artifacts.quality_gate_report`。
+
+映射缺失、文件不存在或路径越出分析目录时，该产物视为缺失；不要读取同名旧文件兜底。
 
 ## 八道门禁
 

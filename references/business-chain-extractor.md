@@ -9,7 +9,7 @@
 
 ## 输出
 
-- `business-chains.md`
+- 新建当前版本的业务链路报告，并更新 `current_artifacts.business_chains`
 - `evidence-manifest.json.business_chains`
 
 ## Step 1：选择入口策略

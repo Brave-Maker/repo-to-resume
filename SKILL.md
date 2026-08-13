@@ -12,7 +12,7 @@ description: 将本地路径、GitHub 仓库、开源/他人项目、真实或�
 1. 先识别用户目标和已有材料，再选择最短路径。
 2. 区分项目能力、团队成果、个人贡献、复现内容、方案设计和叙事补全。
 3. 高风险内容不自动删除；为它生成复现、增强、学习和拷打路径。
-4. 所有下游产物共享 `evidence-manifest.json`，不得各自重新解释事实。
+4. 所有下游产物共享 `evidence-manifest.json`，并只通过 `current_artifacts` 解析当前文件，不得猜测 `-vN` 或各自重新解释事实。
 5. 每个核心 Bullet 都要通过事实、角色、实现、选型、验证和边界六层追问。
 6. 每个阶段都产出文件并保留版本；不得覆盖已有文件。
 
@@ -39,7 +39,7 @@ description: 将本地路径、GitHub 仓库、开源/他人项目、真实或�
 |---|---|
 | 项目分析 | [code-analysis-engine.md](references/code-analysis-engine.md)、[business-chain-extractor.md](references/business-chain-extractor.md) |
 | 贡献确认 | [contribution-mapper.md](references/contribution-mapper.md)、[claim-policy.md](references/claim-policy.md) |
-| Manifest 校验 | [evidence-manifest.schema.json](references/evidence-manifest.schema.json) |
+| Manifest 校验 | [evidence-manifest.schema.json](references/evidence-manifest.schema.json)，并运行 `scripts/validate_manifest.py` |
 | 经历增强 | [experience-lab.md](references/experience-lab.md)、[claim-policy.md](references/claim-policy.md) |
 | 简历生成 | [star-resume-generator.md](references/star-resume-generator.md)、[star-framework.md](references/star-framework.md) |
 | Bullet 拷打 | [claim-grill.md](references/claim-grill.md) |
@@ -58,7 +58,7 @@ description: 将本地路径、GitHub 仓库、开源/他人项目、真实或�
 2. 判断用户模式、目标岗位、时间约束和期望产物。
 3. 确认扫描范围与跳过目录。
 4. 在被分析项目根目录创建 `{项目名}-analysis/`。
-5. 按 `references/evidence-manifest.schema.json` 初始化 `evidence-manifest.json`；若已存在则校验后增量更新。
+5. 按 `references/evidence-manifest.schema.json` 初始化 `evidence-manifest.json`；若已存在则先运行 `scripts/validate_manifest.py`，通过后增量更新。
 
 🔴 CHECKPOINT · MODE & SCOPE
 
@@ -69,7 +69,7 @@ description: 将本地路径、GitHub 仓库、开源/他人项目、真实或�
 1. 使用代码分析引擎生成技术栈、架构、模块、入口和六维分析。
 2. 使用业务链路提取器从入口追踪到最终消费者。
 3. 为每条链路记录关键代码、工程能力、缺口、价值评分和不确定项。
-4. 写入 `project-analysis.md`、`business-chains.md` 和 manifest。
+4. 写入当前版本的项目分析与业务链路报告，更新 `current_artifacts.project_analysis`、`current_artifacts.business_chains` 和 manifest。
 
 只读代码时优先使用仓库已有索引工具；存在 `.codegraph/` 时先用 CodeGraph。代码关系不确定时标记 `[待确认]`，不得猜测。
 
@@ -80,7 +80,7 @@ description: 将本地路径、GitHub 仓库、开源/他人项目、真实或�
 1. 逐条确认用户在高价值链路中的角色。
 2. 为候选声明标记来源、掌握度、证据和风险。
 3. 将内容分为 `READY / NEEDS_EVIDENCE / NEEDS_TRAINING / NEEDS_BUILD / BLOCKED`。
-4. 写入 `contribution-map.md` 和 manifest。
+4. 写入当前版本的贡献映射，更新 `current_artifacts.contribution_map` 和 manifest。
 
 🔴 CHECKPOINT · ROLE & SOURCE
 
@@ -95,7 +95,11 @@ description: 将本地路径、GitHub 仓库、开源/他人项目、真实或�
 - 项目缺少可讲的工程闭环；
 - 用户要求补监控、容错、性能、测试、灰度等方案。
 
-为 1-3 个最高价值缺口生成任务。优先实际实现；环境不足时降级为复现、设计或完整叙事推演。写入 `enhancement-plan.md`，更新掌握度和风险。
+为 1-3 个最高价值缺口生成任务。默认只生成计划、复现、设计或完整叙事推演。只有 manifest 中 `code_mutation.authorized=true` 时才允许修改被分析项目，并将写入范围限制在 `code_mutation.scope`。写入当前版本的增强计划，更新 `current_artifacts.enhancement_plan`、掌握度和风险。
+
+🔴 CHECKPOINT · CODE MUTATION
+
+修改被分析项目代码前，单独展示写入目录、预计文件和验证命令并等待明确授权。“直接全部做完”、`auto_confirmed=true` 或允许生成分析产物都不等于代码修改授权。未授权时保持 `code_mutation.authorized=false`，自动降级为 `REPRODUCED`、`DESIGNED` 或 `NARRATIVE_READY`。
 
 ### Phase 4：STAR 简历
 
@@ -105,7 +109,7 @@ description: 将本地路径、GitHub 仓库、开源/他人项目、真实或�
 2. 按来源和角色选择动词。
 3. 将高风险声明保留在草稿时，写入内部 claim ID 和风险，不在用户可见正文堆内部标签。
 4. 数字沿用 manifest 的来源与口径；无数字时使用范围、闭环、故障或验证结果。
-5. 生成 `resume.md`，最多 10 条 Action，每条保持紧凑。
+5. 生成当前版本简历，更新 `current_artifacts.resume`；最多 10 条 Action，每条保持紧凑。
 
 🔴 CHECKPOINT · RESUME
 
@@ -117,7 +121,7 @@ description: 将本地路径、GitHub 仓库、开源/他人项目、真实或�
 
 交互时一次问一个；自动评估时根据现有代码、manifest 和用户材料做干跑，并明确标记未获得用户回答的部分。
 
-输出 `claim-grill-report.md`。存在 `RED` 时自动回退一次：
+从 `current_artifacts.resume` 读取当前简历并输出新版本拷打报告，再更新 `current_artifacts.claim_grill_report`。存在 `RED` 时自动回退一次：
 
 1. 角色冲突 -> Phase 2；
 2. 实现不熟 -> Phase 3 或 Phase 6；
@@ -128,16 +132,16 @@ description: 将本地路径、GitHub 仓库、开源/他人项目、真实或�
 
 ### Phase 6：风险驱动学习与交互页面
 
-根据“声明风险 x 面试概率 x 掌握缺口”排序学习任务，生成 `learning-path.md`。用户要求交互学习或执行完整流程时，再生成 `learning-interactive.html`；HTML 只转换学习路径，不重新分析代码。
+根据“声明风险 x 面试概率 x 掌握缺口”排序学习任务，生成当前版本学习路径并更新 `current_artifacts.learning_path`。用户要求交互学习或执行完整流程时，再生成交互页面并更新 `current_artifacts.learning_interactive`；HTML 只转换学习路径，不重新分析代码。
 
 ### Phase 7：分层话术与模拟面试
 
 `UNDERSTAND_ONLY` 跳过本阶段。
 
-1. 为 `GREEN/YELLOW` 声明生成 15 秒、30 秒、2 分钟和深挖材料，写入 `interview-scripts.md`。
+1. 为 `GREEN/YELLOW` 声明生成 15 秒、30 秒、2 分钟和深挖材料，写入当前版本话术并更新 `current_artifacts.interview_scripts`。
 2. 按暖场、技术深挖、系统视角、收尾四阶段模拟面试。
 3. 优先追问高风险声明和学习薄弱点。
-4. 生成 `interview-report.md`。
+4. 用户实际回答时生成当前版本面试报告并更新 `current_artifacts.interview_report`；未回答时只生成待实战问题集，不写入虚构评分。
 
 用户未实际回答时，不伪造面试得分；生成“待实战”问题集和预评分风险即可。
 
@@ -147,7 +151,7 @@ description: 将本地路径、GitHub 仓库、开源/他人项目、真实或�
 
 完整门禁检查来源、代码、角色、数字、抗追问、学习闭环、跨产物一致性和敏感信息。
 
-输出 `quality-gate-report.md`，最终状态只能是：
+输出当前版本质量门禁报告并更新 `current_artifacts.quality_gate_report`，最终状态只能是：
 
 - `BLOCKED`
 - `TRAINING_REQUIRED`
@@ -160,7 +164,7 @@ description: 将本地路径、GitHub 仓库、开源/他人项目、真实或�
 
 ## 产物目录
 
-所有产物写入被分析项目内的 `{项目名}-analysis/`：
+所有产物写入被分析项目内的 `{项目名}-analysis/`。下表是完整模式的逻辑产物集合；`UNDERSTAND_ONLY` 只生成项目分析、业务链路、学习路径、manifest 和质量门禁报告：
 
 ```text
 {项目名}-analysis/
@@ -178,9 +182,9 @@ description: 将本地路径、GitHub 仓库、开源/他人项目、真实或�
 `- quality-gate-report.md
 ```
 
-写入前确认目录存在。普通交付文件同名时创建 `-v1`、`-v2`，取现有最大版本号加一；禁止覆盖。
+写入前确认目录存在。普通交付文件同名时创建 `-v1`、`-v2`，取现有最大版本号加一；禁止覆盖。每次成功写入后，将 manifest 的 `current_artifacts.{逻辑名}` 更新为新文件的相对路径。所有下游先读取该映射；映射缺失或文件不存在时停止该阶段并重建索引，禁止回退到猜测固定文件名。
 
-`evidence-manifest.json` 是唯一例外：它是下游共同读取的当前状态文件，必须保持固定文件名。更新前将旧版复制到 `history/evidence-manifest-{时间戳}.json`，再把新内容写入临时文件、完成 Schema 校验后原子替换当前 manifest。校验失败时保留旧版并报告错误。下游禁止读取历史快照作为当前状态。
+`evidence-manifest.json` 是唯一例外：它是下游共同读取的当前状态文件，必须保持固定文件名。更新前将旧版复制到 `history/evidence-manifest-{时间戳}.json`，再把新内容写入临时文件，同时完成 Schema 与 `scripts/validate_manifest.py` 语义校验后原子替换当前 manifest。校验失败时保留旧版并报告错误。下游禁止读取历史快照作为当前状态。
 
 ## 失败与恢复
 
@@ -194,6 +198,8 @@ description: 将本地路径、GitHub 仓库、开源/他人项目、真实或�
 | 用户角色不清 | 按链路和文件追问 | 标记高风险，进入增强与拷打 |
 | 项目无法运行 | 建立最小复现或设计验证计划 | 使用 `DESIGNED/NARRATIVE_READY` |
 | manifest 缺失/损坏 | 备份后从现有产物重建 | 状态设为 `TRAINING_REQUIRED` |
+| `current_artifacts` 指向缺失文件 | 扫描同逻辑名的最高版本并展示候选 | 用户确认后修复映射，未确认则停止下游阶段 |
+| 未授权代码修改 | 保持只读并输出增强计划 | 降级为复现、设计或叙事推演 |
 | 用户跳过阶段 | 记录 override 和未完成门禁 | 继续，但不虚报最终状态 |
 
 所有异常必须告知用户并写入风险记录；不得静默跳过。
@@ -209,6 +215,8 @@ description: 将本地路径、GitHub 仓库、开源/他人项目、真实或�
 - 不要一次向用户抛出多个面试问题。
 - 不要在用户未回答时伪造模拟面试得分。
 - 不要覆盖已有产物或读取密钥、token、密码内容。
+- 不要把分析或“全部做完”的授权解释为修改目标项目代码的授权。
+- 不要绕过 `current_artifacts` 按固定文件名读取可能过期的产物。
 - 不要跳过最终跨产物一致性检查。
 
 ## 完成标准

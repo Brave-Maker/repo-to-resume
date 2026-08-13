@@ -1,0 +1,40 @@
+{
+  "manifest": {
+    "schema_version": "1.1",
+    "mode": "PROJECT_MIGRATION",
+    "auto_confirmed": true,
+    "current_artifacts": {
+      "project_analysis": "project-analysis.md",
+      "business_chains": "business-chains.md",
+      "contribution_map": "contribution-map.md",
+      "enhancement_plan": "enhancement-plan.md",
+      "resume": "resume.md",
+      "claim_grill_report": "claim-grill-report.md",
+      "learning_path": "learning-path.md",
+      "interview_scripts": "interview-scripts.md",
+      "quality_gate_report": "quality-gate-report.md"
+    },
+    "code_mutation": {"authorized": false, "scope": []},
+    "project": {"name": "express-study", "scan_scope": ".", "excluded_paths": ["node_modules"]},
+    "business_chains": [{"id": "CHAIN-001", "name": "中间件调度", "domain_type": "PLATFORM", "code_locations": ["lib/router/index.js"], "consumer": "HTTP 响应", "value_score": 9}],
+    "contributions": [{"id": "CONTRIBUTION-001", "chain_id": "CHAIN-001", "role": "叙事推演", "source_type": "NARRATIVE_FILL", "mastery_level": "L3", "risk": "HIGH"}],
+    "enhancement_tasks": [{"id": "TASK-001", "chain_id": "CHAIN-001", "claim_ids": ["CLAIM-001"], "mode": "NARRATIVE_READY", "status": "COMPLETED", "solution_options": ["线性栈调度", "显式状态机"], "execution_steps": ["追踪请求分发", "完成异常路径推演"], "failure_injection": ["中间件抛错"], "validation_methods": ["逐步推演 next(err)"], "completion_evidence": ["推演记录"], "interview_gate": ["解释错误中间件选择"]}],
+    "claims": [{"id": "CLAIM-001", "text": "推演中间件调度与错误传播", "resume_text": "围绕中间件调度链路完成错误传播方案推演", "source_type": "NARRATIVE_FILL", "role": "叙事推演", "mastery_level": "L3", "risk": "HIGH", "chain_id": "CHAIN-001", "evidence_ids": ["EVIDENCE-001"], "status": "NEEDS_TRAINING", "grill_status": "YELLOW", "is_core": true}],
+    "evidence": [{"id": "EVIDENCE-001", "type": "NARRATIVE", "value": "完整推演记录", "risk": "HIGH"}],
+    "grill_results": [{"claim_id": "CLAIM-001", "status": "YELLOW", "rounds": 2, "layers": ["事实确认", "个人角色", "技术实现", "方案对比", "数据与验证", "边界与复盘"]}],
+    "learning_gaps": [{"claim_id": "CLAIM-001", "task": "复现最小路由链", "success_criteria": "运行错误传播测试"}],
+    "risk_flags": [{"type": "source_claim", "claim_id": "CLAIM-001", "risk": "HIGH", "message": "内容来自叙事补全"}],
+    "quality_status": "REVIEW_REQUIRED"
+  },
+  "files": {
+    "project-analysis.md": "# Express 分析",
+    "business-chains.md": "# 业务链路\nCHAIN-001 中间件到 HTTP 响应",
+    "contribution-map.md": "# 来源\nNARRATIVE_FILL HIGH",
+    "enhancement-plan.md": "# 增强计划\nTASK-001 NARRATIVE_READY",
+    "resume.md": "# 训练草稿\n围绕中间件调度链路完成错误传播方案推演\nCLAIM-001",
+    "claim-grill-report.md": "# 强化拷打\nCLAIM-001 两轮 YELLOW",
+    "learning-path.md": "# 学习路径\nCLAIM-001 复现最小路由链",
+    "interview-scripts.md": "# 训练话术\n15秒 30秒 2分钟 深挖",
+    "quality-gate-report.md": "# 质量门禁\nREVIEW_REQUIRED"
+  }
+}

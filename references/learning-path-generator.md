@@ -4,9 +4,9 @@
 
 ## 输入
 
-- 代码分析引擎的结构化输出（project-analysis.md）
-- `business-chains.md`
-- STAR 简历（resume.md，如存在）
+- manifest 的 `current_artifacts.project_analysis`
+- manifest 的 `current_artifacts.business_chains`
+- manifest 的 `current_artifacts.resume`（如存在）
 - `claim-grill-report.md`（如存在）
 - `evidence-manifest.json`
 
@@ -341,7 +341,7 @@ learning_priority = claim_risk(0-3) + interview_frequency(0-3) + mastery_gap(0-3
 ## 质量要求
 
 - 整份学习路径的总字数控制在 2000-4000 字（项目越大越接近上限）
-- 文件路径和数据流描述必须与 project-analysis.md 一致
+- 文件路径和数据流描述必须与 `current_artifacts.project_analysis` 指向的当前项目分析一致
 - 代码片段直接从源码复制，不要重写或简化
 - 重要度标注要敢于取舍——如果所有模块都是 ⭐⭐⭐，等于没有标注
 - 面试题的具体程度要能让用户直接拿来练习，不需要再自己翻译
@@ -351,9 +351,9 @@ learning_priority = claim_risk(0-3) + interview_frequency(0-3) + mastery_gap(0-3
 
 ## 与交互式学习模板的衔接
 
-本文件产出的 `learning-path.md` 是 Step 2.5 生成 `learning-interactive.html` 的**唯一内容来源**。HTML 生成不重新分析代码，只做格式转换。以下内容块直接映射到 HTML 元素：
+本文件产出的当前学习路径是生成 `learning-interactive.html` 的**唯一内容来源**。写入后更新 `current_artifacts.learning_path`；HTML 生成从该映射读取，不重新分析代码，只做格式转换。以下内容块直接映射到 HTML 元素：
 
-| learning-path.md 内容 | HTML 元素 |
+| 当前学习路径内容 | HTML 元素 |
 |------------------------|-----------|
 | 一句话定位 | `module-0` 的 `.module-subtitle` |
 | 角色表（表格） | `.role-cards` 网格，每行一张 `.role-card` |

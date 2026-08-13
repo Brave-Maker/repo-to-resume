@@ -25,7 +25,7 @@
 ## 项目分析
 
 ```markdown
-> 项目分析完成 · `project-analysis.md` / `business-chains.md`
+> 项目分析完成 · `{current_artifacts.project_analysis}` / `{current_artifacts.business_chains}`
 
 | 指标 | 结果 |
 |---|---|
@@ -40,7 +40,7 @@
 ## 贡献映射
 
 ```markdown
-> 贡献映射完成 · `contribution-map.md`
+> 贡献映射完成 · `{current_artifacts.contribution_map}`
 
 | Ready | Needs training | Needs build | Blocked |
 |---:|---:|---:|---:|
@@ -52,7 +52,7 @@
 ## 经历增强
 
 ```markdown
-> 增强计划完成 · `enhancement-plan.md` · {N} 个任务
+> 增强计划完成 · `{current_artifacts.enhancement_plan}` · {N} 个任务
 
 1. **{任务}**：{模式}，完成后可支持 `{Claim}`
 2. **{任务}**：{模式}，完成后可支持 `{Claim}`
@@ -61,7 +61,7 @@
 ## 简历
 
 ```markdown
-> STAR 简历已生成 · `resume.md` · {N} 条 Action
+> STAR 简历已生成 · `{current_artifacts.resume}` · {N} 条 Action
 
 - LOW / MEDIUM / HIGH：{数量}
 - 待拷打：{N} 条
@@ -71,7 +71,7 @@
 ## 拷打
 
 ```markdown
-> Bullet 拷打完成 · `claim-grill-report.md`
+> Bullet 拷打完成 · `{current_artifacts.claim_grill_report}`
 
 | GREEN | YELLOW | ORANGE | RED |
 |---:|---:|---:|---:|
@@ -83,17 +83,29 @@
 ## 学习与话术
 
 ```markdown
-> 面试准备完成 · `learning-path.md` / `interview-scripts.md`
+> 面试准备完成 · `{current_artifacts.learning_path}` / `{current_artifacts.interview_scripts}`
 
 - 必读模块：{列表}
 - 最高风险话题：{内容}
 - 已生成：15 秒 / 30 秒 / 2 分钟 / 深挖材料
 ```
 
+`UNDERSTAND_ONLY` 不使用上面的面试准备模板，改用：
+
+```markdown
+> 代码理解材料完成 · `{current_artifacts.learning_path}`
+
+- 核心链路：{N} 条
+- 必读模块：{列表}
+- 待确认关系：{N} 项
+```
+
+不得在该模式宣称生成 `interview-scripts.md`、分层话术或模拟面试报告。
+
 ## 最终门禁
 
 ```markdown
-> 质量门禁完成 · `quality-gate-report.md` · **{STATUS}**
+> 质量门禁完成 · `{current_artifacts.quality_gate_report}` · **{STATUS}**
 
 - 可直接使用：{N} 条
 - 需要训练：{N} 条

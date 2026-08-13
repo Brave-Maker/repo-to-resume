@@ -76,9 +76,16 @@ PERSONAL_FACT / SELF_PROJECT / 已验证 REPRODUCED -> LOW
 
 ```json
 {
-  "schema_version": "1.0",
+  "schema_version": "1.1",
   "mode": "REAL_INTERNSHIP",
-  "project": {},
+  "current_artifacts": {
+    "project_analysis": "project-analysis.md",
+    "business_chains": "business-chains.md",
+    "learning_path": "learning-path.md",
+    "quality_gate_report": "quality-gate-report.md"
+  },
+  "code_mutation": {"authorized": false, "scope": []},
+  "project": {"name": "sample-project"},
   "business_chains": [],
   "contributions": [],
   "enhancement_tasks": [],
@@ -91,7 +98,7 @@ PERSONAL_FACT / SELF_PROJECT / 已验证 REPRODUCED -> LOW
 }
 ```
 
-每条 `claim` 必须包含：`id`、`text`、`source_type`、`role`、`mastery_level`、`risk`、`chain_id`、`evidence_ids`、`status`、`grill_status`。`status` 只能是 `READY / NEEDS_EVIDENCE / NEEDS_TRAINING / NEEDS_BUILD / BLOCKED`。
+每条 `claim` 必须包含：`id`、`text`、`source_type`、`role`、`mastery_level`、`risk`、`chain_id`、`evidence_ids`、`status`、`grill_status` 和 `is_core`。`status` 只能是 `READY / NEEDS_EVIDENCE / NEEDS_TRAINING / NEEDS_BUILD / BLOCKED`。
 
 ### 更新规则
 
@@ -99,11 +106,11 @@ PERSONAL_FACT / SELF_PROJECT / 已验证 REPRODUCED -> LOW
 
 1. 将旧文件复制到 `history/evidence-manifest-{时间戳}.json`；
 2. 将新内容写入同目录临时文件；
-3. 按 `evidence-manifest.schema.json` 校验；
+3. 按 `evidence-manifest.schema.json` 校验结构，再运行 `scripts/validate_manifest.py` 校验 ID 唯一性、引用完整性、产物指针、模式约束和代码修改授权；
 4. 校验通过后原子替换当前文件；
 5. 校验失败则删除临时文件并继续使用旧文件。
 
-其他模块只读取固定的当前 manifest；历史文件仅用于审计和恢复。
+其他模块只读取固定的当前 manifest，并从 `current_artifacts` 获取普通产物当前版本；历史文件仅用于审计和恢复。写入普通产物成功后先更新 `current_artifacts`，再按上述原子流程替换 manifest。
 
 ## 7. 失败处理
 

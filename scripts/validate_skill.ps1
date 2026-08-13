@@ -100,11 +100,36 @@ if (Test-Path -LiteralPath $schemaPath) {
     $schemaText = Get-Content -Raw -Encoding UTF8 -LiteralPath $schemaPath
     Assert-Check ($schemaText -match 'NEEDS_EVIDENCE') 'Claim status enum is missing from manifest schema'
     Assert-Check ($schemaText -match '"status"') 'Claim status is not required by manifest schema'
+    Assert-Check ($schemaText -match '"current_artifacts"') 'Current artifact routing is missing from manifest schema'
+    Assert-Check ($schemaText -match '"code_mutation"') 'Code mutation authorization is missing from manifest schema'
+    Assert-Check ($schemaText -match '"is_core"') 'Core claim marker is missing from manifest schema'
+    Assert-Check ($schemaText -match '"additionalProperties": false') 'Manifest schema does not reject unknown fields'
 }
 
 foreach ($name in $requiredReferences) {
     $requiredPath = Join-Path $SkillRoot "references\$name"
     Assert-Check (Test-Path -LiteralPath $requiredPath) "Required module missing: $name"
+}
+
+$pythonCommand = Get-Command python -ErrorAction SilentlyContinue
+if ($null -eq $pythonCommand) {
+    $failures.Add('Python is required to run deterministic manifest and eval checks')
+}
+else {
+    $manifestValidator = Join-Path $SkillRoot 'scripts\validate_manifest.py'
+    $evalRunner = Join-Path $SkillRoot 'scripts\run_evals.py'
+    $contractTests = Join-Path $SkillRoot 'scripts\test_contracts.py'
+    foreach ($script in @($manifestValidator, $evalRunner, $contractTests)) {
+        Assert-Check (Test-Path -LiteralPath $script) "Required validation script missing: $script"
+    }
+    if ($failures.Count -eq 0) {
+        & python $manifestValidator (Join-Path $SkillRoot 'evals\manifest-minimal.json')
+        Assert-Check ($LASTEXITCODE -eq 0) 'Manifest semantic validation failed'
+        & python $evalRunner
+        Assert-Check ($LASTEXITCODE -eq 0) 'Executable eval assertions failed'
+        & python $contractTests
+        Assert-Check ($LASTEXITCODE -eq 0) 'Negative contract tests failed'
+    }
 }
 
 if ($failures.Count -gt 0) {

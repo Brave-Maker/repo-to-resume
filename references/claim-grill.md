@@ -4,11 +4,13 @@
 
 ## 输入
 
-- `resume.md`
 - `evidence-manifest.json`
-- `project-analysis.md`
-- `business-chains.md`
-- 可选：`enhancement-plan.md`
+- manifest 的 `current_artifacts.resume`
+- manifest 的 `current_artifacts.project_analysis`
+- manifest 的 `current_artifacts.business_chains`
+- 可选：manifest 的 `current_artifacts.enhancement_plan`
+
+任何映射缺失或目标文件不存在时停止拷打，先修复 manifest；不要猜测固定文件名或最高 `-vN`。
 
 ## 交互原则
 

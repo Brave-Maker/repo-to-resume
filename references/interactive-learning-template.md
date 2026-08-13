@@ -2,6 +2,8 @@
 
 基于 Step 2 产出的学习路径内容，生成单文件自包含交互式 HTML。用户在浏览器中打开即可按模块学习，核心模块附带随堂测验。
 
+写入 `learning-interactive.html` 或下一个 `learning-interactive-vN.html` 后，更新 `current_artifacts.learning_interactive`。
+
 ## 核心约束（强制）
 
 **设计稳定性——以下内容严禁修改：**
@@ -11,7 +13,7 @@
 - 可替换的只有：HTML 注释中标注 `{占位符}` 的内容、模块数量、测验题目和选项
 
 **内容来源：**
-- 不从零生成内容——把 Step 2 产出的 learning-path.md 中的内容转换为 HTML
+- 不从零生成内容——把 manifest 的 `current_artifacts.learning_path` 指向的内容转换为 HTML
 - 系统全景图 → 角色卡片 + 步骤动画
 - 模块详解 → 代码对照块 + 设计决策卡片 + 文件树
 - 测验题：核心模块各 1 道，从模块的「面试可能追问」中衍生，考察应用而非记忆
@@ -29,9 +31,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{项目名称} - 交互式学习</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
     /* ===== CSS 变量（严禁修改） ===== */
     :root {
@@ -59,6 +58,8 @@
       --color-success-light:  #E8F5EE;
       --color-error:          #C93B3B;
       --color-error-light:    #FDE8E8;
+      --color-info:           #2A7B9B;
+      --color-info-light:     #E6F2F6;
       /* 角色色 */
       --color-actor-1:        #D94F30;
       --color-actor-2:        #2A7B9B;
@@ -66,8 +67,8 @@
       --color-actor-4:        #D4A843;
       --color-actor-5:        #2D8B55;
       /* 字体（严禁替换） */
-      --font-display:  'Bricolage Grotesque', Georgia, serif;
-      --font-body:     'DM Sans', -apple-system, sans-serif;
+      --font-display:  Georgia, 'Times New Roman', serif;
+      --font-body:     -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
       --font-mono:     'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
       /* 字号 */
       --text-xs:   0.75rem;
@@ -528,7 +529,7 @@
     <div class="module-content">
       <span class="module-number">00</span>
       <h1 class="module-title">🗺️ 系统全景图</h1>
-      <p class="module-subtitle">{一句话定位，从 learning-path.md 第一层复制}</p>
+      <p class="module-subtitle">{一句话定位，从当前学习路径第一层复制}</p>
 
       <div class="module-body">
 
@@ -559,7 +560,7 @@
         <div>
           <h2 class="section-heading">一条请求走到底</h2>
           <p style="color: var(--color-text-secondary); margin-bottom: var(--space-6);">
-            {从 learning-path.md 第一层复制的用户操作描述}
+            {从当前学习路径第一层复制的用户操作描述}
           </p>
           <div class="flow-steps">
             <!-- 每一步一个 flow-step，步骤间夹 flow-arrow → -->
@@ -584,7 +585,7 @@
         <div>
           <h2 class="section-heading">📖 学习策略</h2>
           <p style="color: var(--color-text-secondary);">
-            {从 learning-path.md 的「你应该优先看哪些」复制，转换为自然语言}
+            {从当前学习路径的「你应该优先看哪些」复制，转换为自然语言}
           </p>
         </div>
 
@@ -612,7 +613,7 @@
 
         <div>
           <h2 class="section-heading">为什么需要这个模块</h2>
-          <p style="color: var(--color-text-secondary);">{从 learning-path.md 复制}</p>
+          <p style="color: var(--color-text-secondary);">{从当前学习路径复制}</p>
         </div>
 
         <div>
@@ -683,7 +684,7 @@
       <div class="module-body">
         <div>
           <h2 class="section-heading">一句话职责</h2>
-          <p style="color: var(--color-text-secondary);">{从 learning-path.md 复制}</p>
+          <p style="color: var(--color-text-secondary);">{从当前学习路径复制}</p>
         </div>
         <div>
           <h2 class="section-heading">📁 关键文件</h2>
@@ -854,7 +855,7 @@
 
 ### 内容来源映射
 
-| learning-path.md 内容 | HTML 元素 | 位置 |
+| 当前学习路径内容 | HTML 元素 | 位置 |
 |----------------------|-----------|------|
 | 一句话定位 | `.module-subtitle` | module-0 |
 | 角色表 | `.role-cards` > `.role-card` | module-0 |

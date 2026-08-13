@@ -4,15 +4,15 @@
 
 ## 输入
 
-- `project-analysis.md`
-- `business-chains.md`
+- manifest 的 `current_artifacts.project_analysis`
+- manifest 的 `current_artifacts.business_chains`
 - 用户口述、现有简历或工作记录
 - 可选：提交记录、工单、测试报告、截图
 - `references/claim-policy.md`
 
 ## 输出
 
-- `contribution-map.md`
+- 新建当前版本的贡献映射，并更新 `current_artifacts.contribution_map`
 - 更新后的 `evidence-manifest.json`
 
 ## Step 1：确定用户模式
@@ -56,7 +56,7 @@
   "source_type": "MENTOR_DIRECTED",
   "mastery_level": "L3",
   "code_locations": ["src/order/CallbackService.java"],
-  "evidence_ids": ["CODE-012", "USER-003"],
+  "evidence_ids": ["EVIDENCE-012", "EVIDENCE-003"],
   "open_questions": [],
   "risk": "MEDIUM"
 }

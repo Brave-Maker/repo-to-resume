@@ -1,0 +1,40 @@
+{
+  "manifest": {
+    "schema_version": "1.1",
+    "mode": "WEAK_INTERNSHIP",
+    "auto_confirmed": true,
+    "current_artifacts": {
+      "project_analysis": "project-analysis.md",
+      "business_chains": "business-chains.md",
+      "contribution_map": "contribution-map.md",
+      "enhancement_plan": "enhancement-plan.md",
+      "resume": "resume.md",
+      "claim_grill_report": "claim-grill-report.md",
+      "learning_path": "learning-path.md",
+      "interview_scripts": "interview-scripts.md",
+      "quality_gate_report": "quality-gate-report.md"
+    },
+    "code_mutation": {"authorized": false, "scope": []},
+    "project": {"name": "energy-platform", "scan_scope": ".", "excluded_paths": []},
+    "business_chains": [{"id": "CHAIN-001", "name": "报表导出", "domain_type": "BUSINESS", "code_locations": ["src/Export.java"], "consumer": "运营人员", "value_score": 7}],
+    "contributions": [{"id": "CONTRIBUTION-001", "chain_id": "CHAIN-001", "role": "实现查询与导出", "source_type": "PERSONAL_FACT", "mastery_level": "L2", "risk": "MEDIUM"}],
+    "enhancement_tasks": [{"id": "TASK-001", "chain_id": "CHAIN-001", "claim_ids": ["CLAIM-001"], "mode": "DESIGNED", "status": "PLANNED", "solution_options": ["流式导出", "分页导出"], "execution_steps": ["建立数据基线", "设计批次边界"], "failure_injection": ["导出中断"], "validation_methods": ["核对总行数与内存峰值"], "completion_evidence": [], "interview_gate": ["解释分页与流式取舍"]}],
+    "claims": [{"id": "CLAIM-001", "text": "补齐大数据量导出稳定性方案", "resume_text": "设计批次化导出与中断恢复方案", "source_type": "DESIGNED_ONLY", "role": "设计", "mastery_level": "L2", "risk": "HIGH", "chain_id": "CHAIN-001", "evidence_ids": ["EVIDENCE-001"], "status": "NEEDS_TRAINING", "grill_status": "ORANGE", "is_core": true}],
+    "evidence": [{"id": "EVIDENCE-001", "type": "DESIGN", "value": "enhancement-plan.md", "risk": "MEDIUM"}],
+    "grill_results": [{"claim_id": "CLAIM-001", "status": "ORANGE", "rounds": 1, "layers": ["事实确认", "个人角色", "技术实现", "方案对比", "数据与验证", "边界与复盘"]}],
+    "learning_gaps": [{"claim_id": "CLAIM-001", "task": "完成中断恢复推演", "success_criteria": "解释失败位置和恢复策略"}],
+    "risk_flags": [{"type": "mastery_gap", "claim_id": "CLAIM-001", "risk": "HIGH", "message": "尚未实际验证"}],
+    "quality_status": "TRAINING_REQUIRED"
+  },
+  "files": {
+    "project-analysis.md": "# 能源平台分析",
+    "business-chains.md": "# 业务链路\nCHAIN-001 查询到运营导出",
+    "contribution-map.md": "# 贡献\nCRUD 与导出",
+    "enhancement-plan.md": "# 增强计划\nTASK-001 流式与分页方案、执行步骤、失败注入、验证方法、完成证据、面试门禁",
+    "resume.md": "# 训练草稿\n设计批次化导出与中断恢复方案\nCLAIM-001",
+    "claim-grill-report.md": "# 拷打\nCLAIM-001 ORANGE",
+    "learning-path.md": "# 学习路径\nCLAIM-001 完成中断恢复推演",
+    "interview-scripts.md": "# 训练话术\n15秒 30秒 2分钟 深挖",
+    "quality-gate-report.md": "# 质量门禁\nTRAINING_REQUIRED"
+  }
+}

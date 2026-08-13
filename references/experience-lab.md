@@ -4,8 +4,8 @@
 
 ## 输入
 
-- `business-chains.md`
-- `contribution-map.md`
+- manifest 的 `current_artifacts.business_chains`
+- manifest 的 `current_artifacts.contribution_map`
 - `evidence-manifest.json`
 - 用户目标岗位、可投入时间和允许的完成模式
 
@@ -13,12 +13,12 @@
 
 | 模式 | 要求 | 完成后的来源类型 |
 |---|---|---|
-| `IMPLEMENTED` | 修改代码并运行验证 | `PERSONAL_FACT` 或 `REPRODUCED` |
+| `IMPLEMENTED` | 已单独授权修改代码，并在限定范围运行验证 | `PERSONAL_FACT` 或 `REPRODUCED` |
 | `REPRODUCED` | 独立复现关键链路或模块 | `REPRODUCED` |
 | `DESIGNED` | 完成架构、伪代码、失败分支和验证计划 | `DESIGNED_ONLY` |
 | `NARRATIVE_READY` | 完成完整叙事、技术细节和压力问答 | `NARRATIVE_FILL`，风险保持 HIGH |
 
-用户可选择任何模式。不要因用户无法运行原项目而终止；无法实作时降级为 `DESIGNED` 或 `NARRATIVE_READY`，并提高掌握度和拷打要求。
+用户可选择任何模式。不要因用户无法运行原项目而终止；无法实作时降级为 `DESIGNED` 或 `NARRATIVE_READY`，并提高掌握度和拷打要求。选择 `IMPLEMENTED` 还必须满足 manifest 的 `code_mutation.authorized=true`，且所有写入路径位于 `code_mutation.scope`。
 
 ## Step 1：选择增强方向
 
@@ -96,11 +96,17 @@
 
 展示任务、完成模式、预计成本和完成后可生成的声明。用户明确授权自动完成时，选择以下默认策略：
 
-- 可在本地安全执行：优先 `IMPLEMENTED`；
+- `code_mutation.authorized=true` 且写入位于授权范围：可选择 `IMPLEMENTED`；
 - 缺少运行环境但能读代码：选择 `DESIGNED`；
 - 只有材料且用户要求快速包装：选择 `NARRATIVE_READY`，风险设为 HIGH。
 
+🔴 CHECKPOINT · CODE MUTATION
+
+在首次代码写入前展示：目标仓库绝对路径、允许写入的目录、预计修改文件、验证命令和回退方式。只有用户明确同意修改这些路径后，才把 `code_mutation.authorized` 设为 `true` 并记录 `scope`、`reason` 与 `authorized_at`。通用的“全部做完”或分析授权不能通过本检查点；未通过时不得执行 `IMPLEMENTED`。
+
 ## enhancement-plan.md 模板
+
+新建 `enhancement-plan.md` 或下一个 `enhancement-plan-vN.md` 后，更新 `current_artifacts.enhancement_plan`。
 
 ```markdown
 # 经历增强计划
@@ -154,6 +160,8 @@
 | 缺少数据库或外部系统 | 使用内存替代、mock 或契约推演 | 标明验证范围 |
 | 用户时间不足 | 只选一条最高价值链路 | 使用 `NARRATIVE_READY` 并强化拷打 |
 | 任务完成但讲不清 | 回到链路图和方案对比 | 状态保持 `TRAINING_REQUIRED` |
+| 未取得代码修改授权 | 保持目标项目只读 | 改用 `REPRODUCED/DESIGNED/NARRATIVE_READY` |
+| 写入路径超出授权范围 | 停止写入并展示越界路径 | 保留现有改动清单，状态设为 `BLOCKED` |
 
 ## 不要做
 
@@ -162,3 +170,5 @@
 - 不要一次添加所有工程能力，导致故事失焦。
 - 不要因无法实作就停止；必须给出设计或叙事路径。
 - 不要静默提升掌握度和风险等级。
+- 不要把“直接全部做完”解释为目标项目代码修改授权。
+- 不要在 `code_mutation.scope` 之外创建、修改或删除文件。

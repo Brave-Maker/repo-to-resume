@@ -179,9 +179,9 @@
 }
 ```
 
-### 对外输出文件：project-analysis.md（固定模板）
+### 对外输出文件：项目分析（固定模板）
 
-写入 `{项目名}/{项目名}-analysis/project-analysis.md`，后续步骤直接引用。模板如下：
+新建 `project-analysis.md` 或下一个 `project-analysis-vN.md`，并把相对路径写入 `current_artifacts.project_analysis`。后续步骤只通过该映射读取。模板如下：
 
 ```markdown
 # {项目名} 项目分析报告

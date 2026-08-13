@@ -1,14 +1,17 @@
 {
-  "schema_version": "1.0",
+  "schema_version": "1.1",
   "mode": "PROJECT_MIGRATION",
   "auto_confirmed": true,
-  "project": {"name": "sample-project"},
+  "current_artifacts": {},
+  "code_mutation": {"authorized": false, "scope": []},
+  "project": {"name": "sample-project", "excluded_paths": []},
   "business_chains": [
     {
       "id": "CHAIN-001",
       "name": "Request handling",
       "domain_type": "BUSINESS",
       "code_locations": ["src/app.ts"],
+      "consumer": "HTTP client",
       "value_score": 8
     }
   ],
@@ -27,7 +30,13 @@
       "id": "TASK-001",
       "chain_id": "CHAIN-001",
       "mode": "REPRODUCED",
-      "status": "COMPLETED"
+      "status": "COMPLETED",
+      "solution_options": ["middleware validation"],
+      "execution_steps": ["reproduce request path"],
+      "failure_injection": ["invalid payload"],
+      "validation_methods": ["run request tests"],
+      "completion_evidence": ["src/app.ts"],
+      "interview_gate": ["explain validation order"]
     }
   ],
   "claims": [
@@ -39,14 +48,15 @@
       "mastery_level": "L3",
       "risk": "MEDIUM",
       "chain_id": "CHAIN-001",
-      "evidence_ids": ["CODE-001"],
+      "evidence_ids": ["EVIDENCE-001"],
       "status": "READY",
-      "grill_status": "YELLOW"
+      "grill_status": "YELLOW",
+      "is_core": true
     }
   ],
   "evidence": [
     {
-      "id": "CODE-001",
+      "id": "EVIDENCE-001",
       "type": "CODE",
       "value": "src/app.ts",
       "risk": "LOW"

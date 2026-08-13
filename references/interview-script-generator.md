@@ -4,15 +4,15 @@
 
 ## 输入
 
-- `resume.md`
+- manifest 的 `current_artifacts.resume`
 - `claim-grill-report.md`
 - `evidence-manifest.json`
-- `business-chains.md`
-- `learning-path.md`（如存在）
+- manifest 的 `current_artifacts.business_chains`
+- manifest 的 `current_artifacts.learning_path`（如存在）
 
 ## 输出
 
-- `interview-scripts.md`
+- 新建当前版本的面试话术，并更新 `current_artifacts.interview_scripts`
 
 ## 每条声明的四层结构
 

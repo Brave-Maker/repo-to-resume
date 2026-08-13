@@ -6,6 +6,8 @@
   "required": [
     "schema_version",
     "mode",
+    "current_artifacts",
+    "code_mutation",
     "project",
     "business_chains",
     "contributions",
@@ -18,19 +20,12 @@
     "quality_status"
   ],
   "properties": {
-    "schema_version": {"const": "1.0"},
-    "mode": {
-      "enum": [
-        "REAL_INTERNSHIP",
-        "WEAK_INTERNSHIP",
-        "SELF_PROJECT",
-        "PROJECT_MIGRATION",
-        "EXISTING_RESUME",
-        "UNDERSTAND_ONLY"
-      ]
-    },
+    "schema_version": {"const": "1.1"},
+    "mode": {"$ref": "#/$defs/mode"},
     "auto_confirmed": {"type": "boolean"},
-    "project": {"type": "object"},
+    "current_artifacts": {"$ref": "#/$defs/currentArtifacts"},
+    "code_mutation": {"$ref": "#/$defs/codeMutation"},
+    "project": {"$ref": "#/$defs/project"},
     "business_chains": {
       "type": "array",
       "items": {"$ref": "#/$defs/businessChain"}
@@ -51,26 +46,121 @@
       "type": "array",
       "items": {"$ref": "#/$defs/evidence"}
     },
-    "grill_results": {"type": "array"},
-    "learning_gaps": {"type": "array"},
-    "risk_flags": {"type": "array"},
+    "grill_results": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/grillResult"}
+    },
+    "learning_gaps": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/learningGap"}
+    },
+    "risk_flags": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/riskFlag"}
+    },
     "quality_status": {
       "enum": ["BLOCKED", "TRAINING_REQUIRED", "REVIEW_REQUIRED", "INTERVIEW_READY"]
     }
   },
-  "additionalProperties": true,
+  "additionalProperties": false,
   "$defs": {
+    "mode": {
+      "enum": [
+        "REAL_INTERNSHIP",
+        "WEAK_INTERNSHIP",
+        "SELF_PROJECT",
+        "PROJECT_MIGRATION",
+        "EXISTING_RESUME",
+        "UNDERSTAND_ONLY"
+      ]
+    },
+    "artifactPath": {
+      "type": "string",
+      "minLength": 1
+    },
+    "currentArtifacts": {
+      "type": "object",
+      "properties": {
+        "project_analysis": {"$ref": "#/$defs/artifactPath"},
+        "business_chains": {"$ref": "#/$defs/artifactPath"},
+        "contribution_map": {"$ref": "#/$defs/artifactPath"},
+        "enhancement_plan": {"$ref": "#/$defs/artifactPath"},
+        "resume": {"$ref": "#/$defs/artifactPath"},
+        "resume_clean": {"$ref": "#/$defs/artifactPath"},
+        "claim_grill_report": {"$ref": "#/$defs/artifactPath"},
+        "learning_path": {"$ref": "#/$defs/artifactPath"},
+        "learning_interactive": {"$ref": "#/$defs/artifactPath"},
+        "interview_scripts": {"$ref": "#/$defs/artifactPath"},
+        "interview_report": {"$ref": "#/$defs/artifactPath"},
+        "quality_gate_report": {"$ref": "#/$defs/artifactPath"}
+      },
+      "additionalProperties": false
+    },
+    "codeMutation": {
+      "type": "object",
+      "required": ["authorized", "scope"],
+      "properties": {
+        "authorized": {"type": "boolean"},
+        "scope": {
+          "type": "array",
+          "items": {"type": "string", "minLength": 1},
+          "uniqueItems": true
+        },
+        "reason": {"type": "string", "minLength": 1},
+        "authorized_at": {"type": "string", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T"}
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"authorized": {"const": true}}},
+          "then": {
+            "required": ["reason", "authorized_at"],
+            "properties": {"scope": {"minItems": 1}}
+          },
+          "else": {"properties": {"scope": {"maxItems": 0}}}
+        }
+      ],
+      "additionalProperties": false
+    },
+    "project": {
+      "type": "object",
+      "required": ["name"],
+      "properties": {
+        "name": {"type": "string", "minLength": 1},
+        "root": {"type": "string"},
+        "source_url": {"type": "string", "minLength": 1},
+        "target_role": {"type": "string", "minLength": 1},
+        "scan_scope": {"type": "string"},
+        "tech_stack": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
+        "analysis_complete": {"type": "boolean"},
+        "excluded_paths": {
+          "type": "array",
+          "items": {"type": "string", "minLength": 1},
+          "uniqueItems": true
+        }
+      },
+      "additionalProperties": false
+    },
     "businessChain": {
       "type": "object",
-      "required": ["id", "name", "domain_type", "code_locations", "value_score"],
+      "required": ["id", "name", "domain_type", "code_locations", "consumer", "value_score"],
       "properties": {
         "id": {"type": "string", "pattern": "^CHAIN-[0-9]{3,}$"},
         "name": {"type": "string", "minLength": 1},
         "domain_type": {"enum": ["BUSINESS", "PLATFORM", "TOOLING", "MIXED"]},
-        "code_locations": {"type": "array", "items": {"type": "string"}},
-        "value_score": {"type": "integer", "minimum": 0, "maximum": 10}
+        "entry": {"type": "string", "minLength": 1},
+        "steps": {"type": "array", "items": {"type": "string", "minLength": 1}},
+        "code_locations": {
+          "type": "array",
+          "items": {"type": "string", "minLength": 1},
+          "uniqueItems": true
+        },
+        "consumer": {"type": "string", "minLength": 1},
+        "dependencies": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
+        "value_score": {"type": "integer", "minimum": 0, "maximum": 10},
+        "enhancement_candidates": {"type": "array", "items": {"type": "string", "minLength": 1}},
+        "uncertainties": {"type": "array", "items": {"type": "string", "minLength": 1}}
       },
-      "additionalProperties": true
+      "additionalProperties": false
     },
     "contribution": {
       "type": "object",
@@ -78,23 +168,49 @@
       "properties": {
         "id": {"type": "string", "pattern": "^CONTRIBUTION-[0-9]{3,}$"},
         "chain_id": {"type": "string", "pattern": "^CHAIN-[0-9]{3,}$"},
+        "scope": {"type": "string", "minLength": 1},
         "role": {"type": "string", "minLength": 1},
         "source_type": {"$ref": "#/$defs/sourceType"},
         "mastery_level": {"$ref": "#/$defs/mastery"},
-        "risk": {"$ref": "#/$defs/risk"}
+        "risk": {"$ref": "#/$defs/risk"},
+        "code_locations": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
+        "evidence_ids": {"type": "array", "items": {"type": "string", "pattern": "^EVIDENCE-[0-9]{3,}$"}, "uniqueItems": true},
+        "open_questions": {"type": "array", "items": {"type": "string", "minLength": 1}}
       },
-      "additionalProperties": true
+      "additionalProperties": false
     },
     "enhancementTask": {
       "type": "object",
-      "required": ["id", "chain_id", "mode", "status"],
+      "required": [
+        "id",
+        "chain_id",
+        "mode",
+        "status",
+        "solution_options",
+        "execution_steps",
+        "failure_injection",
+        "validation_methods",
+        "completion_evidence",
+        "interview_gate"
+      ],
       "properties": {
         "id": {"type": "string", "pattern": "^TASK-[0-9]{3,}$"},
         "chain_id": {"type": "string", "pattern": "^CHAIN-[0-9]{3,}$"},
+        "claim_ids": {
+          "type": "array",
+          "items": {"type": "string", "pattern": "^CLAIM-[0-9]{3,}$"},
+          "uniqueItems": true
+        },
         "mode": {"enum": ["IMPLEMENTED", "REPRODUCED", "DESIGNED", "NARRATIVE_READY"]},
-        "status": {"enum": ["PLANNED", "IN_PROGRESS", "COMPLETED", "BLOCKED"]}
+        "status": {"enum": ["PLANNED", "IN_PROGRESS", "COMPLETED", "BLOCKED"]},
+        "solution_options": {"type": "array", "items": {"type": "string", "minLength": 1}, "minItems": 1},
+        "execution_steps": {"type": "array", "items": {"type": "string", "minLength": 1}, "minItems": 1},
+        "failure_injection": {"type": "array", "items": {"type": "string", "minLength": 1}, "minItems": 1},
+        "validation_methods": {"type": "array", "items": {"type": "string", "minLength": 1}, "minItems": 1},
+        "completion_evidence": {"type": "array", "items": {"type": "string", "minLength": 1}},
+        "interview_gate": {"type": "array", "items": {"type": "string", "minLength": 1}, "minItems": 1}
       },
-      "additionalProperties": true
+      "additionalProperties": false
     },
     "claim": {
       "type": "object",
@@ -108,29 +224,38 @@
         "chain_id",
         "evidence_ids",
         "status",
-        "grill_status"
+        "grill_status",
+        "is_core"
       ],
       "properties": {
         "id": {"type": "string", "pattern": "^CLAIM-[0-9]{3,}$"},
         "text": {"type": "string", "minLength": 1},
+        "resume_text": {"type": "string", "minLength": 1},
         "source_type": {"$ref": "#/$defs/sourceType"},
         "role": {"type": "string", "minLength": 1},
         "mastery_level": {"$ref": "#/$defs/mastery"},
         "risk": {"$ref": "#/$defs/risk"},
         "chain_id": {"type": "string", "pattern": "^CHAIN-[0-9]{3,}$"},
-        "evidence_ids": {"type": "array", "items": {"type": "string"}},
+        "evidence_ids": {
+          "type": "array",
+          "items": {"type": "string", "pattern": "^EVIDENCE-[0-9]{3,}$"},
+          "uniqueItems": true
+        },
         "status": {
           "enum": ["READY", "NEEDS_EVIDENCE", "NEEDS_TRAINING", "NEEDS_BUILD", "BLOCKED"]
         },
-        "grill_status": {"enum": ["NOT_RUN", "RED", "ORANGE", "YELLOW", "GREEN"]}
+        "grill_status": {"enum": ["NOT_RUN", "RED", "ORANGE", "YELLOW", "GREEN"]},
+        "is_core": {"type": "boolean"},
+        "override": {"type": "boolean"},
+        "repair_task_id": {"type": "string", "pattern": "^TASK-[0-9]{3,}$"}
       },
-      "additionalProperties": true
+      "additionalProperties": false
     },
     "evidence": {
       "type": "object",
       "required": ["id", "type", "value", "risk"],
       "properties": {
-        "id": {"type": "string", "minLength": 1},
+        "id": {"type": "string", "pattern": "^EVIDENCE-[0-9]{3,}$"},
         "type": {
           "enum": [
             "CODE",
@@ -144,9 +269,48 @@
           ]
         },
         "value": {},
-        "risk": {"$ref": "#/$defs/risk"}
+        "risk": {"$ref": "#/$defs/risk"},
+        "context": {"type": "string", "minLength": 1}
       },
-      "additionalProperties": true
+      "additionalProperties": false
+    },
+    "grillResult": {
+      "type": "object",
+      "required": ["claim_id", "status", "rounds", "layers"],
+      "properties": {
+        "claim_id": {"type": "string", "pattern": "^CLAIM-[0-9]{3,}$"},
+        "status": {"enum": ["RED", "ORANGE", "YELLOW", "GREEN"]},
+        "rounds": {"type": "integer", "minimum": 1},
+        "layers": {
+          "type": "array",
+          "items": {"enum": ["事实确认", "个人角色", "技术实现", "方案对比", "数据与验证", "边界与复盘"]},
+          "minItems": 6,
+          "maxItems": 6,
+          "uniqueItems": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "learningGap": {
+      "type": "object",
+      "required": ["claim_id", "task", "success_criteria"],
+      "properties": {
+        "claim_id": {"type": "string", "pattern": "^CLAIM-[0-9]{3,}$"},
+        "task": {"type": "string", "minLength": 1},
+        "success_criteria": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": false
+    },
+    "riskFlag": {
+      "type": "object",
+      "required": ["type", "risk", "message"],
+      "properties": {
+        "type": {"enum": ["role_claim", "numeric_claim", "source_claim", "mastery_gap", "artifact_gap", "sensitive_data"]},
+        "claim_id": {"type": "string", "pattern": "^CLAIM-[0-9]{3,}$"},
+        "risk": {"$ref": "#/$defs/risk"},
+        "message": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": false
     },
     "sourceType": {
       "enum": [

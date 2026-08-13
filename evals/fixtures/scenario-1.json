@@ -1,0 +1,38 @@
+{
+  "manifest": {
+    "schema_version": "1.1",
+    "mode": "REAL_INTERNSHIP",
+    "auto_confirmed": true,
+    "current_artifacts": {
+      "project_analysis": "project-analysis.md",
+      "business_chains": "business-chains.md",
+      "contribution_map": "contribution-map.md",
+      "resume": "resume.md",
+      "claim_grill_report": "claim-grill-report.md",
+      "learning_path": "learning-path.md",
+      "interview_scripts": "interview-scripts.md",
+      "quality_gate_report": "quality-gate-report.md"
+    },
+    "code_mutation": {"authorized": false, "scope": []},
+    "project": {"name": "order-service", "scan_scope": ".", "excluded_paths": ["vendor"]},
+    "business_chains": [{"id": "CHAIN-001", "name": "订单回调", "domain_type": "BUSINESS", "code_locations": ["src/Callback.java"], "consumer": "订单状态", "value_score": 9}],
+    "contributions": [{"id": "CONTRIBUTION-001", "chain_id": "CHAIN-001", "role": "在既定方案下实现幂等与重试", "source_type": "MENTOR_DIRECTED", "mastery_level": "L3", "risk": "MEDIUM"}],
+    "enhancement_tasks": [],
+    "claims": [{"id": "CLAIM-001", "text": "实现订单回调幂等与失败重试", "resume_text": "在既定方案下实现订单回调幂等校验和失败重试", "source_type": "MENTOR_DIRECTED", "role": "实现", "mastery_level": "L3", "risk": "MEDIUM", "chain_id": "CHAIN-001", "evidence_ids": ["EVIDENCE-001"], "status": "READY", "grill_status": "YELLOW", "is_core": true}],
+    "evidence": [{"id": "EVIDENCE-001", "type": "CODE", "value": "src/Callback.java", "risk": "LOW"}],
+    "grill_results": [{"claim_id": "CLAIM-001", "status": "YELLOW", "rounds": 1, "layers": ["事实确认", "个人角色", "技术实现", "方案对比", "数据与验证", "边界与复盘"]}],
+    "learning_gaps": [{"claim_id": "CLAIM-001", "task": "补充并发边界", "success_criteria": "解释重复回调处理"}],
+    "risk_flags": [],
+    "quality_status": "REVIEW_REQUIRED"
+  },
+  "files": {
+    "project-analysis.md": "# 订单服务分析\n入口 src/Callback.java",
+    "business-chains.md": "# 业务链路\nCHAIN-001 回调到订单状态",
+    "contribution-map.md": "# 贡献\nMENTOR_DIRECTED 实现",
+    "resume.md": "# 订单服务\n1. 在既定方案下实现订单回调幂等校验和失败重试\n\n| Bullet | Claim ID |\n|---|---|\n| 1 | CLAIM-001 |",
+    "claim-grill-report.md": "# 拷打\nCLAIM-001 YELLOW 六层完成",
+    "learning-path.md": "# 学习路径\nCLAIM-001 补充并发边界",
+    "interview-scripts.md": "# 话术\n15秒 30秒 2分钟 深挖",
+    "quality-gate-report.md": "# 质量门禁\nREVIEW_REQUIRED"
+  }
+}

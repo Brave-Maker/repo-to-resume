@@ -96,6 +96,9 @@
     {"id": "G.5", "text": "关键阶段有显式检查点", "check": "explicit_checkpoints_exist"},
     {"id": "G.6", "text": "存在反例黑名单", "check": "blacklist_exists"},
     {"id": "G.7", "text": "无单一 runtime 锁定", "check": "runtime_neutral"},
-    {"id": "G.8", "text": "用户未回答时不生成虚构面试得分", "check": "no_fabricated_interview_scores"}
+    {"id": "G.8", "text": "用户未回答时不生成虚构面试得分", "check": "no_fabricated_interview_scores"},
+    {"id": "G.9", "text": "所有下游通过 current_artifacts 读取当前产物", "check": "current_artifact_routing_enforced"},
+    {"id": "G.10", "text": "代码修改需要独立授权", "check": "code_mutation_gate_enforced"},
+    {"id": "G.11", "text": "Manifest 执行结构与语义校验", "check": "manifest_semantic_validator_exists"}
   ]
 }

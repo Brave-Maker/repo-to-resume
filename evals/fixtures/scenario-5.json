@@ -1,0 +1,40 @@
+{
+  "manifest": {
+    "schema_version": "1.1",
+    "mode": "EXISTING_RESUME",
+    "auto_confirmed": true,
+    "current_artifacts": {
+      "project_analysis": "project-analysis.md",
+      "business_chains": "business-chains.md",
+      "contribution_map": "contribution-map.md",
+      "enhancement_plan": "enhancement-plan.md",
+      "resume": "resume.md",
+      "claim_grill_report": "claim-grill-report.md",
+      "learning_path": "learning-path.md",
+      "interview_scripts": "interview-scripts.md",
+      "quality_gate_report": "quality-gate-report.md"
+    },
+    "code_mutation": {"authorized": false, "scope": []},
+    "project": {"name": "orders", "scan_scope": ".", "excluded_paths": []},
+    "business_chains": [{"id": "CHAIN-001", "name": "订单查询", "domain_type": "BUSINESS", "code_locations": ["src/Order.java"], "consumer": "订单接口", "value_score": 8}],
+    "contributions": [{"id": "CONTRIBUTION-001", "chain_id": "CHAIN-001", "role": "角色待确认", "source_type": "CODE_INFERRED", "mastery_level": "L1", "risk": "HIGH"}],
+    "enhancement_tasks": [{"id": "TASK-001", "chain_id": "CHAIN-001", "claim_ids": ["CLAIM-001"], "mode": "DESIGNED", "status": "PLANNED", "solution_options": ["基准测试"], "execution_steps": ["定义数据规模", "建立前后基线"], "failure_injection": ["缓存失效"], "validation_methods": ["记录 P95 与吞吐"], "completion_evidence": [], "interview_gate": ["解释统计口径"]}],
+    "claims": [{"id": "CLAIM-001", "text": "Redis 提升 80% 并支撑百万 QPS", "resume_text": "使用 Redis 优化订单查询（结果待验证）", "source_type": "CODE_INFERRED", "role": "角色待确认", "mastery_level": "L1", "risk": "HIGH", "chain_id": "CHAIN-001", "evidence_ids": ["EVIDENCE-001"], "status": "BLOCKED", "grill_status": "RED", "is_core": true, "override": true, "repair_task_id": "TASK-001"}],
+    "evidence": [{"id": "EVIDENCE-001", "type": "ESTIMATED", "value": "用户原简历数字，尚无监控", "risk": "HIGH"}],
+    "grill_results": [{"claim_id": "CLAIM-001", "status": "RED", "rounds": 1, "layers": ["事实确认", "个人角色", "技术实现", "方案对比", "数据与验证", "边界与复盘"]}],
+    "learning_gaps": [{"claim_id": "CLAIM-001", "task": "建立可复现基准", "success_criteria": "给出环境、样本和前后值"}],
+    "risk_flags": [{"type": "role_claim", "claim_id": "CLAIM-001", "risk": "HIGH", "message": "主导角色无依据"}, {"type": "numeric_claim", "claim_id": "CLAIM-001", "risk": "HIGH", "message": "性能数字无监控证据"}],
+    "quality_status": "BLOCKED"
+  },
+  "files": {
+    "project-analysis.md": "# 订单项目分析",
+    "business-chains.md": "# 业务链路\nCHAIN-001 订单查询到接口",
+    "contribution-map.md": "# 贡献\n角色待确认",
+    "enhancement-plan.md": "# 修复任务\nTASK-001 建立基准",
+    "resume.md": "# 高风险草稿\n使用 Redis 优化订单查询（结果待验证）\nCLAIM-001",
+    "claim-grill-report.md": "# 拷打\nCLAIM-001 RED",
+    "learning-path.md": "# 学习路径\nCLAIM-001 建立可复现基准",
+    "interview-scripts.md": "# NOT READY 训练稿\n15秒 30秒 2分钟 深挖",
+    "quality-gate-report.md": "# 质量门禁\nBLOCKED"
+  }
+}

@@ -5,10 +5,10 @@
 ## 输入
 
 - `evidence-manifest.json`
-- `project-analysis.md`
-- `business-chains.md`
-- `contribution-map.md`
-- `enhancement-plan.md`（如存在）
+- manifest 的 `current_artifacts.project_analysis`
+- manifest 的 `current_artifacts.business_chains`
+- manifest 的 `current_artifacts.contribution_map`
+- manifest 的 `current_artifacts.enhancement_plan`（如存在）
 - `references/star-framework.md`
 - `references/claim-policy.md`
 
@@ -16,8 +16,9 @@
 
 ## 输出
 
-- `{项目名}-analysis/resume.md`
+- 新建 `{项目名}-analysis/resume.md` 或下一个 `resume-vN.md`
 - 更新 manifest 中的 `claims[].resume_text`
+- 更新 manifest 的 `current_artifacts.resume` 为本次新文件的相对路径
 
 ## Step 1：筛选声明
 
@@ -71,7 +72,7 @@ Task 不复述项目功能，不把整个项目职责归给用户。
 CLAIM-ID -> CONTRIBUTION-ID -> CHAIN-ID -> EVIDENCE-ID
 ```
 
-用户可见正文不展示内部 ID，但 `resume.md` 末尾增加“面试准备索引”，列出 Bullet 序号对应的 claim ID，便于后续拷打。
+用户可见正文不展示内部 ID，但当前简历文件末尾增加“面试准备索引”，列出 Bullet 序号对应的 claim ID，便于后续拷打。
 
 ### 长度与数量
 
