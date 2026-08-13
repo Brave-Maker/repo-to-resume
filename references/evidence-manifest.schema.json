@@ -1,0 +1,163 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.local/repo-to-resume/evidence-manifest.schema.json",
+  "title": "repo-to-resume evidence manifest",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "mode",
+    "project",
+    "business_chains",
+    "contributions",
+    "enhancement_tasks",
+    "claims",
+    "evidence",
+    "grill_results",
+    "learning_gaps",
+    "risk_flags",
+    "quality_status"
+  ],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "mode": {
+      "enum": [
+        "REAL_INTERNSHIP",
+        "WEAK_INTERNSHIP",
+        "SELF_PROJECT",
+        "PROJECT_MIGRATION",
+        "EXISTING_RESUME",
+        "UNDERSTAND_ONLY"
+      ]
+    },
+    "auto_confirmed": {"type": "boolean"},
+    "project": {"type": "object"},
+    "business_chains": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/businessChain"}
+    },
+    "contributions": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/contribution"}
+    },
+    "enhancement_tasks": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/enhancementTask"}
+    },
+    "claims": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/claim"}
+    },
+    "evidence": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/evidence"}
+    },
+    "grill_results": {"type": "array"},
+    "learning_gaps": {"type": "array"},
+    "risk_flags": {"type": "array"},
+    "quality_status": {
+      "enum": ["BLOCKED", "TRAINING_REQUIRED", "REVIEW_REQUIRED", "INTERVIEW_READY"]
+    }
+  },
+  "additionalProperties": true,
+  "$defs": {
+    "businessChain": {
+      "type": "object",
+      "required": ["id", "name", "domain_type", "code_locations", "value_score"],
+      "properties": {
+        "id": {"pattern": "^CHAIN-[0-9]{3,}$"},
+        "name": {"type": "string", "minLength": 1},
+        "domain_type": {"enum": ["BUSINESS", "PLATFORM", "TOOLING", "MIXED"]},
+        "code_locations": {"type": "array", "items": {"type": "string"}},
+        "value_score": {"type": "integer", "minimum": 0, "maximum": 10}
+      },
+      "additionalProperties": true
+    },
+    "contribution": {
+      "type": "object",
+      "required": ["id", "chain_id", "role", "source_type", "mastery_level", "risk"],
+      "properties": {
+        "id": {"pattern": "^CONTRIBUTION-[0-9]{3,}$"},
+        "chain_id": {"pattern": "^CHAIN-[0-9]{3,}$"},
+        "role": {"type": "string", "minLength": 1},
+        "source_type": {"$ref": "#/$defs/sourceType"},
+        "mastery_level": {"$ref": "#/$defs/mastery"},
+        "risk": {"$ref": "#/$defs/risk"}
+      },
+      "additionalProperties": true
+    },
+    "enhancementTask": {
+      "type": "object",
+      "required": ["id", "chain_id", "mode", "status"],
+      "properties": {
+        "id": {"pattern": "^TASK-[0-9]{3,}$"},
+        "chain_id": {"pattern": "^CHAIN-[0-9]{3,}$"},
+        "mode": {"enum": ["IMPLEMENTED", "REPRODUCED", "DESIGNED", "NARRATIVE_READY"]},
+        "status": {"enum": ["PLANNED", "IN_PROGRESS", "COMPLETED", "BLOCKED"]}
+      },
+      "additionalProperties": true
+    },
+    "claim": {
+      "type": "object",
+      "required": [
+        "id",
+        "text",
+        "source_type",
+        "role",
+        "mastery_level",
+        "risk",
+        "chain_id",
+        "evidence_ids",
+        "grill_status"
+      ],
+      "properties": {
+        "id": {"pattern": "^CLAIM-[0-9]{3,}$"},
+        "text": {"type": "string", "minLength": 1},
+        "source_type": {"$ref": "#/$defs/sourceType"},
+        "role": {"type": "string", "minLength": 1},
+        "mastery_level": {"$ref": "#/$defs/mastery"},
+        "risk": {"$ref": "#/$defs/risk"},
+        "chain_id": {"pattern": "^CHAIN-[0-9]{3,}$"},
+        "evidence_ids": {"type": "array", "items": {"type": "string"}},
+        "grill_status": {"enum": ["NOT_RUN", "RED", "ORANGE", "YELLOW", "GREEN"]}
+      },
+      "additionalProperties": true
+    },
+    "evidence": {
+      "type": "object",
+      "required": ["id", "type", "value", "risk"],
+      "properties": {
+        "id": {"type": "string", "minLength": 1},
+        "type": {
+          "enum": [
+            "CODE",
+            "PRODUCTION",
+            "BENCHMARK",
+            "STATIC_COUNT",
+            "USER_REPORTED",
+            "ESTIMATED",
+            "NARRATIVE",
+            "DESIGN"
+          ]
+        },
+        "value": {},
+        "risk": {"$ref": "#/$defs/risk"}
+      },
+      "additionalProperties": true
+    },
+    "sourceType": {
+      "enum": [
+        "PERSONAL_FACT",
+        "TEAM_FACT",
+        "MENTOR_DIRECTED",
+        "CODE_INFERRED",
+        "SELF_PROJECT",
+        "REPRODUCED",
+        "BORROWED_CONTEXT",
+        "DESIGNED_ONLY",
+        "NARRATIVE_FILL"
+      ]
+    },
+    "mastery": {"enum": ["L0", "L1", "L2", "L3", "L4"]},
+    "risk": {"enum": ["LOW", "MEDIUM", "HIGH", "BLOCKED"]}
+  }
+}

@@ -1,62 +1,101 @@
 {
   "skill_name": "repo-to-resume",
+  "schema_version": "2.0",
   "evals": [
     {
       "id": 1,
-      "name": "本地项目-STAR简历生成",
-      "prompt": "帮我分析 C:\\work\\my-react-app 这个前端项目，给这个项目写一份面试用的 STAR 简历。项目大概是一个 React + TypeScript 的 dashboard 应用，有用户管理、数据可视化、权限控制这些模块。",
-      "expected_output": "生成包含 Situation（三段式：业务问题 → 项目作用 → 技术栈）/ Task（具体职责）/ Action & Result（不超过 10 条，每条 ≤80 字，强动词开头，业务问题+技术决策+量化结果三要素齐全）的 STAR 简历。简历开头标注 AI 生成声明，末尾标注估算值提示。每步等待用户确认。",
-      "files": [],
+      "name": "真实实习-角色边界与STAR",
+      "prompt": "我在一家电商公司实习，参与订单回调模块开发。mentor 定了整体方案，我实现了幂等校验和失败重试。帮我分析 C:\\work\\order-service 并做完整面试准备。",
+      "expected_mode": "REAL_INTERNSHIP",
       "assertions": [
-        {"id": "1.1", "text": "简历包含 Situation 章节（## Situation 或 Situation）", "check": "section_exists:situation"},
-        {"id": "1.2", "text": "简历包含 Task 章节", "check": "section_exists:task"},
-        {"id": "1.3", "text": "简历包含 Action & Result 章节", "check": "section_exists:action"},
-        {"id": "1.4", "text": "Action 条数不超过 10 条", "check": "count_action_items_lte:10"},
-        {"id": "1.5", "text": "每条 Action 不超过 80 字", "check": "each_action_item_lte:80"},
-        {"id": "1.6", "text": "简历开头有 AI 生成声明", "check": "output_contains:AI 生成 or 人工复核"},
-        {"id": "1.7", "text": "简历末尾有估算值提示", "check": "output_contains:估算 or 建议替换为真实运行数据"},
-        {"id": "1.8", "text": "Action 不使用弱动词（负责/参与/协助/维护）", "check": "output_not_contains_regex:^\\d+\\.\\s*(负责|参与|协助|维护)"},
-        {"id": "1.9", "text": "Action 不使用主观形容词（深刻理解/熟练掌握/深度/全面/显著/极佳/大量/充分/强大/优雅/完美/极致）", "check": "output_not_contains:深刻理解|熟练掌握|深度|全面|显著|极佳|大量|充分|强大|优雅|完美|极致"},
-        {"id": "1.10", "text": "Situation 分三段（业务问题 / 项目作用 / 技术栈）", "check": "situation_has_three_parts"},
-        {"id": "1.11", "text": "章节顺序正确：Situation → Task → Action", "check": "section_order:situation,task,action"},
-        {"id": "1.12", "text": "简历展示后 AI 停下来等待用户确认（未自动进入下一步）", "check": "stops_for_user_confirmation"}
+        {"id": "1.1", "text": "识别为真实实习模式", "check": "manifest.mode_equals:REAL_INTERNSHIP"},
+        {"id": "1.2", "text": "生成项目分析和业务链路", "check": "files_exist:project-analysis.md,business-chains.md"},
+        {"id": "1.3", "text": "区分 mentor 决策与用户实现", "check": "contribution_has_source:MENTOR_DIRECTED"},
+        {"id": "1.4", "text": "简历动词匹配参与实现角色", "check": "resume_role_matches_manifest"},
+        {"id": "1.5", "text": "每条核心 Bullet 有 claim ID", "check": "all_resume_bullets_have_claim_id"},
+        {"id": "1.6", "text": "生成六层拷打报告", "check": "grill_has_layers:事实确认,个人角色,技术实现,方案对比,数据与验证,边界与复盘"},
+        {"id": "1.7", "text": "生成最终质量门禁", "check": "file_exists:quality-gate-report.md"}
       ]
     },
     {
       "id": 2,
-      "name": "GitHub仓库-完整三步流程",
-      "prompt": "我明天要面试，帮我准备项目面试。分析 https://github.com/expressjs/express 这个仓库，我需要完整的面试准备——从项目分析、STAR 简历、到学习路径和模拟面试，全部走一遍。",
-      "expected_output": "完成完整三步流程：Step 0 项目概览与 6 维度深度分析 → Step 1 STAR 简历（Markdown 格式）→ Step 2 学习路径（按模块拆解，每个模块含关键文件/做了什么/为什么这样写/面试可能怎么问）→ Step 3 模拟面试（三源混合出题 + 逐题追问 + 面试报告含总览/逐题详情/薄弱环节/复习资料）。每步产出后 STOP 等待用户确认才继续。",
-      "files": [],
+      "name": "弱实习-经历增强",
+      "prompt": "我有两个月 Java 实习，但只写了几个 CRUD 和导出 Excel，感觉没什么能写。项目在 C:\\work\\energy-platform，帮我全部做完。",
+      "expected_mode": "WEAK_INTERNSHIP",
       "assertions": [
-        {"id": "2.1", "text": "Step 0 产出 project-analysis.md", "check": "file_exists:project-analysis.md"},
-        {"id": "2.2", "text": "Step 0 分析覆盖 6 维度（产品理解/角色识别/数据流/技术选型理由/巧妙模式/坑点）", "check": "output_contains_all:产品理解,角色识别,数据流,技术选型理由,巧妙模式,坑点"},
-        {"id": "2.3", "text": "Step 1 产出 resume.md", "check": "file_exists:resume.md"},
-        {"id": "2.4", "text": "Step 1 简历符合 STAR 结构（Situation/Task/Action）", "check": "output_contains_all:Situation,Task,Action"},
-        {"id": "2.5", "text": "Step 2 产出 learning-path.md", "check": "file_exists:learning-path.md"},
-        {"id": "2.6", "text": "Step 2 每个模块包含四个字段（关键文件/做了什么/为什么这样写/面试可能怎么问）", "check": "output_contains_all:关键文件,做了什么,为什么这样写,面试可能怎么问"},
-        {"id": "2.7", "text": "Step 3 产出 interview-report.md", "check": "file_exists:interview-report.md"},
-        {"id": "2.8", "text": "Step 3 面试报告包含四个部分（总览/逐题详情/薄弱环节/推荐复习资料）", "check": "output_contains_all:总览,逐题详情,薄弱环节,推荐复习"},
-        {"id": "2.9", "text": "每步产出后停止等待用户确认（Step 0/1/2 各有一个 STOP）", "check": "stops_between_each_step:3"},
-        {"id": "2.10", "text": "模拟面试出题覆盖三个来源（技术细节/简历深挖/通用面试题）", "check": "interview_has_mixed_sources"}
+        {"id": "2.1", "text": "识别为弱实习模式", "check": "manifest.mode_equals:WEAK_INTERNSHIP"},
+        {"id": "2.2", "text": "CRUD 被放回端到端业务链路评估", "check": "business_chain_has_consumer"},
+        {"id": "2.3", "text": "生成 1-3 个可执行增强任务", "check": "enhancement_task_count_between:1,3"},
+        {"id": "2.4", "text": "任务包含方案、步骤、失败注入和验证", "check": "all_tasks_have:方案选项,执行步骤,失败注入,验证方法,完成证据,面试门禁"},
+        {"id": "2.5", "text": "任务计划未自动当作已完成成果", "check": "planned_tasks_not_marked_implemented"},
+        {"id": "2.6", "text": "高风险内容进入拷打", "check": "high_risk_claims_have_grill_result"}
       ]
     },
     {
       "id": 3,
-      "name": "Go项目-仅学习路径",
-      "prompt": "我刚接手一个 Go 写的微服务项目 C:\\work\\go-payment-service，大概 2 万行代码。不用生成简历，帮我快速看懂这个项目，生成学习路径就行。只看 src/ 下面的业务代码，不要看测试和 vendor。",
-      "expected_output": "仅生成学习路径（不生成简历），按入口文件→核心业务模块→工具/公共模块→配置/部署的顺序排列模块，每个模块包含关键文件/做了什么/为什么这样写/面试可能怎么问。输出前先确认分析范围（仅 src/ 业务代码），等待用户确认后继续。",
-      "files": [],
+      "name": "自研项目-企业化包装",
+      "prompt": "我没有实习，自己做了一个 Go 支付服务。帮我分析 C:\\work\\go-payment，补齐工程亮点，写简历并准备面试。",
+      "expected_mode": "SELF_PROJECT",
       "assertions": [
-        {"id": "3.1", "text": "只产出学习路径，不生成简历文件", "check": "file_not_exists:resume.md"},
-        {"id": "3.2", "text": "产出 learning-path.md", "check": "file_exists:learning-path.md"},
-        {"id": "3.3", "text": "模块排序正确：入口模块在最前", "check": "first_module_is_entry"},
-        {"id": "3.4", "text": "每个模块包含四个字段（关键文件/做了什么/为什么这样写/面试可能怎么问）", "check": "each_module_has_all_fields:关键文件,做了什么,为什么这样写,面试可能怎么问"},
-        {"id": "3.5", "text": "分析范围圈定在 src/ 业务代码", "check": "output_not_contains:test file or vendor"},
-        {"id": "3.6", "text": "没有分析测试文件", "check": "output_not_contains:_test.go or spec/"},
-        {"id": "3.7", "text": "分析前先和用户确认范围", "check": "confirms_scope_before_analysis"},
-        {"id": "3.8", "text": "产出后停止等待用户确认（未自动进入面试）", "check": "stops_for_user_confirmation"}
+        {"id": "3.1", "text": "识别为自研项目模式", "check": "manifest.mode_equals:SELF_PROJECT"},
+        {"id": "3.2", "text": "不要求虚构公司背景", "check": "resume_does_not_require_company"},
+        {"id": "3.3", "text": "增强任务与核心链路关联", "check": "all_enhancements_have_chain_id"},
+        {"id": "3.4", "text": "无数据时不凭组件推导百分比", "check": "no_component_based_performance_estimates"},
+        {"id": "3.5", "text": "生成 15秒/30秒/2分钟/深挖材料", "check": "scripts_have_all_layers"},
+        {"id": "3.6", "text": "学习路径按风险和重要度排序", "check": "learning_path_has_claim_gaps"}
+      ]
+    },
+    {
+      "id": 4,
+      "name": "开源项目迁移-高风险门禁",
+      "prompt": "我没实习也没项目，想用 https://github.com/expressjs/express 准备一段后端经历。帮我选核心内容、包装简历并准备到能面试。",
+      "expected_mode": "PROJECT_MIGRATION",
+      "assertions": [
+        {"id": "4.1", "text": "识别为项目迁移模式", "check": "manifest.mode_equals:PROJECT_MIGRATION"},
+        {"id": "4.2", "text": "选 1-3 条高价值链路而非全仓库冒领", "check": "migration_focus_chain_count_between:1,3"},
+        {"id": "4.3", "text": "来源标记为复现、借用语境或叙事补全", "check": "claims_source_in:REPRODUCED,BORROWED_CONTEXT,NARRATIVE_FILL"},
+        {"id": "4.4", "text": "生成复现、设计或叙事准备任务", "check": "enhancement_mode_in:REPRODUCED,DESIGNED,NARRATIVE_READY"},
+        {"id": "4.5", "text": "高风险声明完成强化门禁", "check": "high_risk_gate_enforced"},
+        {"id": "4.6", "text": "未通过时不虚报 Interview Ready", "check": "quality_status_respects_grill"}
+      ]
+    },
+    {
+      "id": 5,
+      "name": "现有简历-反向找漏洞",
+      "prompt": "这是我简历：‘主导公司订单系统从0到1建设，使用 Redis 将性能提升 80%，支撑百万 QPS。’我只有项目代码 C:\\work\\orders，没有监控数据。帮我找漏洞并修到能面试。",
+      "expected_mode": "EXISTING_RESUME",
+      "assertions": [
+        {"id": "5.1", "text": "识别为现有简历模式", "check": "manifest.mode_equals:EXISTING_RESUME"},
+        {"id": "5.2", "text": "识别角色和数字高风险", "check": "risk_flags_include:role_claim,numeric_claim"},
+        {"id": "5.3", "text": "不保留无依据的百万 QPS 结论为低风险", "check": "unsupported_number_not_low_risk"},
+        {"id": "5.4", "text": "允许保留草稿但强制拷打和补强", "check": "override_keeps_risk_and_training"},
+        {"id": "5.5", "text": "生成明确修复任务", "check": "red_claim_has_repair_task"},
+        {"id": "5.6", "text": "最终状态不虚报", "check": "quality_status_respects_evidence"}
+      ]
+    },
+    {
+      "id": 6,
+      "name": "仅理解代码-不生成简历",
+      "prompt": "我刚接手 C:\\work\\large-python-service，只想快速看懂，不要生成简历。只分析 src/，跳过测试和 vendor。",
+      "expected_mode": "UNDERSTAND_ONLY",
+      "assertions": [
+        {"id": "6.1", "text": "识别为仅理解模式", "check": "manifest.mode_equals:UNDERSTAND_ONLY"},
+        {"id": "6.2", "text": "限制分析范围", "check": "scope_equals:src"},
+        {"id": "6.3", "text": "跳过测试和依赖", "check": "excluded:test,vendor"},
+        {"id": "6.4", "text": "生成项目分析、业务链路和学习路径", "check": "files_exist:project-analysis.md,business-chains.md,learning-path.md"},
+        {"id": "6.5", "text": "不生成简历和拷打报告", "check": "files_not_exist:resume.md,claim-grill-report.md"},
+        {"id": "6.6", "text": "学习路径不依赖简历", "check": "learning_path_generated_without_resume"}
       ]
     }
+  ],
+  "global_assertions": [
+    {"id": "G.1", "text": "所有引用文件存在", "check": "all_skill_references_exist"},
+    {"id": "G.2", "text": "所有产物使用同一 manifest", "check": "single_manifest_contract"},
+    {"id": "G.3", "text": "同名文件不覆盖", "check": "version_existing_outputs"},
+    {"id": "G.4", "text": "异常有 if-then fallback", "check": "failure_modes_encoded"},
+    {"id": "G.5", "text": "关键阶段有显式检查点", "check": "explicit_checkpoints_exist"},
+    {"id": "G.6", "text": "存在反例黑名单", "check": "blacklist_exists"},
+    {"id": "G.7", "text": "无单一 runtime 锁定", "check": "runtime_neutral"},
+    {"id": "G.8", "text": "用户未回答时不生成虚构面试得分", "check": "no_fabricated_interview_scores"}
   ]
 }

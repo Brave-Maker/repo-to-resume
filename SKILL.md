@@ -39,6 +39,7 @@ description: 将本地路径、GitHub 仓库、开源/他人项目、真实或�
 |---|---|
 | 项目分析 | [code-analysis-engine.md](references/code-analysis-engine.md)、[business-chain-extractor.md](references/business-chain-extractor.md) |
 | 贡献确认 | [contribution-mapper.md](references/contribution-mapper.md)、[claim-policy.md](references/claim-policy.md) |
+| Manifest 校验 | [evidence-manifest.schema.json](references/evidence-manifest.schema.json) |
 | 经历增强 | [experience-lab.md](references/experience-lab.md)、[claim-policy.md](references/claim-policy.md) |
 | 简历生成 | [star-resume-generator.md](references/star-resume-generator.md)、[star-framework.md](references/star-framework.md) |
 | Bullet 拷打 | [claim-grill.md](references/claim-grill.md) |
@@ -57,7 +58,7 @@ description: 将本地路径、GitHub 仓库、开源/他人项目、真实或�
 2. 判断用户模式、目标岗位、时间约束和期望产物。
 3. 确认扫描范围与跳过目录。
 4. 在被分析项目根目录创建 `{项目名}-analysis/`。
-5. 初始化 `evidence-manifest.json`；若已存在则读取并增量更新。
+5. 按 `references/evidence-manifest.schema.json` 初始化 `evidence-manifest.json`；若已存在则校验后增量更新。
 
 🔴 CHECKPOINT · MODE & SCOPE
 
