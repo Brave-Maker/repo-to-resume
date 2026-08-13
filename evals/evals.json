@@ -1,0 +1,62 @@
+{
+  "skill_name": "repo-to-resume",
+  "evals": [
+    {
+      "id": 1,
+      "name": "本地项目-STAR简历生成",
+      "prompt": "帮我分析 C:\\work\\my-react-app 这个前端项目，给这个项目写一份面试用的 STAR 简历。项目大概是一个 React + TypeScript 的 dashboard 应用，有用户管理、数据可视化、权限控制这些模块。",
+      "expected_output": "生成包含 Situation（三段式：业务问题 → 项目作用 → 技术栈）/ Task（具体职责）/ Action & Result（不超过 10 条，每条 ≤80 字，强动词开头，业务问题+技术决策+量化结果三要素齐全）的 STAR 简历。简历开头标注 AI 生成声明，末尾标注估算值提示。每步等待用户确认。",
+      "files": [],
+      "assertions": [
+        {"id": "1.1", "text": "简历包含 Situation 章节（## Situation 或 Situation）", "check": "section_exists:situation"},
+        {"id": "1.2", "text": "简历包含 Task 章节", "check": "section_exists:task"},
+        {"id": "1.3", "text": "简历包含 Action & Result 章节", "check": "section_exists:action"},
+        {"id": "1.4", "text": "Action 条数不超过 10 条", "check": "count_action_items_lte:10"},
+        {"id": "1.5", "text": "每条 Action 不超过 80 字", "check": "each_action_item_lte:80"},
+        {"id": "1.6", "text": "简历开头有 AI 生成声明", "check": "output_contains:AI 生成 or 人工复核"},
+        {"id": "1.7", "text": "简历末尾有估算值提示", "check": "output_contains:估算 or 建议替换为真实运行数据"},
+        {"id": "1.8", "text": "Action 不使用弱动词（负责/参与/协助/维护）", "check": "output_not_contains_regex:^\\d+\\.\\s*(负责|参与|协助|维护)"},
+        {"id": "1.9", "text": "Action 不使用主观形容词（深刻理解/熟练掌握/深度/全面/显著/极佳/大量/充分/强大/优雅/完美/极致）", "check": "output_not_contains:深刻理解|熟练掌握|深度|全面|显著|极佳|大量|充分|强大|优雅|完美|极致"},
+        {"id": "1.10", "text": "Situation 分三段（业务问题 / 项目作用 / 技术栈）", "check": "situation_has_three_parts"},
+        {"id": "1.11", "text": "章节顺序正确：Situation → Task → Action", "check": "section_order:situation,task,action"},
+        {"id": "1.12", "text": "简历展示后 AI 停下来等待用户确认（未自动进入下一步）", "check": "stops_for_user_confirmation"}
+      ]
+    },
+    {
+      "id": 2,
+      "name": "GitHub仓库-完整三步流程",
+      "prompt": "我明天要面试，帮我准备项目面试。分析 https://github.com/expressjs/express 这个仓库，我需要完整的面试准备——从项目分析、STAR 简历、到学习路径和模拟面试，全部走一遍。",
+      "expected_output": "完成完整三步流程：Step 0 项目概览与 6 维度深度分析 → Step 1 STAR 简历（Markdown 格式）→ Step 2 学习路径（按模块拆解，每个模块含关键文件/做了什么/为什么这样写/面试可能怎么问）→ Step 3 模拟面试（三源混合出题 + 逐题追问 + 面试报告含总览/逐题详情/薄弱环节/复习资料）。每步产出后 STOP 等待用户确认才继续。",
+      "files": [],
+      "assertions": [
+        {"id": "2.1", "text": "Step 0 产出 project-analysis.md", "check": "file_exists:project-analysis.md"},
+        {"id": "2.2", "text": "Step 0 分析覆盖 6 维度（产品理解/角色识别/数据流/技术选型理由/巧妙模式/坑点）", "check": "output_contains_all:产品理解,角色识别,数据流,技术选型理由,巧妙模式,坑点"},
+        {"id": "2.3", "text": "Step 1 产出 resume.md", "check": "file_exists:resume.md"},
+        {"id": "2.4", "text": "Step 1 简历符合 STAR 结构（Situation/Task/Action）", "check": "output_contains_all:Situation,Task,Action"},
+        {"id": "2.5", "text": "Step 2 产出 learning-path.md", "check": "file_exists:learning-path.md"},
+        {"id": "2.6", "text": "Step 2 每个模块包含四个字段（关键文件/做了什么/为什么这样写/面试可能怎么问）", "check": "output_contains_all:关键文件,做了什么,为什么这样写,面试可能怎么问"},
+        {"id": "2.7", "text": "Step 3 产出 interview-report.md", "check": "file_exists:interview-report.md"},
+        {"id": "2.8", "text": "Step 3 面试报告包含四个部分（总览/逐题详情/薄弱环节/推荐复习资料）", "check": "output_contains_all:总览,逐题详情,薄弱环节,推荐复习"},
+        {"id": "2.9", "text": "每步产出后停止等待用户确认（Step 0/1/2 各有一个 STOP）", "check": "stops_between_each_step:3"},
+        {"id": "2.10", "text": "模拟面试出题覆盖三个来源（技术细节/简历深挖/通用面试题）", "check": "interview_has_mixed_sources"}
+      ]
+    },
+    {
+      "id": 3,
+      "name": "Go项目-仅学习路径",
+      "prompt": "我刚接手一个 Go 写的微服务项目 C:\\work\\go-payment-service，大概 2 万行代码。不用生成简历，帮我快速看懂这个项目，生成学习路径就行。只看 src/ 下面的业务代码，不要看测试和 vendor。",
+      "expected_output": "仅生成学习路径（不生成简历），按入口文件→核心业务模块→工具/公共模块→配置/部署的顺序排列模块，每个模块包含关键文件/做了什么/为什么这样写/面试可能怎么问。输出前先确认分析范围（仅 src/ 业务代码），等待用户确认后继续。",
+      "files": [],
+      "assertions": [
+        {"id": "3.1", "text": "只产出学习路径，不生成简历文件", "check": "file_not_exists:resume.md"},
+        {"id": "3.2", "text": "产出 learning-path.md", "check": "file_exists:learning-path.md"},
+        {"id": "3.3", "text": "模块排序正确：入口模块在最前", "check": "first_module_is_entry"},
+        {"id": "3.4", "text": "每个模块包含四个字段（关键文件/做了什么/为什么这样写/面试可能怎么问）", "check": "each_module_has_all_fields:关键文件,做了什么,为什么这样写,面试可能怎么问"},
+        {"id": "3.5", "text": "分析范围圈定在 src/ 业务代码", "check": "output_not_contains:test file or vendor"},
+        {"id": "3.6", "text": "没有分析测试文件", "check": "output_not_contains:_test.go or spec/"},
+        {"id": "3.7", "text": "分析前先和用户确认范围", "check": "confirms_scope_before_analysis"},
+        {"id": "3.8", "text": "产出后停止等待用户确认（未自动进入面试）", "check": "stops_for_user_confirmation"}
+      ]
+    }
+  ]
+}
