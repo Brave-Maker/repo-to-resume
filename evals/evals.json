@@ -100,6 +100,7 @@
     {"id": "G.9", "text": "所有下游通过 current_artifacts 读取当前产物", "check": "current_artifact_routing_enforced"},
     {"id": "G.10", "text": "代码修改需要独立授权", "check": "code_mutation_gate_enforced"},
     {"id": "G.11", "text": "Manifest 执行结构与语义校验", "check": "manifest_semantic_validator_exists"},
-    {"id": "G.12", "text": "中文成品执行语言一致性契约并保留必要技术名词", "check": "chinese_output_contract"}
+    {"id": "G.12", "text": "中文成品执行语言一致性契约并保留必要技术名词", "check": "chinese_output_contract"},
+    {"id": "G.13", "text": "代码价值优先于 Git 规模，候选池会用更强内容替换弱要点", "check": "code_first_value_selection_contract"}
   ]
 }

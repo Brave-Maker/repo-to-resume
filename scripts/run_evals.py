@@ -249,6 +249,25 @@ def _check_assertion(
         forbidden_templates = ["> Bullet 拷打完成", "条 Action", "| Ready | Needs training"]
         found = [item for item in forbidden_templates if item in output]
         return not missing and not found, f"missing={missing}, forbidden={found}"
+    if op == "code_first_value_selection_contract":
+        skill = (ROOT / "SKILL.md").read_text(encoding="utf-8")
+        engine = (ROOT / "references" / "code-analysis-engine.md").read_text(encoding="utf-8")
+        chains = (ROOT / "references" / "business-chain-extractor.md").read_text(encoding="utf-8")
+        mapper = (ROOT / "references" / "contribution-mapper.md").read_text(encoding="utf-8")
+        resume = (ROOT / "references" / "star-resume-generator.md").read_text(encoding="utf-8")
+        prompts = (ROOT / "test-prompts.json").read_text(encoding="utf-8")
+        combined = "\n".join((skill, engine, chains, mapper, resume))
+        required = [
+            "Git 历史仅用于核对作者、时间、改动边界和演进顺序",
+            "Git 元数据只能追加作者/时间/演进信息，不得提高节点价值分",
+            "至少 `max(6, 2N)` 个跨链路候选",
+            "存在更高分且准入合格的候选时必须替换",
+            "commit hash、提交次数、改动文件数、增删行数、commit 大小、ADR/设计文档数量",
+            "候选池只来自一个提交/功能",
+        ]
+        missing = [item for item in required if item not in combined]
+        prompt_ok = all(item in prompts for item in ("QualityFlow", "7fd13a7", "增加 8422 行", "替换"))
+        return not missing and prompt_ok, f"missing={missing}, qualityflow_prompt={prompt_ok}"
     raise EvalFailure(f"unsupported assertion operator: {op}")
 
 
