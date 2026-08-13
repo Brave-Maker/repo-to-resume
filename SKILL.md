@@ -58,7 +58,7 @@ description: 将本地路径、GitHub 仓库、开源/他人项目、真实或�
 2. 判断用户模式、目标岗位、时间约束和期望产物。
 3. 确认扫描范围与跳过目录。
 4. 在被分析项目根目录创建 `{项目名}-analysis/`。
-5. 按 `references/evidence-manifest.schema.json` 初始化 `evidence-manifest.json`；若已存在则先运行 `scripts/validate_manifest.py`，通过后增量更新。
+5. 按 `references/evidence-manifest.schema.json` 初始化 `evidence-manifest.json`。若检测到 `schema_version=1.0`，先运行 `python scripts/migrate_manifest.py <manifest> --output <临时文件>`，校验迁移结果并让用户确认差异后再原子替换；其他旧版本停止并报告不支持。`1.1` 版本先运行 `python scripts/validate_manifest.py <manifest>`，通过后增量更新。
 
 🔴 CHECKPOINT · MODE & SCOPE
 
@@ -149,7 +149,7 @@ description: 将本地路径、GitHub 仓库、开源/他人项目、真实或�
 
 `UNDERSTAND_ONLY` 只检查代码证据、业务链路、学习路径和敏感信息，不要求简历、贡献、拷打或话术产物；其他模式运行全部八道门禁。
 
-完整门禁检查来源、代码、角色、数字、抗追问、学习闭环、跨产物一致性和敏感信息。
+完整门禁检查来源、代码、角色、数字、抗追问、学习闭环、跨产物一致性和敏感信息。判定最终状态前必须运行 `python scripts/validate_manifest.py <manifest> --analysis-dir <分析目录> --require-artifacts`，保证映射存在且文件真实可读；失败时不得给出 `INTERVIEW_READY`。
 
 输出当前版本质量门禁报告并更新 `current_artifacts.quality_gate_report`，最终状态只能是：
 

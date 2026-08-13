@@ -117,9 +117,10 @@ if ($null -eq $pythonCommand) {
 }
 else {
     $manifestValidator = Join-Path $SkillRoot 'scripts\validate_manifest.py'
+    $manifestMigrator = Join-Path $SkillRoot 'scripts\migrate_manifest.py'
     $evalRunner = Join-Path $SkillRoot 'scripts\run_evals.py'
     $contractTests = Join-Path $SkillRoot 'scripts\test_contracts.py'
-    foreach ($script in @($manifestValidator, $evalRunner, $contractTests)) {
+    foreach ($script in @($manifestValidator, $manifestMigrator, $evalRunner, $contractTests)) {
         Assert-Check (Test-Path -LiteralPath $script) "Required validation script missing: $script"
     }
     if ($failures.Count -eq 0) {

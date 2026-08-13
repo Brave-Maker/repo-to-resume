@@ -9,7 +9,13 @@
 
 运行门禁前，完整模式要求 `project_analysis`、`business_chains`、`contribution_map`、`resume`、`claim_grill_report`、`learning_path` 和 `interview_scripts`；`enhancement_plan`、`learning_interactive`、`interview_report` 按流程是否执行决定。`UNDERSTAND_ONLY` 只要求 `project_analysis`、`business_chains` 和 `learning_path`。门禁完成后写入新报告并更新 `current_artifacts.quality_gate_report`。
 
-映射缺失、文件不存在或路径越出分析目录时，该产物视为缺失；不要读取同名旧文件兜底。
+映射缺失、文件不存在或路径越出分析目录时，该产物视为缺失；不要读取同名旧文件兜底。检查前必须运行：
+
+```text
+python scripts/validate_manifest.py <分析目录>/evidence-manifest.json --analysis-dir <分析目录> --require-artifacts
+```
+
+命令失败时将错误写入门禁报告，最终状态不得为 `INTERVIEW_READY`。
 
 ## 八道门禁
 

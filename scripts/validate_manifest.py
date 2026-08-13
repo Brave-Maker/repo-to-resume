@@ -375,6 +375,8 @@ def validate_manifest(
 
     grill_by_claim = {item.get("claim_id"): item for item in grill_results}
     if data.get("quality_status") == "INTERVIEW_READY":
+        if not any(claim.get("is_core") for claim in claims):
+            errors.append("INTERVIEW_READY requires at least one core claim")
         for claim in claims:
             if not claim.get("is_core"):
                 continue

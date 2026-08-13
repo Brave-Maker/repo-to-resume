@@ -8,6 +8,7 @@ import json
 import tempfile
 from pathlib import Path
 
+from migrate_manifest import migrate
 from run_evals import _artifact_text
 from validate_manifest import validate_manifest
 
@@ -78,6 +79,28 @@ def main() -> int:
     false_ready["quality_status"] = "INTERVIEW_READY"
     expect_error("interview ready claim state", false_ready, "must have status READY")
 
+    empty_ready = copy.deepcopy(migration)
+    empty_ready["claims"] = []
+    empty_ready["grill_results"] = []
+    empty_ready["learning_gaps"] = []
+    empty_ready["risk_flags"] = []
+    empty_ready["quality_status"] = "INTERVIEW_READY"
+    expect_error("interview ready without claims", empty_ready, "at least one core claim")
+
+    legacy = load_scenario(3)
+    legacy["schema_version"] = "1.0"
+    legacy.pop("current_artifacts")
+    legacy.pop("code_mutation")
+    for claim in legacy["claims"]:
+        claim.pop("is_core")
+        claim["evidence_ids"] = [item.replace("EVIDENCE-", "CODE-") for item in claim["evidence_ids"]]
+    for evidence in legacy["evidence"]:
+        evidence["id"] = evidence["id"].replace("EVIDENCE-", "CODE-")
+    migrated, _ = migrate(legacy)
+    migration_errors = validate_manifest(migrated)
+    if migration_errors:
+        raise AssertionError(f"valid legacy manifest did not migrate: {migration_errors}")
+
     routed = copy.deepcopy(migration)
     routed["current_artifacts"]["resume"] = "resume-v1.md"
     with tempfile.TemporaryDirectory(prefix="repo-to-resume-routing-") as temp_root:
@@ -93,7 +116,7 @@ def main() -> int:
     core_red["quality_status"] = "TRAINING_REQUIRED"
     expect_error("core red status", core_red, "quality_status BLOCKED")
 
-    print("Contract tests: 13 passed, 0 failed")
+    print("Contract tests: 15 passed, 0 failed")
     return 0
 
 

@@ -106,11 +106,13 @@ PERSONAL_FACT / SELF_PROJECT / 已验证 REPRODUCED -> LOW
 
 1. 将旧文件复制到 `history/evidence-manifest-{时间戳}.json`；
 2. 将新内容写入同目录临时文件；
-3. 按 `evidence-manifest.schema.json` 校验结构，再运行 `scripts/validate_manifest.py` 校验 ID 唯一性、引用完整性、产物指针、模式约束和代码修改授权；
+3. 按 `evidence-manifest.schema.json` 校验结构，再运行 `python scripts/validate_manifest.py <manifest>` 校验 ID 唯一性、引用完整性、产物指针、模式约束和代码修改授权；最终门禁额外传入 `--analysis-dir <分析目录> --require-artifacts`；
 4. 校验通过后原子替换当前文件；
 5. 校验失败则删除临时文件并继续使用旧文件。
 
 其他模块只读取固定的当前 manifest，并从 `current_artifacts` 获取普通产物当前版本；历史文件仅用于审计和恢复。写入普通产物成功后先更新 `current_artifacts`，再按上述原子流程替换 manifest。
+
+旧 manifest 的 `schema_version=1.0` 时，运行 `python scripts/migrate_manifest.py <manifest> --output <临时文件>`。迁移器只补确定性默认值并报告需要人工补齐的字段；迁移结果通过结构和语义校验、且用户确认差异后才能替换当前 manifest。未知版本不得猜测迁移。
 
 ## 7. 失败处理
 
