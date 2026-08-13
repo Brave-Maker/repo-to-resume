@@ -10,6 +10,8 @@
 - 不把内部执行日志、manifest 全量 JSON 或敏感路径内容直接展示。
 - 每个检查点明确显示“等待确认”或“已按自动授权继续”。
 - 普通产物使用 `-vN` 保留旧版；`evidence-manifest.json` 固定为当前状态，旧版进入 `history/`。
+- 用户使用中文或未指定语言时，标题和叙述以自然中文为主；内部状态可用反引号保留，但先给出中文含义。用户明确要求英文时统一使用英文。
+- 中文对话中使用“简历要点、声明、智能体、大语言模型、意图、检查点”，不使用 `Bullet`、`Claim`、`Agent`、`LLM`、`Intent`、`checkpoint` 充当普通叙述词。
 
 ## 模式与范围
 
@@ -42,7 +44,7 @@
 ```markdown
 > 贡献映射完成 · `{current_artifacts.contribution_map}`
 
-| Ready | Needs training | Needs build | Blocked |
+| 可直接使用 | 需要训练 | 需要补建 | 已阻断 |
 |---:|---:|---:|---:|
 | {N} | {N} | {N} | {N} |
 
@@ -54,16 +56,16 @@
 ```markdown
 > 增强计划完成 · `{current_artifacts.enhancement_plan}` · {N} 个任务
 
-1. **{任务}**：{模式}，完成后可支持 `{Claim}`
-2. **{任务}**：{模式}，完成后可支持 `{Claim}`
+1. **{任务}**：{模式}，完成后可支持 `{声明编号}`
+2. **{任务}**：{模式}，完成后可支持 `{声明编号}`
 ```
 
 ## 简历
 
 ```markdown
-> STAR 简历已生成 · `{current_artifacts.resume}` · {N} 条 Action
+> STAR 简历已生成 · `{current_artifacts.resume}` · {N} 条简历要点
 
-- LOW / MEDIUM / HIGH：{数量}
+- 低 / 中 / 高风险：{数量}
 - 待拷打：{N} 条
 - 数字来源待复核：{N} 项
 ```
@@ -71,9 +73,9 @@
 ## 拷打
 
 ```markdown
-> Bullet 拷打完成 · `{current_artifacts.claim_grill_report}`
+> 简历要点拷打完成 · `{current_artifacts.claim_grill_report}`
 
-| GREEN | YELLOW | ORANGE | RED |
+| 通过 | 待补充 | 高风险 | 阻断 |
 |---:|---:|---:|---:|
 | {N} | {N} | {N} | {N} |
 
@@ -119,3 +121,5 @@
 - 不要用卡片隐藏 `RED/BLOCKED`。
 - 不要展示用户没有要求的内部执行细节。
 - 不要在同一张表格单元格塞入多段列表。
+- 不要在中文成品中使用 `Bullet 1`、`Action & Result` 或未解释的内部英文状态名。
+- 不要机械翻译产品名、协议名、框架名和真实代码标识符。

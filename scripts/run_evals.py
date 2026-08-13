@@ -232,6 +232,23 @@ def _check_assertion(
         validator = ROOT / "scripts" / "validate_manifest.py"
         tests = ROOT / "scripts" / "test_contracts.py"
         return validator.is_file() and tests.is_file(), "semantic validation scripts"
+    if op == "chinese_output_contract":
+        skill = (ROOT / "SKILL.md").read_text(encoding="utf-8")
+        resume = (ROOT / "references" / "star-resume-generator.md").read_text(encoding="utf-8")
+        output = (ROOT / "references" / "output-contracts.md").read_text(encoding="utf-8")
+        required = [
+            "用户明确指定 > 用户当前使用的语言 > 默认中文",
+            "大语言模型（LLM）",
+            "`Agent` | 智能体",
+            "代码标识符首次出现时补充中文职责",
+            "用户明确要求英文时",
+            "简历要点拷打完成",
+        ]
+        combined = "\n".join((skill, resume, output))
+        missing = [item for item in required if item not in combined]
+        forbidden_templates = ["> Bullet 拷打完成", "条 Action", "| Ready | Needs training"]
+        found = [item for item in forbidden_templates if item in output]
+        return not missing and not found, f"missing={missing}, forbidden={found}"
     raise EvalFailure(f"unsupported assertion operator: {op}")
 
 

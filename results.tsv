@@ -3,3 +3,5 @@ timestamp	commit	skill	old_score	new_score	status	dimension	note	eval_mode
 2026-08-13T12:05:00+08:00	paired	repo-to-resume	81.1	3-0 better	keep	architecture/effectiveness	三位独立评委一致判定当前版明显更好；已修复 claim status、RED 分流、UNDERSTAND_ONLY 路由和 manifest 版本冲突	paired
 2026-08-13T14:39:00+08:00	280fddf	repo-to-resume	86.7	3-0 better	keep	effectiveness/contracts	三位独立评委均判定 clear better；54 条可执行断言、15 条负向合同测试通过，补齐 current_artifacts、代码修改授权、Manifest 迁移与语义门禁	paired
 2026-08-13T14:48:00+08:00	forward-test	repo-to-resume	-	3/3 pass	keep	effectiveness	弱实习、项目迁移、仅理解代码三条真实前向路径均生成完整产物并通过 manifest 文件存在性校验；源码未修改	full_test
+2026-08-13T15:58:15+08:00	paired	repo-to-resume	-	3-0 better	keep	language-consistency	三位独立评委均判 clear better；中文优先、必要英文例外、逐句自检与失败回退显著减少成品中英文混排	paired
+2026-08-13T15:58:15+08:00	forward-test	repo-to-resume	-	2/2 pass	keep	effectiveness	中文真实样例仅保留 WPS 与代码标识符并补中文职责；英文明确请求保持全英文且准确保留 Redis/HTTP	full_test

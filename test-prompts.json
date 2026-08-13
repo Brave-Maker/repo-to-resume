@@ -34,5 +34,23 @@
     "mode": "SELF_PROJECT",
     "prompt": "我没有实习，自己做了一个 Go 支付服务。帮我找工程亮点、写简历并准备面试。",
     "expected": "识别为自研项目，增强任务关联核心链路，不虚构公司背景或无依据数字。"
+  },
+  {
+    "id": 7,
+    "mode": "REAL_INTERNSHIP",
+    "prompt": "基于项目代码和现有数据，输出两条适合中文简历的项目成果，并补充面试口径。",
+    "expected": "输出自然中文的简历要点；LLM、Agent、Intent、Schema、checkpoint 等普通概念优先使用中文，代码标识符保留并补中文职责。"
+  },
+  {
+    "id": 8,
+    "mode": "EXISTING_RESUME",
+    "prompt": "把下面两条中英文混用的 STAR bullets 改成适合中文后端简历的表述。保留必要技术名词，但不要降低技术准确性。",
+    "expected": "标题和叙述统一为中文；保留产品名、协议、通用缩写及真实代码标识符；成品与内部风险说明分区。"
+  },
+  {
+    "id": 9,
+    "mode": "EXISTING_RESUME",
+    "prompt": "Write two English resume bullets for this project and provide concise interview notes in English.",
+    "expected": "遵循用户明确指定的英文，不强制中文；同一部分保持单一主语言。"
   }
 ]

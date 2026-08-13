@@ -29,7 +29,7 @@
     "project-analysis.md": "# 订单服务分析\n入口 src/Callback.java",
     "business-chains.md": "# 业务链路\nCHAIN-001 回调到订单状态",
     "contribution-map.md": "# 贡献\nMENTOR_DIRECTED 实现",
-    "resume.md": "# 订单服务\n1. 在既定方案下实现订单回调幂等校验和失败重试\n\n| Bullet | Claim ID |\n|---|---|\n| 1 | CLAIM-001 |",
+    "resume.md": "# 订单服务\n1. 在既定方案下实现订单回调幂等校验和失败重试\n\n| 简历要点 | 声明编号 |\n|---|---|\n| 1 | CLAIM-001 |",
     "claim-grill-report.md": "# 拷打\nCLAIM-001 YELLOW 六层完成",
     "learning-path.md": "# 学习路径\nCLAIM-001 补充并发边界",
     "interview-scripts.md": "# 话术\n15秒 30秒 2分钟 深挖",
