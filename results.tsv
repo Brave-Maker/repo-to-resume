@@ -1,0 +1,2 @@
+timestamp	commit	skill	old_score	new_score	status	dimension	note	eval_mode
+2026-08-13T11:10:00+08:00	64dd94e	repo-to-resume	-	81.1	baseline	triage	旧流程缺少来源/贡献契约，评测鼓励组件推导数字	dry_run
