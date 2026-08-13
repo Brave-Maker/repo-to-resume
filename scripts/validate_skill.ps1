@@ -49,6 +49,7 @@ if (Test-Path -LiteralPath $skillPath) {
 
 $jsonFiles = @(
     (Join-Path $SkillRoot 'evals\evals.json'),
+    (Join-Path $SkillRoot 'evals\manifest-minimal.json'),
     (Join-Path $SkillRoot 'references\evidence-manifest.schema.json'),
     (Join-Path $SkillRoot 'test-prompts.json')
 )
@@ -93,6 +94,13 @@ $requiredReferences = @(
     'output-contracts.md',
     'evidence-manifest.schema.json'
 )
+
+$schemaPath = Join-Path $SkillRoot 'references\evidence-manifest.schema.json'
+if (Test-Path -LiteralPath $schemaPath) {
+    $schemaText = Get-Content -Raw -Encoding UTF8 -LiteralPath $schemaPath
+    Assert-Check ($schemaText -match 'NEEDS_EVIDENCE') 'Claim status enum is missing from manifest schema'
+    Assert-Check ($schemaText -match '"status"') 'Claim status is not required by manifest schema'
+}
 
 foreach ($name in $requiredReferences) {
     $requiredPath = Join-Path $SkillRoot "references\$name"

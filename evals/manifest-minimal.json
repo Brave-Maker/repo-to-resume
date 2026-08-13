@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.0",
+  "mode": "PROJECT_MIGRATION",
+  "auto_confirmed": true,
+  "project": {"name": "sample-project"},
+  "business_chains": [
+    {
+      "id": "CHAIN-001",
+      "name": "Request handling",
+      "domain_type": "BUSINESS",
+      "code_locations": ["src/app.ts"],
+      "value_score": 8
+    }
+  ],
+  "contributions": [
+    {
+      "id": "CONTRIBUTION-001",
+      "chain_id": "CHAIN-001",
+      "role": "reproduced implementation",
+      "source_type": "REPRODUCED",
+      "mastery_level": "L3",
+      "risk": "MEDIUM"
+    }
+  ],
+  "enhancement_tasks": [
+    {
+      "id": "TASK-001",
+      "chain_id": "CHAIN-001",
+      "mode": "REPRODUCED",
+      "status": "COMPLETED"
+    }
+  ],
+  "claims": [
+    {
+      "id": "CLAIM-001",
+      "text": "Reproduced the request pipeline and added validation",
+      "source_type": "REPRODUCED",
+      "role": "reproduced implementation",
+      "mastery_level": "L3",
+      "risk": "MEDIUM",
+      "chain_id": "CHAIN-001",
+      "evidence_ids": ["CODE-001"],
+      "status": "READY",
+      "grill_status": "YELLOW"
+    }
+  ],
+  "evidence": [
+    {
+      "id": "CODE-001",
+      "type": "CODE",
+      "value": "src/app.ts",
+      "risk": "LOW"
+    }
+  ],
+  "grill_results": [],
+  "learning_gaps": [],
+  "risk_flags": [],
+  "quality_status": "REVIEW_REQUIRED"
+}

@@ -91,7 +91,19 @@ PERSONAL_FACT / SELF_PROJECT / 已验证 REPRODUCED -> LOW
 }
 ```
 
-每条 `claim` 必须包含：`id`、`text`、`source_type`、`role`、`mastery_level`、`risk`、`chain_id`、`evidence_ids`、`grill_status`。
+每条 `claim` 必须包含：`id`、`text`、`source_type`、`role`、`mastery_level`、`risk`、`chain_id`、`evidence_ids`、`status`、`grill_status`。`status` 只能是 `READY / NEEDS_EVIDENCE / NEEDS_TRAINING / NEEDS_BUILD / BLOCKED`。
+
+### 更新规则
+
+`evidence-manifest.json` 始终表示当前状态，不使用 `-v1/-v2` 文件名。每次更新必须：
+
+1. 将旧文件复制到 `history/evidence-manifest-{时间戳}.json`；
+2. 将新内容写入同目录临时文件；
+3. 按 `evidence-manifest.schema.json` 校验；
+4. 校验通过后原子替换当前文件；
+5. 校验失败则删除临时文件并继续使用旧文件。
+
+其他模块只读取固定的当前 manifest；历史文件仅用于审计和恢复。
 
 ## 7. 失败处理
 

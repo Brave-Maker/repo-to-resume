@@ -540,6 +540,7 @@ repo-to-resume/
   "evidence_ids": ["CODE-014", "DESIGN-003"],
   "mastery_level": "L3",
   "risk": "HIGH",
+  "status": "NEEDS_TRAINING",
   "grill_status": "YELLOW"
 }
 ```
@@ -597,6 +598,8 @@ repo-to-resume/
 ```
 
 继续沿用“不覆盖已有文件”的版本规则。
+
+例外：`evidence-manifest.json` 是固定名称的当前状态文件。更新前将旧版归档到 `history/`，新内容通过 Schema 校验后原子替换；其他产物继续使用 `-vN` 版本规则。
 
 ## 17. 评测方案
 

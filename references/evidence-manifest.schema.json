@@ -64,7 +64,7 @@
       "type": "object",
       "required": ["id", "name", "domain_type", "code_locations", "value_score"],
       "properties": {
-        "id": {"pattern": "^CHAIN-[0-9]{3,}$"},
+        "id": {"type": "string", "pattern": "^CHAIN-[0-9]{3,}$"},
         "name": {"type": "string", "minLength": 1},
         "domain_type": {"enum": ["BUSINESS", "PLATFORM", "TOOLING", "MIXED"]},
         "code_locations": {"type": "array", "items": {"type": "string"}},
@@ -76,8 +76,8 @@
       "type": "object",
       "required": ["id", "chain_id", "role", "source_type", "mastery_level", "risk"],
       "properties": {
-        "id": {"pattern": "^CONTRIBUTION-[0-9]{3,}$"},
-        "chain_id": {"pattern": "^CHAIN-[0-9]{3,}$"},
+        "id": {"type": "string", "pattern": "^CONTRIBUTION-[0-9]{3,}$"},
+        "chain_id": {"type": "string", "pattern": "^CHAIN-[0-9]{3,}$"},
         "role": {"type": "string", "minLength": 1},
         "source_type": {"$ref": "#/$defs/sourceType"},
         "mastery_level": {"$ref": "#/$defs/mastery"},
@@ -89,8 +89,8 @@
       "type": "object",
       "required": ["id", "chain_id", "mode", "status"],
       "properties": {
-        "id": {"pattern": "^TASK-[0-9]{3,}$"},
-        "chain_id": {"pattern": "^CHAIN-[0-9]{3,}$"},
+        "id": {"type": "string", "pattern": "^TASK-[0-9]{3,}$"},
+        "chain_id": {"type": "string", "pattern": "^CHAIN-[0-9]{3,}$"},
         "mode": {"enum": ["IMPLEMENTED", "REPRODUCED", "DESIGNED", "NARRATIVE_READY"]},
         "status": {"enum": ["PLANNED", "IN_PROGRESS", "COMPLETED", "BLOCKED"]}
       },
@@ -107,17 +107,21 @@
         "risk",
         "chain_id",
         "evidence_ids",
+        "status",
         "grill_status"
       ],
       "properties": {
-        "id": {"pattern": "^CLAIM-[0-9]{3,}$"},
+        "id": {"type": "string", "pattern": "^CLAIM-[0-9]{3,}$"},
         "text": {"type": "string", "minLength": 1},
         "source_type": {"$ref": "#/$defs/sourceType"},
         "role": {"type": "string", "minLength": 1},
         "mastery_level": {"$ref": "#/$defs/mastery"},
         "risk": {"$ref": "#/$defs/risk"},
-        "chain_id": {"pattern": "^CHAIN-[0-9]{3,}$"},
+        "chain_id": {"type": "string", "pattern": "^CHAIN-[0-9]{3,}$"},
         "evidence_ids": {"type": "array", "items": {"type": "string"}},
+        "status": {
+          "enum": ["READY", "NEEDS_EVIDENCE", "NEEDS_TRAINING", "NEEDS_BUILD", "BLOCKED"]
+        },
         "grill_status": {"enum": ["NOT_RUN", "RED", "ORANGE", "YELLOW", "GREEN"]}
       },
       "additionalProperties": true

@@ -88,7 +88,7 @@ description: 将本地路径、GitHub 仓库、开源/他人项目、真实或�
 
 ### Phase 3：经历增强与项目迁移
 
-符合任一条件时执行：
+`UNDERSTAND_ONLY` 跳过本阶段。其他模式符合任一条件时执行：
 
 - 模式为 `WEAK_INTERNSHIP` 或 `PROJECT_MIGRATION`；
 - 存在 `NEEDS_TRAINING/NEEDS_BUILD`；
@@ -113,7 +113,9 @@ description: 将本地路径、GitHub 仓库、开源/他人项目、真实或�
 
 ### Phase 5：Bullet 逐条拷打
 
-对每条核心 Bullet 逐一执行六层追问。交互时一次问一个；自动评估时根据现有代码、manifest 和用户材料做干跑，并明确标记未获得用户回答的部分。
+`UNDERSTAND_ONLY` 跳过本阶段。其他模式对每条核心 Bullet 逐一执行六层追问。
+
+交互时一次问一个；自动评估时根据现有代码、manifest 和用户材料做干跑，并明确标记未获得用户回答的部分。
 
 输出 `claim-grill-report.md`。存在 `RED` 时自动回退一次：
 
@@ -122,13 +124,15 @@ description: 将本地路径、GitHub 仓库、开源/他人项目、真实或�
 3. 数据无来源 -> Phase 4；
 4. 边界不完整 -> Phase 3。
 
-重测仍为 `RED` 时保留训练材料，最终状态不得高于 `TRAINING_REQUIRED`。
+重测后仍为 `RED` 时：核心声明将最终状态设为 `BLOCKED`；非核心声明移出最终简历、保留为训练材料，最终状态最高为 `TRAINING_REQUIRED`。
 
 ### Phase 6：风险驱动学习与交互页面
 
 根据“声明风险 x 面试概率 x 掌握缺口”排序学习任务，生成 `learning-path.md`。用户要求交互学习或执行完整流程时，再生成 `learning-interactive.html`；HTML 只转换学习路径，不重新分析代码。
 
 ### Phase 7：分层话术与模拟面试
+
+`UNDERSTAND_ONLY` 跳过本阶段。
 
 1. 为 `GREEN/YELLOW` 声明生成 15 秒、30 秒、2 分钟和深挖材料，写入 `interview-scripts.md`。
 2. 按暖场、技术深挖、系统视角、收尾四阶段模拟面试。
@@ -139,7 +143,9 @@ description: 将本地路径、GitHub 仓库、开源/他人项目、真实或�
 
 ### Phase 8：最终质量门禁
 
-运行八道门禁，检查来源、代码、角色、数字、抗追问、学习闭环、跨产物一致性和敏感信息。
+`UNDERSTAND_ONLY` 只检查代码证据、业务链路、学习路径和敏感信息，不要求简历、贡献、拷打或话术产物；其他模式运行全部八道门禁。
+
+完整门禁检查来源、代码、角色、数字、抗追问、学习闭环、跨产物一致性和敏感信息。
 
 输出 `quality-gate-report.md`，最终状态只能是：
 
@@ -172,7 +178,9 @@ description: 将本地路径、GitHub 仓库、开源/他人项目、真实或�
 `- quality-gate-report.md
 ```
 
-写入前确认目录存在。同名文件存在时创建 `-v1`、`-v2`，取现有最大版本号加一；禁止覆盖。
+写入前确认目录存在。普通交付文件同名时创建 `-v1`、`-v2`，取现有最大版本号加一；禁止覆盖。
+
+`evidence-manifest.json` 是唯一例外：它是下游共同读取的当前状态文件，必须保持固定文件名。更新前将旧版复制到 `history/evidence-manifest-{时间戳}.json`，再把新内容写入临时文件、完成 Schema 校验后原子替换当前 manifest。校验失败时保留旧版并报告错误。下游禁止读取历史快照作为当前状态。
 
 ## 失败与恢复
 

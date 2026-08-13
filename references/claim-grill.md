@@ -78,7 +78,7 @@
 4. 至少完成一次实现、复现、验证或完整设计任务；
 5. 连续两轮无 `RED` 才能标记可面试。
 
-用户要求直接保留时可以保留在简历草稿，但 `quality_status` 不得设为 `INTERVIEW_READY`。
+用户要求直接保留时可以保留在简历草稿，但 `quality_status` 不得设为 `INTERVIEW_READY`。重测后仍为 `RED` 的核心声明使最终状态成为 `BLOCKED`；非核心声明必须移出最终简历，保留为训练候选。
 
 ## 报告模板
 
@@ -126,7 +126,7 @@ GREEN -> interview-script-generator
 
 🔴 CHECKPOINT · GRILL GATE
 
-存在 `RED` 时暂停自动进入最终面试。若用户已授权全流程自动执行，自动生成修复任务和一轮重测；重测仍为 `RED` 时保留风险并继续生成训练材料，但最终状态标为 `TRAINING_REQUIRED`。
+存在 `RED` 时暂停自动进入最终面试。若用户已授权全流程自动执行，自动生成修复任务和一轮重测；重测后核心声明仍为 `RED` 时最终状态标为 `BLOCKED`，非核心声明仍为 `RED` 时将其移出最终简历、保留训练材料，最终状态最高为 `TRAINING_REQUIRED`。
 
 ## 失败模式
 

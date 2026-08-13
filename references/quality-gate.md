@@ -17,6 +17,8 @@
 
 ## 八道门禁
 
+`UNDERSTAND_ONLY` 使用轻量门禁：只执行 Gate 2 的代码/链路一致性、Gate 6 的学习闭环和 Gate 8 的敏感信息检查，并确认未意外生成简历、拷打和话术。缺少这些被跳过的产物不算失败。
+
 ### Gate 1：来源完整性
 
 每条简历 Bullet 必须有 `claim_id`、`source_type`、`role` 和 `chain_id`。缺任一项为 `RED`。
@@ -35,7 +37,7 @@
 
 ### Gate 5：抗追问状态
 
-所有核心 Bullet 必须至少为 `YELLOW`。存在 `RED` 时不得标记 `INTERVIEW_READY`；高风险来源需要满足 `claim-policy.md` 的额外门禁。
+所有核心 Bullet 必须至少为 `YELLOW`。未解决的核心 `RED` 直接触发 `BLOCKED`；非核心 `RED` 必须移出最终简历并进入训练清单。高风险来源需要满足 `claim-policy.md` 的额外门禁。
 
 ### Gate 6：学习闭环
 
