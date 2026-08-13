@@ -161,8 +161,7 @@ repo-to-resume/
 |  |- test_contracts.py           # 负向契约测试
 |  `- validate_skill.ps1          # 一键仓库自检
 |- evals/                          # 评估配置与六个回归场景
-|- test-prompts.json               # 真实前向测试提示词
-`- OPTIMIZATION_PROPOSAL.md        # 本轮优化设计与决策记录
+`- test-prompts.json               # 真实前向测试提示词
 ```
 
 ## 验证
