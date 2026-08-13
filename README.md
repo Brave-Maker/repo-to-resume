@@ -1,70 +1,186 @@
 # repo-to-resume
 
-代码仓库 → STAR 简历 → 模拟面试，一站式项目面试准备工具。
+把代码、项目和经历加工成一套**可学习、可表达、可追问、可迭代**的求职材料。
 
-## 是什么
+它不只是“读取仓库后生成几条简历 Bullet”。`repo-to-resume` 会先理解项目与业务链路，再区分项目能力、个人贡献、复现成果、方案设计和叙事补全，最后生成简历、学习路径、面试话术与质量报告。即使没有正式实习，也可以从自研项目、开源项目或其他项目中提炼可讲内容。
 
-`repo-to-resume` 是一个 AI Skill，自动分析你的项目代码，生成面试用的 STAR 简历、模块级学习路径，并进行多轮模拟面试拷打。纯代码驱动，不依赖 README 或外部文档。
+## 适用场景
 
-## 能做什么
+| 你的情况 | 模式 | 主要处理方式 |
+|---|---|---|
+| 有真实实习和明确产出 | `REAL_INTERNSHIP` | 提取贡献、生成简历、逐条拷打 |
+| 有实习，但工作零散或角色模糊 | `WEAK_INTERNSHIP` | 补齐业务链路、增强经历、校准表达 |
+| 没有实习，但有自己完成的项目 | `SELF_PROJECT` | 分析项目、补工程闭环、形成项目经历 |
+| 想基于开源、团队或他人项目准备经历 | `PROJECT_MIGRATION` | 区分来源，完成复现、设计或叙事迁移 |
+| 已有简历，希望查漏洞和补强 | `EXISTING_RESUME` | 反查证据、压力追问、修正高风险表述 |
+| 只想快速看懂陌生代码 | `UNDERSTAND_ONLY` | 输出架构、业务链路和学习路径，不生成简历 |
 
-| 场景 | 用法 |
-|------|------|
-| 分析本地项目 | 「帮我分析 `C:\work\my-project`」 |
-| 分析 GitHub 仓库 | 「分析 https://github.com/xxx/yyy」 |
-| 生成面试简历 | 「给这个项目写一份 STAR 简历」 |
-| 准备项目面试 | 「我明天要面试，帮我准备这个项目的面试」 |
-| 快速理解陌生代码 | 「我刚接手这个项目，帮我快速看懂」 |
-| 只分析某一部分 | 「只看 `src/core/` 目录」 |
+支持本地目录、Git 仓库、压缩包、已有简历和零散工作记录。分析代码时会优先读取真实入口、调用链、数据流和工程约束，不依赖一份写得漂亮的 README。
 
-## 四步流程
+## 它解决什么问题
 
+- **项目看不懂**：从入口追踪到最终消费者，建立技术结构和核心业务链路。
+- **不知道自己做了什么**：将团队成果、项目能力和个人贡献拆开，找到可表达的价值节点。
+- **没有传统实习经历**：允许通过自研、复现、方案设计和叙事补全构建候选经历，而不是直接拒绝服务。
+- **简历经不起追问**：对每条核心 Bullet 进行事实、角色、实现、选型、验证和边界六层追问。
+- **会写但不会讲**：按风险生成学习任务，以及 15 秒、30 秒、2 分钟和深挖版本的话术。
+- **产物前后矛盾**：用统一证据清单串联分析、简历、拷打、学习和面试材料。
+
+## 工作流程
+
+```text
+Phase 0  识别输入、目标岗位和工作模式
+   ↓
+Phase 1  分析技术结构与核心业务链路
+   ↓
+Phase 2  映射个人贡献、内容来源与掌握程度
+   ↓
+Phase 3  复现、增强或设计缺失的工程闭环
+   ↓
+Phase 4  生成 STAR 经历与简历 Bullet
+   ↓
+Phase 5  对核心声明执行六层压力追问
+   ↓
+Phase 6  生成风险驱动的学习路径与交互学习页
+   ↓
+Phase 7  生成分层话术并进行模拟面试
+   ↓
+Phase 8  执行最终质量门禁
 ```
-Step 0: 项目概览 → 深度分析（6 维度）
-    ↓
-Step 1: STAR 简历（一页纸，≤10 条 Action）
-    ↓
-Step 2: 学习路径（全景图 → 模块详解 → 跨模块面试题）
-    ↓
-Step 3: 模拟面试（暖场 → 技术深挖 → 系统视角 → 收尾 + 评分报告）
+
+用户明确要求“直接全部做完”时，流程可以自动连续执行并保留每个检查点的记录；交互模式下则会在关键决策处等待确认。
+
+## 核心机制
+
+### 证据清单
+
+`evidence-manifest.json` 是整条流程的事实索引。每项声明都会记录：
+
+- 内容来自用户亲历、代码事实、团队成果、外部项目，还是推演补全；
+- 用户承担的角色、当前掌握程度和可用证据；
+- 当前风险与下一步动作；
+- 下游应该读取的最新产物版本。
+
+这使项目迁移和叙事补全可以继续进行，同时不会把“仓库里存在”直接等同于“用户本人已经完成并掌握”。
+
+### 四类增强结果
+
+| 状态 | 含义 |
+|---|---|
+| `IMPLEMENTED` | 已实际实现并完成验证 |
+| `REPRODUCED` | 已完成最小复现或等价实验 |
+| `DESIGNED` | 已形成可解释、可落地的完整方案 |
+| `NARRATIVE_READY` | 已补齐叙事与学习材料，但仍需要训练或验证 |
+
+### 质量状态
+
+最终只会给出以下四种状态之一：
+
+| 状态 | 含义 |
+|---|---|
+| `INTERVIEW_READY` | 核心声明已具备证据、掌握度和抗追问能力 |
+| `REVIEW_REQUIRED` | 基本可用，但仍有需要人工确认的内容 |
+| `TRAINING_REQUIRED` | 可以继续作为训练材料，暂不建议直接对外使用 |
+| `BLOCKED` | 核心事实或角色冲突尚未解决 |
+
+高风险内容不会被自动删除，但也不会在缺少依据时被错误标成 `INTERVIEW_READY`。
+
+## 主要产物
+
+完整流程会在目标项目中创建 `{项目名}-analysis/`，并按需生成：
+
+```text
+{项目名}-analysis/
+|- project-analysis.md          # 架构、技术栈与六维分析
+|- business-chains.md           # 核心业务链路和价值节点
+|- contribution-map.md          # 个人贡献、来源与掌握度映射
+|- evidence-manifest.json       # 跨产物事实索引和状态清单
+|- enhancement-plan.md          # 复现、增强或方案设计任务
+|- resume.md                    # STAR 经历与简历 Bullet
+|- claim-grill-report.md        # 六层追问和漏洞分级
+|- learning-path.md             # 风险驱动的学习路径
+|- learning-interactive.html    # 单文件交互学习页面
+|- interview-scripts.md         # 分层面试话术
+|- interview-report.md          # 基于实际回答的面试反馈
+`- quality-gate-report.md       # 最终质量状态和剩余风险
 ```
 
-每步产出后都会停下来等你确认，你可以随时说「只看 XX」「跳过这步」「重新生成」。
+`UNDERSTAND_ONLY` 模式只生成项目分析、业务链路、证据清单、学习路径和质量报告。普通产物不会覆盖旧文件，而是保存新版本；manifest 始终指向当前有效版本。
 
-## 架构
+## 安装
 
-主 Skill 负责编排流程，5 个子模块各司其职：
+将仓库克隆到你的 Agent skills 目录。以 Codex 的默认 Windows 目录为例：
 
-| 子模块 | 职责 |
-|--------|------|
-| `code-analysis-engine` | 扫描结构、识别架构、6 维度深度分析、提取亮点 |
-| `star-resume-generator` | 套 STAR 框架生成一页纸简历 |
-| `learning-path-generator` | 三层递进：全景图 → 模块详解 → 跨模块面试题 |
-| `interactive-learning-template` | 单文件 HTML 交互式学习页面 |
-| `mock-interviewer` | 出题 + 追问梯度 + 行为锚定评分 + 复习行动清单 |
-
-## 目录结构
-
+```powershell
+git clone https://github.com/Brave-Maker/repo-to-resume.git "$env:USERPROFILE\.codex\skills\repo-to-resume"
 ```
+
+其他运行环境将目标路径替换为对应的 skills 目录即可。安装后重新加载 Agent 会话，使其发现 `SKILL.md`。
+
+## 使用
+
+显式调用：
+
+```text
+$repo-to-resume 分析 C:\work\my-project，目标岗位是 Java 后端，直接完成整套材料。
+```
+
+也可以自然语言触发：
+
+```text
+帮我分析这个 GitHub 项目，提炼成可面试的项目经历。
+
+我没有正式实习，想基于这个开源项目做复现、补学习材料和简历话术。
+
+这是我现有的简历，帮我逐条找漏洞，补齐证据和面试回答。
+
+我只想快速看懂这个项目，不需要生成简历。
+```
+
+需要限制范围时直接说明目录、模块或目标链路，例如“只分析 `src/order/`”或“重点看支付回调和幂等处理”。
+
+## 安全与授权边界
+
+- 默认只读取目标项目并生成分析材料，不读取或展示密钥、Token、密码等敏感内容。
+- “直接全部做完”只授权连续生成分析产物，**不等于授权修改目标项目源码**。
+- 修改源码前必须单独展示写入范围、预计文件和验证命令，并取得明确授权。
+- 未经实际回答，不会虚构模拟面试得分；此时只生成待实战问题集和预评估风险。
+- 估算数据会保留口径和来源，不会仅凭 Redis、MQ、线程池等技术名词编造性能百分比。
+
+## 仓库结构
+
+```text
 repo-to-resume/
-├── SKILL.md                                  # Skill 主文件（编排流程 + 卡片式输出规范）
-├── skillhub.json                             # Skill 注册信息
-├── evals/
-│   └── evals.json                            # 评估用例
-└── references/
-    ├── code-analysis-engine.md               # 代码分析引擎
-    ├── star-resume-generator.md              # STAR 简历生成器
-    ├── star-framework.md                     # STAR 框架 + 量化估算规则
-    ├── learning-path-generator.md            # 学习路径生成器
-    ├── interactive-learning-template.md      # 交互式学习 HTML 模板
-    ├── mock-interviewer.md                   # 模拟面试官
-    └── interview-question-templates.md       # 通用面试题库
+|- SKILL.md                       # 主流程、路由与行为契约
+|- agents/openai.yaml             # Agent 展示与默认提示词
+|- references/                    # 分析、包装、拷打和质量门禁模块
+|- scripts/
+|  |- validate_manifest.py        # manifest Schema 与语义校验
+|  |- migrate_manifest.py         # 旧版 manifest 迁移
+|  |- run_evals.py                # 评估断言执行器
+|  |- test_contracts.py           # 负向契约测试
+|  `- validate_skill.ps1          # 一键仓库自检
+|- evals/                          # 评估配置与六个回归场景
+|- test-prompts.json               # 真实前向测试提示词
+`- OPTIMIZATION_PROPOSAL.md        # 本轮优化设计与决策记录
 ```
 
-## 边界约束
+## 验证
 
-- 纯代码分析，不依赖外部信息
-- 不碰敏感信息（密钥、token、密码）
-- 不分析第三方依赖源码（node_modules、vendor 等）
-- 不分析测试代码和 Git 历史
-- 全语言通用，AI 自动识别技术栈
+在仓库根目录运行：
+
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts/validate_skill.ps1
+```
+
+单独校验生成的证据清单：
+
+```powershell
+python scripts/validate_manifest.py <manifest路径> --analysis-dir <分析目录> --require-artifacts
+```
+
+当前回归套件包含 6 个代表性场景、54 条评估断言和 15 条负向契约测试，覆盖弱实习、项目迁移、现有简历、只理解代码、版本化产物和未授权源码修改等关键路径。仓库同时保留弱实习、项目迁移和只理解代码三类真实前向测试提示词，用于检查实际 Agent 行为，而不把静态断言冒充完整端到端能力。
+
+## 设计目标
+
+`repo-to-resume` 的目标不是替用户制造一句听起来漂亮但无法解释的话，而是把可用素材一路加工到“知道来源、讲得清实现、答得住追问、明白剩余风险”的状态。没有实习也能开始；没有证据或掌握度时，系统会继续给出复现、学习和训练路径，直到内容具备可用条件。
