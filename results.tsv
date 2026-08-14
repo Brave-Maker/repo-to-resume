@@ -9,3 +9,5 @@ timestamp	commit	skill	old_score	new_score	status	dimension	note	eval_mode
 2026-08-13T17:18:00+08:00	forward-test	repo-to-resume	-	1/1 pass	keep	effectiveness	QualityFlow 合成场景比较 8 个候选，新版以 D/E/F 替换旧版 A/B/C；7fd13a7、29 文件、+8422 行和 3 份 ADR 均未参与价值加分，角色未知的 G/H 未准入	full_test
 2026-08-13T17:24:00+08:00	cc34727	repo-to-resume	-	2-0 better	keep	effectiveness	统一使用 12 分 candidate_value_score 作为排序与替换依据，角色、来源、掌握度和风险仅作准入；清除岗位相关性重复加权歧义	paired
 2026-08-14T17:58:00+08:00	baseline	repo-to-resume	-	77.0	baseline	scope-routing	3 个单步骤回归场景 0/3 通过；来源模式会把明确单步骤请求扩张为完整或长链路	full_test
+2026-08-14T18:08:00+08:00	7fd8142	repo-to-resume	77.0	3-0 clear better	keep	architecture/effectiveness	双轴路由、DIRECT 单步骤交付与阶段门禁修复范围扩张；三位独立评委确认完整流程和 manifest 契约未退化	paired
+2026-08-14T18:08:00+08:00	forward-test	repo-to-resume	0/3 pass	3/3 pass	keep	effectiveness	只分析业务链路、只改一条简历、只做模拟面试均在指定停止点结束，不生成范围外产物	full_test
