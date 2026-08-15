@@ -13,3 +13,5 @@ timestamp	commit	skill	old_score	new_score	status	dimension	note	eval_mode
 2026-08-14T18:08:00+08:00	forward-test	repo-to-resume	0/3 pass	3/3 pass	keep	effectiveness	只分析业务链路、只改一条简历、只做模拟面试均在指定停止点结束，不生成范围外产物	full_test
 2026-08-15T23:47:39+08:00	baseline-source-gate	repo-to-resume	-	2/4 pass	baseline	effectiveness	来源未知的测试 12/14 失败；开源全流程与实习核心闭环仅由通用归因规则间接覆盖	dry_run
 2026-08-15T23:47:39+08:00	forward-test	repo-to-resume	2/4 pass	62/62 assertions + 18/18 contracts	keep	effectiveness/contracts	新增 project_origin 前置门禁、来源分支职责边界、manifest 语义校验与迁移修复路径	full_test
+2026-08-15T23:54:07+08:00	paired	repo-to-resume	允许来源未知时直接改写	3-0 clear better	keep	workflow/effectiveness	三位独立评审一致确认显式来源 STOP 与分支职责边界直接修复旧冲突	paired
+2026-08-15T23:54:07+08:00	forward-test	repo-to-resume	2/4 pass	4/4 pass	keep	effectiveness	未知来源 2 例只问来源并停止；开源全流程与实习核心闭环实际输出均符合契约	full_test
