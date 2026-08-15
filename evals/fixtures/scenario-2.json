@@ -2,6 +2,7 @@
   "manifest": {
     "schema_version": "1.1",
     "mode": "WEAK_INTERNSHIP",
+    "project_origin": "INTERNSHIP",
     "auto_confirmed": true,
     "current_artifacts": {
       "project_analysis": "project-analysis.md",

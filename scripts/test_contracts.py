@@ -67,6 +67,10 @@ def main() -> int:
     unknown_field["unexpected"] = True
     expect_error("unknown top-level field", unknown_field, "not allowed")
 
+    missing_origin = copy.deepcopy(migration)
+    missing_origin.pop("project_origin")
+    expect_error("resume without project origin", missing_origin, "confirmed project_origin")
+
     malformed_task = copy.deepcopy(migration)
     del malformed_task["enhancement_tasks"][0]["validation_methods"]
     expect_error("missing task field", malformed_task, "validation_methods is required")
@@ -101,6 +105,22 @@ def main() -> int:
     if migration_errors:
         raise AssertionError(f"valid legacy manifest did not migrate: {migration_errors}")
 
+    ambiguous_legacy = load_scenario(4)
+    ambiguous_legacy["schema_version"] = "1.0"
+    ambiguous_legacy.pop("project_origin")
+    try:
+        migrate(ambiguous_legacy)
+    except ValueError as exc:
+        if "--project-origin" not in str(exc):
+            raise AssertionError(f"ambiguous migration returned unclear error: {exc}") from exc
+    else:
+        raise AssertionError("ambiguous resume migration did not require project_origin")
+
+    repaired_migration, _ = migrate(ambiguous_legacy, "OPEN_SOURCE")
+    repaired_errors = validate_manifest(repaired_migration)
+    if repaired_errors:
+        raise AssertionError(f"confirmed project origin did not repair migration: {repaired_errors}")
+
     routed = copy.deepcopy(migration)
     routed["current_artifacts"]["resume"] = "resume-v1.md"
     with tempfile.TemporaryDirectory(prefix="repo-to-resume-routing-") as temp_root:
@@ -116,7 +136,7 @@ def main() -> int:
     core_red["quality_status"] = "TRAINING_REQUIRED"
     expect_error("core red status", core_red, "quality_status BLOCKED")
 
-    print("Contract tests: 15 passed, 0 failed")
+    print("Contract tests: 18 passed, 0 failed")
     return 0
 
 

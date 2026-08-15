@@ -17,7 +17,9 @@ def _artifact_candidates(manifest: dict[str, Any]) -> dict[str, str]:
     return artifacts if isinstance(artifacts, dict) else {}
 
 
-def migrate(manifest: dict[str, Any]) -> tuple[dict[str, Any], list[str]]:
+def migrate(
+    manifest: dict[str, Any], project_origin: str | None = None
+) -> tuple[dict[str, Any], list[str]]:
     if manifest.get("schema_version") != "1.0":
         raise ValueError("only schema_version 1.0 can be migrated")
 
@@ -26,6 +28,24 @@ def migrate(manifest: dict[str, Any]) -> tuple[dict[str, Any], list[str]]:
     migrated["schema_version"] = "1.1"
     migrated["current_artifacts"] = _artifact_candidates(migrated)
     migrated["code_mutation"] = {"authorized": False, "scope": []}
+
+    allowed_origins = {"INTERNSHIP", "OPEN_SOURCE", "SELF_OWNED", "OTHER"}
+    if project_origin is not None and project_origin not in allowed_origins:
+        raise ValueError(f"invalid project_origin: {project_origin}")
+    inferred_origin = {
+        "REAL_INTERNSHIP": "INTERNSHIP",
+        "WEAK_INTERNSHIP": "INTERNSHIP",
+        "SELF_PROJECT": "SELF_OWNED",
+    }.get(migrated.get("mode"))
+    if project_origin:
+        migrated["project_origin"] = project_origin
+    elif inferred_origin:
+        migrated["project_origin"] = inferred_origin
+    elif "resume" in migrated["current_artifacts"] or "resume_clean" in migrated["current_artifacts"]:
+        raise ValueError(
+            "project_origin cannot be inferred; ask the user whether the project is open source, "
+            "self-owned, internship, or other, then rerun with --project-origin"
+        )
 
     project = migrated.get("project")
     if not isinstance(project, dict):
@@ -74,11 +94,16 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("manifest", type=Path)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument(
+        "--project-origin",
+        choices=["INTERNSHIP", "OPEN_SOURCE", "SELF_OWNED", "OTHER"],
+        help="Confirmed project origin; required when a resume exists and mode cannot infer it",
+    )
     args = parser.parse_args()
 
     try:
         source = json.loads(args.manifest.read_text(encoding="utf-8"))
-        migrated, warnings = migrate(source)
+        migrated, warnings = migrate(source, args.project_origin)
     except (OSError, json.JSONDecodeError, ValueError) as exc:
         print(f"Migration failed: {exc}", file=sys.stderr)
         return 2

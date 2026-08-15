@@ -2,6 +2,19 @@
 
 本模块定义简历、面试话术和学习材料共同遵守的声明模型。任何用户可见的项目声明都必须先登记到 `evidence-manifest.json`，再由下游模块消费。
 
+## 0. 项目来源与材料模式
+
+`mode/source_mode` 描述当前材料和处理路径；`project_origin` 描述项目本身来自哪里。两者不能互相替代，尤其 `EXISTING_RESUME` 不能推出项目来源。
+
+生成或改写简历要点前必须由用户明确确认 `project_origin`：
+
+- `OPEN_SOURCE`：可写实际复现、改造、实现和验证过的完整流程，不写成原创开源项目；
+- `SELF_OWNED`：可按真实个人/合作范围写端到端设计与实现；
+- `INTERNSHIP`：只允许写用户负责的高价值环节或核心闭环；
+- `OTHER`：默认采用 `INTERNSHIP` 的保守边界，直到所有权得到证实。
+
+来源缺失时只问来源并停止，不创建用户可见的简历声明。claim 级 `source_type`、`role`、`mastery_level` 和 evidence 继续决定单条事实能否准入；`project_origin` 只决定整组简历的最大职责范围。
+
 ## 1. 声明来源
 
 | 类型 | 定义 | 可用范围 |
@@ -78,6 +91,7 @@ PERSONAL_FACT / SELF_PROJECT / 已验证 REPRODUCED -> LOW
 {
   "schema_version": "1.1",
   "mode": "REAL_INTERNSHIP",
+  "project_origin": "INTERNSHIP",
   "current_artifacts": {
     "project_analysis": "project-analysis.md",
     "business_chains": "business-chains.md",
@@ -126,6 +140,10 @@ PERSONAL_FACT / SELF_PROJECT / 已验证 REPRODUCED -> LOW
 ## 8. 反例黑名单
 
 - 不要把仓库存在的能力自动归为用户个人成果。
+- 不要在项目来源未知时生成或改写简历声明。
+- 不要把已有简历的材料状态当作项目来源。
+- 不要把实习项目的团队端到端流程包装成用户个人成果。
+- 不要把开源项目原作者的设计写成用户原创。
 - 不要用统一强动词覆盖真实角色差异。
 - 不要凭技术组件推导虚假的性能百分比。
 - 不要把 `DESIGNED_ONLY` 默认写成已上线运行。

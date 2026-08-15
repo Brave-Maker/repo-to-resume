@@ -22,6 +22,7 @@
   "properties": {
     "schema_version": {"const": "1.1"},
     "mode": {"$ref": "#/$defs/mode"},
+    "project_origin": {"$ref": "#/$defs/projectOrigin"},
     "auto_confirmed": {"type": "boolean"},
     "current_artifacts": {"$ref": "#/$defs/currentArtifacts"},
     "code_mutation": {"$ref": "#/$defs/codeMutation"},
@@ -73,6 +74,9 @@
         "EXISTING_RESUME",
         "UNDERSTAND_ONLY"
       ]
+    },
+    "projectOrigin": {
+      "enum": ["INTERNSHIP", "OPEN_SOURCE", "SELF_OWNED", "OTHER"]
     },
     "artifactPath": {
       "type": "string",

@@ -20,8 +20,9 @@
   {
     "id": 4,
     "mode": "EXISTING_RESUME",
-    "prompt": "我的简历写 Redis 提升 80%、百万 QPS，但没有监控数据，帮我修到能面试。",
-    "expected": "识别数字和角色风险，保留用户选择但生成证据任务、拷打和真实质量状态。"
+    "project_origin": "INTERNSHIP",
+    "prompt": "这是实习项目。我的简历写 Redis 提升 80%、百万 QPS，但没有监控数据，帮我修到能面试。",
+    "expected": "识别为实习项目，围绕用户负责的高价值环节或核心闭环收窄表述；识别数字和角色风险，保留用户选择但生成证据任务、拷打和真实质量状态。"
   },
   {
     "id": 5,
@@ -38,26 +39,30 @@
   {
     "id": 7,
     "mode": "REAL_INTERNSHIP",
-    "prompt": "基于项目代码和现有数据，输出两条适合中文简历的项目成果，并补充面试口径。",
-    "expected": "输出自然中文的简历要点；LLM、Agent、Intent、Schema、checkpoint 等普通概念优先使用中文，代码标识符保留并补中文职责。"
+    "project_origin": "INTERNSHIP",
+    "prompt": "这是实习项目，我负责意图识别链路。基于项目代码和现有数据，输出两条适合中文简历的项目成果，并补充面试口径。",
+    "expected": "只围绕用户负责的高价值链路或其中的核心闭环输出自然中文简历要点，不把整个项目写成个人端到端成果；LLM、Agent、Intent、Schema、checkpoint 等普通概念优先使用中文，代码标识符保留并补中文职责。"
   },
   {
     "id": 8,
     "mode": "EXISTING_RESUME",
-    "prompt": "把下面两条中英文混用的 STAR bullets 改成适合中文后端简历的表述。保留必要技术名词，但不要降低技术准确性。",
+    "project_origin": "SELF_OWNED",
+    "prompt": "下面内容来自我的个人项目。把这两条中英文混用的 STAR bullets 改成适合中文后端简历的表述。保留必要技术名词，但不要降低技术准确性。",
     "expected": "标题和叙述统一为中文；保留产品名、协议、通用缩写及真实代码标识符；成品与内部风险说明分区。"
   },
   {
     "id": 9,
     "mode": "EXISTING_RESUME",
-    "prompt": "Write two English resume bullets for this project and provide concise interview notes in English.",
+    "project_origin": "SELF_OWNED",
+    "prompt": "This is my personal project. Write two English resume bullets for this project and provide concise interview notes in English.",
     "expected": "遵循用户明确指定的英文，不强制中文；同一部分保持单一主语言。"
   },
   {
     "id": 10,
     "mode": "REAL_INTERNSHIP",
-    "prompt": "分析 QualityFlow 项目和我的贡献，输出 3 条最有含金量的简历要点。Git 中有一个 7fd13a7 大提交，包含 AI 建议采纳、审核草稿、3 份 ADR，共 29 个文件、增加 8422 行；仓库里还可能有更强的架构、可靠性或核心业务链路实现。",
-    "expected": "先从当前代码、调用链和测试建立跨仓库候选池，再用 Git 确认个人归因；不得因大提交、文件数、行数或 ADR 数量优先选材。至少比较 6 个候选，若存在更高价值且角色合格的候选，替换审核交互、草稿持久化或 ADR 等低价值要点。"
+    "project_origin": "INTERNSHIP",
+    "prompt": "QualityFlow 是实习项目。分析项目和我的贡献，输出 3 条最有含金量的简历要点。Git 中有一个 7fd13a7 大提交，包含 AI 建议采纳、审核草稿、3 份 ADR，共 29 个文件、增加 8422 行；仓库里还可能有更强的架构、可靠性或核心业务链路实现。",
+    "expected": "先从当前代码、调用链和测试建立跨仓库候选池，再用 Git 确认个人归因；不得因大提交、文件数、行数或 ADR 数量优先选材。至少比较 6 个候选，若存在更高价值且角色合格的候选则替换较弱要点；只选择用户实际负责的高价值环节或核心闭环，不把全项目流程归为个人成果。"
   },
   {
     "id": 11,
@@ -71,13 +76,36 @@
     "mode": "EXISTING_RESUME",
     "scope": "RESUME_ONLY",
     "prompt": "只帮我改好这一条简历要点，不要重新分析整个仓库，也不要做拷打：使用 Redis 优化接口，性能提升 80%。",
-    "expected": "只处理这一条简历要点；对 80% 的口径和证据做最小必要追问或风险标记，不扫描整个仓库，不自动进入拷打、学习或面试阶段。"
+    "expected": "项目来源未知，先且只询问这是开源项目、个人项目还是实习项目；用户回答前不得改写简历要点。仍保持 RESUME_ONLY 边界，不扫描仓库，不自动进入拷打、学习或面试阶段。"
   },
   {
     "id": 13,
     "mode": "EXISTING_RESUME",
     "scope": "MOCK_INTERVIEW_ONLY",
     "prompt": "基于我接下来提供的简历只做一轮模拟面试，不要重写简历，也不要重新分析项目。",
-    "expected": "只进入模拟面试；仅索取或读取模拟面试必需的简历与目标岗位信息，不自动执行项目分析、贡献映射、简历生成、学习路径或完整质量门禁。"
+    "expected": "只进入模拟面试；因为不生成或改写简历要点，不强制追问项目来源；仅索取或读取模拟面试必需的简历与目标岗位信息，不自动执行项目分析、贡献映射、简历生成、学习路径或完整质量门禁。"
+  },
+  {
+    "id": 14,
+    "mode": "EXISTING_RESUME",
+    "scope": "RESUME_ONLY",
+    "prompt": "帮我把这个项目写成 3 条简历要点。",
+    "expected": "项目来源未知，只询问这是开源项目、个人项目还是实习项目；在用户回答前停止，不生成候选要点或示例成品。"
+  },
+  {
+    "id": 15,
+    "mode": "PROJECT_MIGRATION",
+    "project_origin": "OPEN_SOURCE",
+    "scope": "RESUME_ONLY",
+    "prompt": "这是我已经完整复现并二次开发的开源项目。我实现了需求拆解、架构调整、核心链路和测试验证，请写 3 条简历要点。",
+    "expected": "允许围绕已复现和实际改造的端到端设计与实现组织简历要点，覆盖需求、架构、核心实现和验证；使用复现、改造、扩展等来源准确的动词，不冒充开源项目原作者。"
+  },
+  {
+    "id": 16,
+    "mode": "REAL_INTERNSHIP",
+    "project_origin": "INTERNSHIP",
+    "scope": "RESUME_ONLY",
+    "prompt": "这是实习项目，我负责智能客服中的意图识别链路和知识反馈闭环。请根据项目代码写 3 条简历要点。",
+    "expected": "只围绕意图识别链路或知识反馈闭环中用户实际负责的设计、实现和验证写要点；不得把智能客服全流程、整体架构或团队成果包装成个人端到端交付。"
   }
 ]

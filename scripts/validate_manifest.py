@@ -19,6 +19,7 @@ MODES = {
     "EXISTING_RESUME",
     "UNDERSTAND_ONLY",
 }
+PROJECT_ORIGINS = {"INTERNSHIP", "OPEN_SOURCE", "SELF_OWNED", "OTHER"}
 QUALITY_STATUSES = {
     "BLOCKED",
     "TRAINING_REQUIRED",
@@ -80,7 +81,7 @@ TOP_LEVEL_REQUIRED = {
     "risk_flags",
     "quality_status",
 }
-TOP_LEVEL_ALLOWED = TOP_LEVEL_REQUIRED | {"auto_confirmed"}
+TOP_LEVEL_ALLOWED = TOP_LEVEL_REQUIRED | {"auto_confirmed", "project_origin"}
 DEFAULT_SCHEMA_PATH = Path(__file__).resolve().parents[1] / "references" / "evidence-manifest.schema.json"
 
 
@@ -269,6 +270,9 @@ def validate_manifest(
     mode = data.get("mode")
     if mode not in MODES:
         errors.append(f"invalid mode: {mode}")
+    project_origin = data.get("project_origin")
+    if project_origin is not None and project_origin not in PROJECT_ORIGINS:
+        errors.append(f"invalid project_origin: {project_origin}")
     if data.get("quality_status") not in QUALITY_STATUSES:
         errors.append(f"invalid quality_status: {data.get('quality_status')}")
 
@@ -285,6 +289,26 @@ def validate_manifest(
             continue
         if analysis_dir is not None and not (analysis_dir / value).is_file():
             errors.append(f"current_artifacts.{key} points to a missing file: {value}")
+
+    has_resume_content = bool({"resume", "resume_clean"} & set(artifacts)) or any(
+        isinstance(claim, dict) and bool(claim.get("resume_text"))
+        for claim in data.get("claims", [])
+    )
+    if has_resume_content and project_origin not in PROJECT_ORIGINS:
+        errors.append("resume content requires a confirmed project_origin")
+    expected_origin = {
+        "REAL_INTERNSHIP": "INTERNSHIP",
+        "WEAK_INTERNSHIP": "INTERNSHIP",
+        "SELF_PROJECT": "SELF_OWNED",
+    }.get(mode)
+    if expected_origin and project_origin is not None and project_origin != expected_origin:
+        errors.append(
+            f"mode {mode} requires project_origin {expected_origin}, got {project_origin}"
+        )
+    if mode == "PROJECT_MIGRATION" and project_origin not in {None, "OPEN_SOURCE", "OTHER"}:
+        errors.append(
+            f"mode PROJECT_MIGRATION requires project_origin OPEN_SOURCE or OTHER, got {project_origin}"
+        )
 
     if mode == "UNDERSTAND_ONLY":
         forbidden = sorted(UNDERSTAND_FORBIDDEN & set(artifacts))

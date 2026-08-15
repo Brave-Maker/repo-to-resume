@@ -23,7 +23,16 @@ python scripts/validate_manifest.py <分析目录>/evidence-manifest.json --anal
 
 ### Gate 1：来源完整性
 
-每条简历 Bullet 必须有 `claim_id`、`source_type`、`role` 和 `chain_id`。缺任一项为 `RED`。
+存在简历产物时，manifest 必须有用户已确认的 `project_origin`。每条简历要点必须有 `claim_id`、`source_type`、`role` 和 `chain_id`。缺任一项为 `RED`。
+
+随后检查职责跨度：
+
+- `OPEN_SOURCE`：全流程表述只能覆盖用户实际复现、改造、实现和验证的内容，不能冒充原作者；
+- `SELF_OWNED`：端到端表述必须与个人或合作角色一致；
+- `INTERNSHIP`：每条必须收敛到用户负责的高价值环节或核心闭环，不能冒领全产品、全系统或跨团队流程；
+- `OTHER`：默认按实习项目的聚焦边界检查。
+
+违反职责跨度为 `RED`，回退到贡献映射和简历生成阶段。
 
 ### Gate 2：代码与业务一致性
 

@@ -64,6 +64,11 @@ def _check_assertion(
 
     if op == "manifest.mode_equals":
         return manifest.get("mode") == argument, f"mode={manifest.get('mode')}"
+    if op == "manifest.project_origin_equals":
+        return (
+            manifest.get("project_origin") == argument,
+            f"project_origin={manifest.get('project_origin')}",
+        )
     if op == "files_exist":
         missing = [name for name in _split_csv(argument) if not (target / name).is_file()]
         return not missing, f"missing={missing}"
@@ -272,6 +277,24 @@ def _check_assertion(
         missing = [item for item in required if item not in combined]
         prompt_ok = all(item in prompts for item in ("QualityFlow", "7fd13a7", "增加 8422 行", "替换"))
         return not missing and prompt_ok, f"missing={missing}, qualityflow_prompt={prompt_ok}"
+    if op == "resume_requires_project_origin":
+        skill = (ROOT / "SKILL.md").read_text(encoding="utf-8")
+        resume = (ROOT / "references" / "star-resume-generator.md").read_text(encoding="utf-8")
+        schema = (ROOT / "references" / "evidence-manifest.schema.json").read_text(encoding="utf-8")
+        validator = (ROOT / "scripts" / "validate_manifest.py").read_text(encoding="utf-8")
+        prompts = (ROOT / "test-prompts.json").read_text(encoding="utf-8")
+        combined = "\n".join((skill, resume, schema, validator))
+        required = [
+            "CHECKPOINT · PROJECT ORIGIN",
+            "用户回答前不得",
+            "`OPEN_SOURCE`",
+            "`SELF_OWNED`",
+            "`INTERNSHIP`",
+            "resume content requires a confirmed project_origin",
+        ]
+        missing = [item for item in required if item not in combined]
+        prompt_ok = all(item in prompts for item in ('"id": 14', '"id": 15', '"id": 16'))
+        return not missing and prompt_ok, f"missing={missing}, source_prompts={prompt_ok}"
     raise EvalFailure(f"unsupported assertion operator: {op}")
 
 

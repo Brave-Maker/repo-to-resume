@@ -9,6 +9,7 @@
       "expected_mode": "REAL_INTERNSHIP",
       "assertions": [
         {"id": "1.1", "text": "识别为真实实习模式", "check": "manifest.mode_equals:REAL_INTERNSHIP"},
+        {"id": "1.1a", "text": "确认项目来源为实习", "check": "manifest.project_origin_equals:INTERNSHIP"},
         {"id": "1.2", "text": "生成项目分析和业务链路", "check": "files_exist:project-analysis.md,business-chains.md"},
         {"id": "1.3", "text": "区分 mentor 决策与用户实现", "check": "contribution_has_source:MENTOR_DIRECTED"},
         {"id": "1.4", "text": "简历动词匹配参与实现角色", "check": "resume_role_matches_manifest"},
@@ -24,6 +25,7 @@
       "expected_mode": "WEAK_INTERNSHIP",
       "assertions": [
         {"id": "2.1", "text": "识别为弱实习模式", "check": "manifest.mode_equals:WEAK_INTERNSHIP"},
+        {"id": "2.1a", "text": "确认项目来源为实习", "check": "manifest.project_origin_equals:INTERNSHIP"},
         {"id": "2.2", "text": "CRUD 被放回端到端业务链路评估", "check": "business_chain_has_consumer"},
         {"id": "2.3", "text": "生成 1-3 个可执行增强任务", "check": "enhancement_task_count_between:1,3"},
         {"id": "2.4", "text": "任务包含方案、步骤、失败注入和验证", "check": "all_tasks_have:方案选项,执行步骤,失败注入,验证方法,完成证据,面试门禁"},
@@ -38,6 +40,7 @@
       "expected_mode": "SELF_PROJECT",
       "assertions": [
         {"id": "3.1", "text": "识别为自研项目模式", "check": "manifest.mode_equals:SELF_PROJECT"},
+        {"id": "3.1a", "text": "确认项目来源为个人项目", "check": "manifest.project_origin_equals:SELF_OWNED"},
         {"id": "3.2", "text": "不要求虚构公司背景", "check": "resume_does_not_require_company"},
         {"id": "3.3", "text": "增强任务与核心链路关联", "check": "all_enhancements_have_chain_id"},
         {"id": "3.4", "text": "无数据时不凭组件推导百分比", "check": "no_component_based_performance_estimates"},
@@ -52,6 +55,7 @@
       "expected_mode": "PROJECT_MIGRATION",
       "assertions": [
         {"id": "4.1", "text": "识别为项目迁移模式", "check": "manifest.mode_equals:PROJECT_MIGRATION"},
+        {"id": "4.1a", "text": "确认项目来源为开源项目", "check": "manifest.project_origin_equals:OPEN_SOURCE"},
         {"id": "4.2", "text": "选 1-3 条高价值链路而非全仓库冒领", "check": "migration_focus_chain_count_between:1,3"},
         {"id": "4.3", "text": "来源标记为复现、借用语境或叙事补全", "check": "claims_source_in:REPRODUCED,BORROWED_CONTEXT,NARRATIVE_FILL"},
         {"id": "4.4", "text": "生成复现、设计或叙事准备任务", "check": "enhancement_mode_in:REPRODUCED,DESIGNED,NARRATIVE_READY"},
@@ -62,10 +66,11 @@
     {
       "id": 5,
       "name": "现有简历-反向找漏洞",
-      "prompt": "这是我简历：‘主导公司订单系统从0到1建设，使用 Redis 将性能提升 80%，支撑百万 QPS。’我只有项目代码 C:\\work\\orders，没有监控数据。帮我找漏洞并修到能面试。",
+      "prompt": "这是实习项目，也是我现有简历中的经历：‘主导公司订单系统从0到1建设，使用 Redis 将性能提升 80%，支撑百万 QPS。’我只有项目代码 C:\\work\\orders，没有监控数据。帮我找漏洞并修到能面试。",
       "expected_mode": "EXISTING_RESUME",
       "assertions": [
         {"id": "5.1", "text": "识别为现有简历模式", "check": "manifest.mode_equals:EXISTING_RESUME"},
+        {"id": "5.1a", "text": "现有简历仍记录底层项目来源", "check": "manifest.project_origin_equals:INTERNSHIP"},
         {"id": "5.2", "text": "识别角色和数字高风险", "check": "risk_flags_include:role_claim,numeric_claim"},
         {"id": "5.3", "text": "不保留无依据的百万 QPS 结论为低风险", "check": "unsupported_number_not_low_risk"},
         {"id": "5.4", "text": "允许保留草稿但强制拷打和补强", "check": "override_keeps_risk_and_training"},
@@ -101,6 +106,7 @@
     {"id": "G.10", "text": "代码修改需要独立授权", "check": "code_mutation_gate_enforced"},
     {"id": "G.11", "text": "Manifest 执行结构与语义校验", "check": "manifest_semantic_validator_exists"},
     {"id": "G.12", "text": "中文成品执行语言一致性契约并保留必要技术名词", "check": "chinese_output_contract"},
-    {"id": "G.13", "text": "代码价值优先于 Git 规模，候选池会用更强内容替换弱要点", "check": "code_first_value_selection_contract"}
+    {"id": "G.13", "text": "代码价值优先于 Git 规模，候选池会用更强内容替换弱要点", "check": "code_first_value_selection_contract"},
+    {"id": "G.14", "text": "生成或改写简历前必须确认项目来源", "check": "resume_requires_project_origin"}
   ]
 }

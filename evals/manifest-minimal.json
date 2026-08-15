@@ -1,6 +1,7 @@
 {
   "schema_version": "1.1",
   "mode": "PROJECT_MIGRATION",
+  "project_origin": "OPEN_SOURCE",
   "auto_confirmed": true,
   "current_artifacts": {},
   "code_mutation": {"authorized": false, "scope": []},
