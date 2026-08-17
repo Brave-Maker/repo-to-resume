@@ -16,3 +16,5 @@ timestamp	commit	skill	old_score	new_score	status	dimension	note	eval_mode
 2026-08-15T23:54:07+08:00	paired	repo-to-resume	允许来源未知时直接改写	3-0 clear better	keep	workflow/effectiveness	三位独立评审一致确认显式来源 STOP 与分支职责边界直接修复旧冲突	paired
 2026-08-15T23:54:07+08:00	forward-test	repo-to-resume	2/4 pass	4/4 pass	keep	effectiveness	未知来源 2 例只问来源并停止；开源全流程与实习核心闭环实际输出均符合契约	full_test
 2026-08-17T23:49:00+08:00	baseline-star-bullets	repo-to-resume	-	82.3	baseline	effectiveness	旧回归 62/62、合同 18/18；新增 STAR 严格场景 0/3，缺少逐条四要素与量化占位符门禁	dry_run
+2026-08-18T00:10:11+08:00	d113a66	repo-to-resume	0/3 strict	3/3 pass	keep	effectiveness	真实前向测试覆盖可信数字、量化占位符、拒绝伪稳妥版；自动回归 63/63、合同 18/18	full_test
+2026-08-18T00:10:11+08:00	paired	repo-to-resume	逐条 STAR 与占位符门禁缺失	3-0 clear better	keep	effectiveness	三位独立评审一致确认完整 STAR、占位符状态门禁和组件推断黑名单明确提升质量	paired
