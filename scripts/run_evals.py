@@ -295,6 +295,27 @@ def _check_assertion(
         missing = [item for item in required if item not in combined]
         prompt_ok = all(item in prompts for item in ('"id": 14', '"id": 15', '"id": 16'))
         return not missing and prompt_ok, f"missing={missing}, source_prompts={prompt_ok}"
+    if op == "star_bullet_contract":
+        skill = (ROOT / "SKILL.md").read_text(encoding="utf-8")
+        framework = (ROOT / "references" / "star-framework.md").read_text(encoding="utf-8")
+        resume = (ROOT / "references" / "star-resume-generator.md").read_text(encoding="utf-8")
+        gate = (ROOT / "references" / "quality-gate.md").read_text(encoding="utf-8")
+        prompts = (ROOT / "test-prompts.json").read_text(encoding="utf-8")
+        combined = "\n".join((skill, framework, resume, gate))
+        required = [
+            "情境 -> 任务 -> 行动 -> 结果",
+            "四项均不可缺失",
+            "[待补：{指标}从 __ 变为 __，变化 __%，口径/环境 __]",
+            "待补数据，不可直接投递",
+            "最终状态不得高于 `REVIEW_REQUIRED`",
+            "不得只写“技术动作 + 效果”",
+            "连定性结果也未确认时，不生成所谓“可直接投递版”",
+            "不得补造“上线后稳定”",
+            "仅知道“使用 Redis”时，不得推断缓存键、过期、回源、命中行为或数据库压力变化",
+        ]
+        missing = [item for item in required if item not in combined]
+        prompt_ok = all(item in prompts for item in ('"id": 17', '"id": 18', '"id": 19'))
+        return not missing and prompt_ok, f"missing={missing}, star_prompts={prompt_ok}"
     raise EvalFailure(f"unsupported assertion operator: {op}")
 
 

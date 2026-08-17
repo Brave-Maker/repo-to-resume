@@ -42,9 +42,11 @@ python scripts/validate_manifest.py <分析目录>/evidence-manifest.json --anal
 
 简历、话术、拷打和模拟面试中的个人角色必须一致。团队成果不得在另一份产物中变成个人主导，除非 manifest 已更新并有依据。
 
-### Gate 4：数字口径
+### Gate 4：STAR 完整性与数字口径
 
-每个数字必须能映射到 evidence。检查环境、样本、前后值、统计口径和是否为估算。无来源且被作为关键结果时为 `RED`。
+逐条确认简历要点均按顺序包含情境、个人任务、技术行动和结果；由多条共同拼出 STAR、只写技术动作与效果或缺少任一要素时为 `YELLOW`，回退简历生成阶段重写。
+
+每个真实数字必须能映射到 evidence。检查指标、基线、结果、环境、样本、统计口径和是否为估算。无来源且被作为已验证结果时为 `RED`。`[待补：...]`、`__` 或同类占位标记只能存在于待完善草稿；任何当前简历仍含未填写占位符时，最终状态不得高于 `REVIEW_REQUIRED`，也不得称为可直接投递。稳妥版中的定性结果同样必须来自用户材料或 evidence；补造上线稳定、压力下降、覆盖范围或反馈按事实冲突处理。从组件名称推导缓存键、TTL、失效、回源、命中行为等项目实现，再把推导内容用作 Result，同样按事实冲突处理。
 
 ### Gate 5：抗追问状态
 
@@ -67,7 +69,7 @@ python scripts/validate_manifest.py <分析目录>/evidence-manifest.json --anal
 ```text
 存在角色/事实冲突或核心 RED -> BLOCKED
 存在 ORANGE，或高风险内容未完成门禁 -> TRAINING_REQUIRED
-无 RED/ORANGE，但有 YELLOW 或数字待复核 -> REVIEW_REQUIRED
+无 RED/ORANGE，但有 YELLOW、数字待复核或未填写量化占位符 -> REVIEW_REQUIRED
 核心声明均 GREEN，跨产物一致，敏感检查通过 -> INTERVIEW_READY
 ```
 
@@ -91,7 +93,7 @@ python scripts/validate_manifest.py <分析目录>/evidence-manifest.json --anal
 | 来源完整性 | | | contribution-mapper |
 | 代码一致性 | | | code-analysis-engine |
 | 角色一致性 | | | contribution-mapper |
-| 数字口径 | | | star-resume-generator |
+| STAR 完整性与数字口径 | | | star-resume-generator |
 | 抗追问 | | | claim-grill |
 | 学习闭环 | | | learning-path-generator |
 | 跨产物一致性 | | | interview-script-generator |
@@ -138,3 +140,5 @@ python scripts/validate_manifest.py <分析目录>/evidence-manifest.json --anal
 - 不要静默修正用户角色。
 - 不要把缺失文件当作通过。
 - 不要为了给出“通过”结论而删除高风险项。
+- 不要放行缺少任一 STAR 要素的简历要点。
+- 不要把待补占位符当作 evidence，或让含未填写占位符的简历进入 `INTERVIEW_READY`。
