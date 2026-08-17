@@ -19,3 +19,5 @@ timestamp	commit	skill	old_score	new_score	status	dimension	note	eval_mode
 2026-08-18T00:10:11+08:00	d113a66	repo-to-resume	0/3 strict	3/3 pass	keep	effectiveness	真实前向测试覆盖可信数字、量化占位符、拒绝伪稳妥版；自动回归 63/63、合同 18/18	full_test
 2026-08-18T00:10:11+08:00	paired	repo-to-resume	逐条 STAR 与占位符门禁缺失	3-0 clear better	keep	effectiveness	三位独立评审一致确认完整 STAR、占位符状态门禁和组件推断黑名单明确提升质量	paired
 2026-08-18T00:28:26+08:00	baseline-learning-mermaid	repo-to-resume	-	77.5	baseline	effectiveness	旧回归 63/63、合同 18/18；新学习契约 0/5，缺 Mermaid、开始学习 HTML 路由、浅色锁定与环节输入输出/失败边界	dry_run
+2026-08-18T00:54:39+08:00	9376e83	repo-to-resume	0/5 new contracts	5/5 pass	keep	effectiveness	真实前向验证：学习路径含 flowchart+sequenceDiagram+环节契约；开始学习生成浅色 HTML 并 10/10 结构+浅色渲染通过；不要网页仅出 Markdown；自动回归 64/64、合同 18/18	full_test
+2026-08-18T00:54:39+08:00	paired	repo-to-resume	学习模块缺 Mermaid 与浅色 HTML	3-0 clear better	keep	effectiveness	三位独立评审一致确认证据化 Mermaid 双图、环节契约、开始学习浅色 HTML 与失败回退为明确提升	paired
