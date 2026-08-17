@@ -131,5 +131,26 @@
     "scope": "RESUME_ONLY",
     "prompt": "这是实习项目。原简历写的是：使用 Redis 优化订单查询，性能提升 80%。我无法提供 80% 的测试环境、基线或监控口径。请按 STAR 改写；量化结果可以用占位符代替，并给出可直接投递的稳妥版本。",
     "expected": "STAR 草稿不得沿用未经证实的 80%，应改为带指标、基线、结果和口径的待补占位符并标记不可投递；当前材料连定性结果也未确认，因此不得补造上线稳定、压力下降或覆盖范围来冒充可投递版，只能说明暂无法生成稳妥版并追问一个结果事实。"
+  },
+  {
+    "id": 20,
+    "mode": "UNDERSTAND_ONLY",
+    "scope": "LEARNING_ONLY",
+    "prompt": "只帮我看懂这个后端项目并生成学习路径，不要简历。架构、核心请求链路和相关环节都要讲清楚。",
+    "expected": "只执行学习范围；Markdown 学习路径至少包含一个 Mermaid flowchart 架构图和一个 Mermaid sequenceDiagram 核心链路图；核心环节逐项讲清职责、输入输出、上下游、关键文件、核心逻辑、设计决策、失败边界和达标标准；不得生成简历、话术或模拟面试材料。"
+  },
+  {
+    "id": 21,
+    "mode": "UNDERSTAND_ONLY",
+    "scope": "LEARNING_ONLY",
+    "prompt": "项目分析和学习路径已经生成，现在开始学习。",
+    "expected": "把“开始学习”识别为 LEARNING_ONLY 内的 HTML 交付触发词，从 current_artifacts.learning_path 生成版本化 learning-interactive.html 并更新 current_artifacts.learning_interactive；页面固定浅色主题，包含 Mermaid 架构图、核心链路、模块导航、环节讲解和测验；不得进入简历或面试阶段。"
+  },
+  {
+    "id": 22,
+    "mode": "UNDERSTAND_ONLY",
+    "scope": "LEARNING_ONLY",
+    "prompt": "只给我学习路径，不要网页，但架构和调用链要讲清楚。",
+    "expected": "只生成 Markdown 学习路径，不生成 HTML；学习路径仍包含 Mermaid 架构图和核心链路图，并遵守显式“不要网页”的范围边界。"
   }
 ]

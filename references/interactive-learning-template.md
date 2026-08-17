@@ -1,21 +1,23 @@
 # 交互式学习页面模板
 
-基于 Step 2 产出的学习路径内容，生成单文件自包含交互式 HTML。用户在浏览器中打开即可按模块学习，核心模块附带随堂测验。
+基于当前学习路径生成单文件浅色交互式 HTML。用户在浏览器中打开即可按“系统全景 -> 核心链路 -> 相关环节详解 -> 随堂测验”学习。除固定版本的 Mermaid ESM 渲染器外，不加载其他外部资源；Mermaid 加载失败时保留源码和文字链路。
 
 写入 `learning-interactive.html` 或下一个 `learning-interactive-vN.html` 后，更新 `current_artifacts.learning_interactive`。
 
 ## 核心约束（强制）
 
-**设计稳定性——以下内容严禁修改：**
+**设计稳定性，以下内容严禁修改：**
+- 页面固定浅色：保留 `<meta name="color-scheme" content="light">`、`color-scheme: light` 和全部浅色变量；不得添加暗色媒体查询、主题切换或局部反色区
 - 所有 CSS 自定义属性（`--color-*`、`--font-*`、`--space-*`、`--radius-*`、`--shadow-*`）的值**必须原样使用，不得修改任何颜色、字号、间距**
 - 字体栈**必须原样使用**，不得替换
-- JS 脚本**必须原样使用**，不得增删功能
-- 可替换的只有：HTML 注释中标注 `{占位符}` 的内容、模块数量、测验题目和选项
+- 导航、测验和术语提示 JS **必须原样使用**；Mermaid 初始化脚本只允许替换图源码，不改加载与失败回退逻辑
+- 可替换的只有：HTML 注释中标注 `{占位符}` 的内容、模块数量、Mermaid 源码、测验题目和选项
 
 **内容来源：**
 - 不从零生成内容——把 manifest 的 `current_artifacts.learning_path` 指向的内容转换为 HTML
-- 系统全景图 → 角色卡片 + 步骤动画
-- 模块详解 → 代码对照块 + 设计决策卡片 + 文件树
+- Mermaid 架构图与核心链路图 → `module-0` 的两个 `.mermaid-panel`
+- 系统全景图 → Mermaid 图 + 角色卡片 + 文字步骤
+- 模块详解 → 环节契约 + 代码对照块 + 设计决策卡片 + 文件树
 - 测验题：核心模块各 1 道，从模块的「面试可能追问」中衍生，考察应用而非记忆
 
 ---
@@ -30,6 +32,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light">
   <title>{项目名称} - 交互式学习</title>
   <style>
     /* ===== CSS 变量（严禁修改） ===== */
@@ -116,6 +119,7 @@
     /* ===== 全局重置 ===== */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html {
+      color-scheme: light;
       scroll-snap-type: y proximity;
       scroll-behavior: smooth;
     }
@@ -125,7 +129,6 @@
       line-height: 1.6;
       color: var(--color-text);
       background: var(--color-bg);
-      background-image: radial-gradient(ellipse at 20% 50%, rgba(217, 79, 48, 0.03) 0%, transparent 50%);
     }
 
     /* ===== 导航栏 ===== */
@@ -220,6 +223,43 @@
       color: var(--color-text);
       margin-bottom: var(--space-4);
     }
+
+    /* ===== Mermaid 图表 ===== */
+    .mermaid-panel {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      padding: var(--space-6);
+      overflow-x: auto;
+      box-shadow: var(--shadow-sm);
+    }
+    .mermaid-panel .mermaid {
+      min-width: 640px;
+      color: var(--color-text);
+      font-family: var(--font-mono);
+      font-size: var(--text-sm);
+      white-space: pre;
+    }
+    .mermaid-panel svg { display: block; max-width: 100%; height: auto; margin: 0 auto; }
+    .mermaid-status {
+      margin-top: var(--space-3);
+      color: var(--color-error);
+      font-size: var(--text-sm);
+    }
+
+    /* ===== 环节契约 ===== */
+    .contract-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--space-3);
+    }
+    .contract-item {
+      background: var(--color-surface);
+      border-left: 3px solid var(--color-info);
+      padding: var(--space-4);
+    }
+    .contract-item strong { display: block; margin-bottom: var(--space-1); color: var(--color-text); }
+    .contract-item span { color: var(--color-text-secondary); font-size: var(--text-sm); }
 
     /* ===== 角色卡片网格 ===== */
     .role-cards {
@@ -477,6 +517,8 @@
     @media (max-width: 768px) {
       :root { --text-4xl: 1.875rem; --text-6xl: 3rem; }
       .role-cards { grid-template-columns: 1fr 1fr; }
+      .contract-grid { grid-template-columns: 1fr; }
+      .mermaid-panel { padding: var(--space-4); }
       .module { padding: calc(var(--nav-height) + var(--space-8)) var(--space-4) var(--space-10); }
     }
     @media (max-width: 480px) {
@@ -532,6 +574,26 @@
       <p class="module-subtitle">{一句话定位，从当前学习路径第一层复制}</p>
 
       <div class="module-body">
+
+        <!-- Mermaid 架构图 -->
+        <div>
+          <h2 class="section-heading">系统架构</h2>
+          <div class="mermaid-panel">
+            <pre class="mermaid">{从当前学习路径复制完整 flowchart 源码，不含代码围栏}</pre>
+            <p class="mermaid-status" hidden></p>
+          </div>
+          <p style="color: var(--color-text-secondary); margin-top: var(--space-4);">{复制架构图后的证据化讲解}</p>
+        </div>
+
+        <!-- Mermaid 核心链路图 -->
+        <div>
+          <h2 class="section-heading">核心请求链路</h2>
+          <div class="mermaid-panel">
+            <pre class="mermaid">{从当前学习路径复制完整 sequenceDiagram 源码，不含代码围栏}</pre>
+            <p class="mermaid-status" hidden></p>
+          </div>
+          <p style="color: var(--color-text-secondary); margin-top: var(--space-4);">{复制核心链路的编号文字讲解，确保图表失败时仍可理解}</p>
+        </div>
 
         <!-- 角色卡片 -->
         <div>
@@ -617,6 +679,16 @@
         </div>
 
         <div>
+          <h2 class="section-heading">环节契约</h2>
+          <div class="contract-grid">
+            <div class="contract-item"><strong>输入</strong><span>{从当前学习路径复制}</span></div>
+            <div class="contract-item"><strong>输出</strong><span>{从当前学习路径复制}</span></div>
+            <div class="contract-item"><strong>上游 / 下游</strong><span>{从当前学习路径复制}</span></div>
+            <div class="contract-item"><strong>失败边界</strong><span>{从当前学习路径复制}</span></div>
+          </div>
+        </div>
+
+        <div>
           <h2 class="section-heading">📁 关键文件</h2>
           <div class="file-tree">
             {每条文件一行，ft-name 为路径，ft-desc 为说明}
@@ -687,6 +759,15 @@
           <p style="color: var(--color-text-secondary);">{从当前学习路径复制}</p>
         </div>
         <div>
+          <h2 class="section-heading">环节契约</h2>
+          <div class="contract-grid">
+            <div class="contract-item"><strong>输入</strong><span>{输入或待确认}</span></div>
+            <div class="contract-item"><strong>输出</strong><span>{输出或待确认}</span></div>
+            <div class="contract-item"><strong>上游 / 下游</strong><span>{模块关系}</span></div>
+            <div class="contract-item"><strong>失败边界</strong><span>{真实失败点或待确认}</span></div>
+          </div>
+        </div>
+        <div>
           <h2 class="section-heading">📁 关键文件</h2>
           <div class="file-tree">
             {每条文件一行}
@@ -702,7 +783,38 @@
   </section>
   -->
 
-  <!-- ===== JS 脚本（严禁修改） ===== -->
+  <!-- ===== Mermaid 初始化与失败回退（固定逻辑） ===== -->
+  <script type="module">
+    const diagrams = Array.from(document.querySelectorAll('.mermaid-panel .mermaid'));
+    try {
+      const { default: mermaid } = await import('https://cdn.jsdelivr.net/npm/mermaid@11.12.2/dist/mermaid.esm.min.mjs');
+      mermaid.initialize({
+        startOnLoad: false,
+        theme: 'base',
+        securityLevel: 'strict',
+        themeVariables: {
+          background: '#FAF7F2',
+          primaryColor: '#FDEEE9',
+          primaryTextColor: '#2C2A28',
+          primaryBorderColor: '#D94F30',
+          lineColor: '#6B6560',
+          secondaryColor: '#E6F2F6',
+          tertiaryColor: '#F5F0E8',
+          fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+        }
+      });
+      await mermaid.run({ nodes: diagrams });
+    } catch (error) {
+      diagrams.forEach((diagram) => {
+        const status = diagram.parentElement.querySelector('.mermaid-status');
+        status.hidden = false;
+        status.textContent = '图表暂未渲染，下面保留 Mermaid 源码；请结合本节文字链路继续学习。';
+      });
+      console.warn('Mermaid render fallback:', error);
+    }
+  </script>
+
+  <!-- ===== 导航、测验与术语提示脚本（严禁修改） ===== -->
   <script>
     (function() {
       // ===== 进度条 =====
@@ -858,10 +970,14 @@
 | 当前学习路径内容 | HTML 元素 | 位置 |
 |----------------------|-----------|------|
 | 一句话定位 | `.module-subtitle` | module-0 |
+| Mermaid 架构图 | 第一个 `.mermaid-panel > .mermaid` | module-0 |
+| Mermaid 核心链路图 | 第二个 `.mermaid-panel > .mermaid` | module-0 |
+| 架构与链路文字讲解 | Mermaid 面板后的 `<p>` | module-0 |
 | 角色表 | `.role-cards` > `.role-card` | module-0 |
 | 一条请求走到底 | `.flow-steps` > `.flow-step` + `.flow-arrow` | module-0 |
 | 学习策略 | 最后一段 `<p>` | module-0 |
 | 模块的「为什么需要」 | `<p>` 段落 | 各模块 |
+| 模块的环节契约 | `.contract-grid > .contract-item` | 各模块 |
 | 模块的关键文件 | `.file-tree` > `.ft-item` | 各模块 |
 | 模块的核心逻辑（代码片段） | `.translation-block` | 核心模块 |
 | 模块的设计决策（四段式） | `.decision-card` | 核心模块 |
@@ -905,14 +1021,21 @@
 
 生成 HTML 后，逐项自检：
 
+- [ ] 是否保留 `<meta name="color-scheme" content="light">` 和 `color-scheme: light`，且没有暗色主题或主题切换？
 - [ ] CSS 变量是否完全未修改？
 - [ ] 字体栈是否完全未修改？
 - [ ] JS 脚本是否完全未修改？
 - [ ] 暖色背景 (`#FAF7F2` / `#F5F0E8`) 是否正确交替？
 - [ ] 强调色是否固定为 vermillion (`#D94F30`)？
 - [ ] 模块 0 是否为「系统全景图」？
+- [ ] 模块 0 是否包含一个 `flowchart` 和一个 `sequenceDiagram`，且与当前学习路径源码一致？
+- [ ] Mermaid 节点和连边是否均有当前分析或代码依据，不确定边是否为虚线并标“待确认”？
+- [ ] Mermaid 加载失败时是否保留源码、显示降级提示，并有完整文字链路可读？
+- [ ] 每个核心/重要模块是否展示输入、输出、上下游和失败边界？
 - [ ] 核心模块是否有测验？支撑模块是否**没有**测验？
 - [ ] 测验题是否为场景应用题（非记忆题）？
 - [ ] 代码对照块中的代码是否为项目源码原文（未修改）？
 - [ ] `{项目名称}` 等占位符是否全部替换为实际内容？
 - [ ] 导航圆点数量是否与实际模块数一致？
+- [ ] 桌面与移动端是否均无文字溢出，Mermaid 图非空且可横向浏览？
+- [ ] 可用浏览器自动化时，是否已截图确认固定浅色、图表渲染和交互可达？

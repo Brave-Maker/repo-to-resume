@@ -54,7 +54,9 @@ python scripts/validate_manifest.py <分析目录>/evidence-manifest.json --anal
 
 ### Gate 6：学习闭环
 
-所有 `RED/ORANGE/YELLOW` 薄弱点必须在学习路径或增强计划中有明确任务、参考位置和达标标准。
+所有 `RED/ORANGE/YELLOW` 薄弱点必须在学习路径或增强计划中有明确任务、参考位置和达标标准。学习路径还必须包含基于当前证据的 Mermaid 架构图与核心链路图；核心环节必须具备输入、输出、上下游、失败边界和达标标准。
+
+当用户说“开始学习”或明确请求交互学习时，`current_artifacts.learning_interactive` 必须指向真实存在的版本化 HTML。页面必须固定浅色主题，并包含架构图、核心链路、环节讲解和测验；Mermaid 渲染失败时必须保留源码与文字回退。缺任一项时学习门禁不通过，回退 Phase 6。
 
 ### Gate 7：跨产物一致性
 
@@ -129,6 +131,8 @@ python scripts/validate_manifest.py <分析目录>/evidence-manifest.json --anal
 | 触发条件 | 一线修复 | 仍失败则 |
 |---|---|---|
 | 某产物缺失 | 只检查已有产物并列出缺口 | 状态最高 `REVIEW_REQUIRED` |
+| 学习路径缺 Mermaid 或环节契约 | 回 Phase 6 补架构图、链路图与输入输出/失败边界 | 仍缺失则学习门禁失败 |
+| “开始学习”后 HTML 缺失或非浅色 | 从当前学习路径重建版本化浅色 HTML | 仍失败则不宣称交互学习已交付 |
 | manifest 损坏 | 备份后从现有产物重建索引 | 状态设为 `TRAINING_REQUIRED` |
 | 同一 Claim 多个版本冲突 | 以用户最后确认和代码证据重建 | 状态设为 `BLOCKED` |
 | 用户要求忽略风险 | 保留内容并记录 override | 不提升状态 |

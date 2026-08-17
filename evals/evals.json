@@ -108,6 +108,7 @@
     {"id": "G.12", "text": "中文成品执行语言一致性契约并保留必要技术名词", "check": "chinese_output_contract"},
     {"id": "G.13", "text": "代码价值优先于 Git 规模，候选池会用更强内容替换弱要点", "check": "code_first_value_selection_contract"},
     {"id": "G.14", "text": "生成或改写简历前必须确认项目来源", "check": "resume_requires_project_origin"},
-    {"id": "G.15", "text": "每条简历要点均为完整 STAR，缺少量化证据时使用受门禁约束的占位符", "check": "star_bullet_contract"}
+    {"id": "G.15", "text": "每条简历要点均为完整 STAR，缺少量化证据时使用受门禁约束的占位符", "check": "star_bullet_contract"},
+    {"id": "G.16", "text": "学习路径包含证据化 Mermaid 与环节详解，开始学习时生成可降级的浅色 HTML", "check": "learning_mermaid_html_contract"}
   ]
 }

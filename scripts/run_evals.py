@@ -316,6 +316,27 @@ def _check_assertion(
         missing = [item for item in required if item not in combined]
         prompt_ok = all(item in prompts for item in ('"id": 17', '"id": 18', '"id": 19'))
         return not missing and prompt_ok, f"missing={missing}, star_prompts={prompt_ok}"
+    if op == "learning_mermaid_html_contract":
+        skill = (ROOT / "SKILL.md").read_text(encoding="utf-8")
+        learning = (ROOT / "references" / "learning-path-generator.md").read_text(encoding="utf-8")
+        interactive = (ROOT / "references" / "interactive-learning-template.md").read_text(encoding="utf-8")
+        gate = (ROOT / "references" / "quality-gate.md").read_text(encoding="utf-8")
+        prompts = (ROOT / "test-prompts.json").read_text(encoding="utf-8")
+        combined = "\n".join((skill, learning, interactive, gate))
+        required = [
+            "用户说“开始学习/进入学习/生成学习网页/交互学习/HTML”时为 `LIGHT_HTML`",
+            "```mermaid\nflowchart",
+            "```mermaid\nsequenceDiagram",
+            "输入、输出、上下游、失败边界和达标标准",
+            "<meta name=\"color-scheme\" content=\"light\">",
+            "color-scheme: light",
+            "current_artifacts.learning_interactive",
+            "图表暂未渲染，下面保留 Mermaid 源码",
+            "显式拒绝 HTML 的表达优先级最高",
+        ]
+        missing = [item for item in required if item not in combined]
+        prompt_ok = all(item in prompts for item in ('"id": 20', '"id": 21', '"id": 22'))
+        return not missing and prompt_ok, f"missing={missing}, learning_prompts={prompt_ok}"
     raise EvalFailure(f"unsupported assertion operator: {op}")
 
 

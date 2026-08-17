@@ -85,6 +85,19 @@
 
 ## 学习与话术
 
+学习单步骤使用：
+
+```markdown
+> 学习材料完成 · `{current_artifacts.learning_path}`{如生成 HTML： / `current_artifacts.learning_interactive`}
+
+- Mermaid：架构图 {N} 张 / 核心链路图 {N} 张
+- 核心环节：{N} 个，均含输入、输出、上下游和失败边界
+- 交互页面：{固定浅色 / 未请求}
+- 待确认关系：{N} 条
+```
+
+学习与话术组合范围使用：
+
 ```markdown
 > 面试准备完成 · `{current_artifacts.learning_path}` / `{current_artifacts.interview_scripts}`
 
@@ -98,9 +111,11 @@
 ```markdown
 > 代码理解材料完成 · `{current_artifacts.learning_path}`
 
-- 核心链路：{N} 条
+- Mermaid：架构图 {N} 张 / 核心链路图 {N} 张
+- 核心环节：{N} 个
 - 必读模块：{列表}
 - 待确认关系：{N} 项
+- 交互页面：{固定浅色 / 未请求}
 ```
 
 不得在该模式宣称生成 `interview-scripts.md`、分层话术或模拟面试报告。

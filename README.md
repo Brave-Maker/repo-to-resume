@@ -44,7 +44,7 @@
 | 只补工程闭环或复现计划 | `ENHANCE_ONLY` | 只执行经历增强 |
 | 只写简历或修改一条表述 | `RESUME_ONLY` | 只执行简历处理 |
 | 只检查某条简历能否经住追问 | `GRILL_ONLY` | 只执行逐条拷打 |
-| 只生成风险驱动的学习路线 | `LEARNING_ONLY` | 只执行学习规划 |
+| 只生成风险驱动的学习路线，或开始学习 | `LEARNING_ONLY` | 生成带 Mermaid 的学习路径；“开始学习”时生成浅色交互 HTML |
 | 只准备项目面试话术 | `SCRIPT_ONLY` | 只生成分层话术 |
 | 只进行一轮模拟面试 | `MOCK_INTERVIEW_ONLY` | 只执行模拟面试 |
 | 只检查现有材料的质量 | `QUALITY_CHECK_ONLY` | 只检查已提供产物 |
@@ -94,7 +94,7 @@ Phase 4  生成 STAR 经历与简历要点
    ↓
 Phase 5  对核心声明执行六层压力追问
    ↓
-Phase 6  生成风险驱动的学习路径与交互学习页
+Phase 6  生成带 Mermaid 架构/链路图的学习路径；“开始学习”时生成浅色交互学习页
    ↓
 Phase 7A 生成分层话术
    ↓
@@ -155,8 +155,8 @@ Phase 8  执行最终质量门禁
 |- enhancement-plan.md          # 复现、增强或方案设计任务
 |- resume.md                    # STAR 经历与简历要点
 |- claim-grill-report.md        # 六层追问和漏洞分级
-|- learning-path.md             # 风险驱动的学习路径
-|- learning-interactive.html    # 单文件交互学习页面
+|- learning-path.md             # 含 Mermaid 架构图、核心链路和环节详解的学习路径
+|- learning-interactive.html    # 固定浅色的交互学习页面
 |- interview-scripts.md         # 分层面试话术
 |- interview-report.md          # 基于实际回答的面试反馈
 `- quality-gate-report.md       # 最终质量状态和剩余风险
@@ -198,6 +198,8 @@ $repo-to-resume 分析 C:\work\my-project，目标岗位是 Java 后端，完整
 这是我实习项目的现有简历，帮我逐条找漏洞，补齐证据和面试回答。
 
 我只想快速看懂这个项目的核心业务链路，不需要生成简历或学习路径。
+
+项目分析和学习路径已经生成，现在开始学习。
 ```
 
 需要限制范围时直接说明任务、目录、模块或目标链路，例如“只分析 `src/order/`”“只改这一条”或“只模拟面试”。系统会把“只、不要、不需要”视为硬边界，并在完成指定步骤后停止。
