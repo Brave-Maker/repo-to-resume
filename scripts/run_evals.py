@@ -200,6 +200,11 @@ def _check_assertion(
         return required <= found, f"missing={sorted(required - found)}"
     if op == "learning_path_generated_without_resume":
         return bool(_artifact_text(target, manifest, "learning_path")) and "resume" not in artifacts, "artifact routing"
+    if op == "skill_text_contains":
+        skill_text = (ROOT / "SKILL.md").read_text(encoding="utf-8")
+        required = [item for item in argument.split("|") if item]
+        missing = [item for item in required if item not in skill_text]
+        return not missing, f"missing={missing}"
     if op == "all_skill_references_exist":
         skill_text = (ROOT / "SKILL.md").read_text(encoding="utf-8")
         references = re.findall(r"references/[a-z0-9.-]+", skill_text)

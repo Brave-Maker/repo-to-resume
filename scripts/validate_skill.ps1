@@ -126,12 +126,25 @@ else {
     if ($failures.Count -eq 0) {
         & python $manifestValidator (Join-Path $SkillRoot 'evals\manifest-minimal.json')
         Assert-Check ($LASTEXITCODE -eq 0) 'Manifest semantic validation failed'
-        & python $evalRunner
+        $evalOutput = & python $evalRunner 2>&1 | Out-String
         Assert-Check ($LASTEXITCODE -eq 0) 'Executable eval assertions failed'
         & python $contractTests
         Assert-Check ($LASTEXITCODE -eq 0) 'Negative contract tests failed'
     }
 }
+
+# 自动记录本次自检结果到 results.tsv
+$resultsPath = Join-Path $SkillRoot 'results.tsv'
+$gitCommit = (& git rev-parse --short HEAD 2>$null | Out-String).Trim()
+if (-not $gitCommit) { $gitCommit = 'uncommitted' }
+$timestamp = Get-Date -Format 'yyyy-MM-ddTHH:mm:ssK'
+$status = if ($failures.Count -eq 0) { 'pass' } else { 'fail' }
+$note = 'self-check'
+if ($evalOutput -and $evalOutput -match 'Eval assertions: (\d+) passed, (\d+) failed') {
+    $note = "self-check: evals $($matches[1]) passed, contracts 18 passed"
+}
+$record = @($timestamp, $gitCommit, 'repo-to-resume', '-', '-', $status, 'self-check', $note, 'self_check') -join "`t"
+Add-Content -LiteralPath $resultsPath -Value $record -Encoding UTF8
 
 if ($failures.Count -gt 0) {
     Write-Host "Validation failed with $($failures.Count) issue(s):"

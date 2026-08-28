@@ -1,0 +1,30 @@
+{
+  "manifest": {
+    "schema_version": "1.1",
+    "mode": "UNDERSTAND_ONLY",
+    "auto_confirmed": true,
+    "current_artifacts": {
+      "project_analysis": "project-analysis.md",
+      "business_chains": "business-chains.md",
+      "learning_path": "learning-path.md",
+      "quality_gate_report": "quality-gate-report.md"
+    },
+    "code_mutation": {"authorized": false, "scope": []},
+    "project": {"name": "direct-resume-only", "scan_scope": "src", "excluded_paths": []},
+    "business_chains": [{"id": "CHAIN-001", "name": "订单查询", "domain_type": "BUSINESS", "code_locations": ["src/order.py"], "consumer": "查询接口", "value_score": 8}],
+    "contributions": [],
+    "enhancement_tasks": [],
+    "claims": [],
+    "evidence": [],
+    "grill_results": [],
+    "learning_gaps": [],
+    "risk_flags": [],
+    "quality_status": "REVIEW_REQUIRED"
+  },
+  "files": {
+    "project-analysis.md": "# 分析\n范围 src",
+    "business-chains.md": "# 链路\nCHAIN-001 订单查询",
+    "learning-path.md": "# 学习路径\n从 src/order.py 开始",
+    "quality-gate-report.md": "# 质量门禁\nREVIEW_REQUIRED"
+  }
+}

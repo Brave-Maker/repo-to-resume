@@ -91,6 +91,51 @@
         {"id": "6.5", "text": "不生成简历和拷打报告", "check": "files_not_exist:resume.md,claim-grill-report.md"},
         {"id": "6.6", "text": "学习路径不依赖简历", "check": "learning_path_generated_without_resume"}
       ]
+    },
+    {
+      "id": 7,
+      "name": "单步骤简历改写-DIRECT不建目录",
+      "prompt": "这是实习项目，只改这一条简历：负责订单查询缓存环节，使用 Redis 优化接口，性能提升 80%。",
+      "expected_mode": "RESUME_ONLY",
+      "assertions": [
+        {"id": "7.1", "text": "单步骤默认 DIRECT 执行", "check": "skill_text_contains:单个 `*_ONLY` 默认 `DIRECT`"},
+        {"id": "7.2", "text": "DIRECT 在对话中交付，不创建分析目录或 manifest", "check": "skill_text_contains:在对话中交付，不创建分析目录或 manifest"},
+        {"id": "7.3", "text": "来源确认后直接处理用户提供的事实", "check": "skill_text_contains:`DIRECT + RESUME_ONLY` 在来源确认后可直接处理用户提供的要点或事实"},
+        {"id": "7.4", "text": "单条改写不扩张为六层拷打", "check": "skill_text_contains:不要求 manifest、候选池或全仓扫描"}
+      ]
+    },
+    {
+      "id": 8,
+      "name": "模拟面试-单步骤不预生成产物",
+      "prompt": "基于这份简历只做一轮模拟面试，现在开始问我。",
+      "expected_mode": "MOCK_INTERVIEW_ONLY",
+      "assertions": [
+        {"id": "8.1", "text": "只读摘要和目标岗位，不先生成其他产物", "check": "skill_text_contains:不要求先生成贡献映射、拷打报告、学习路径或分层话术"},
+        {"id": "8.2", "text": "一次只问一个问题", "check": "skill_text_contains:一次只问一个问题并等待用户实际回答"},
+        {"id": "8.3", "text": "未回答时不伪造面试得分", "check": "skill_text_contains:用户未实际回答时，不伪造面试得分"}
+      ]
+    },
+    {
+      "id": 9,
+      "name": "组合范围-不自动扩张",
+      "prompt": "改两条简历并准备话术。",
+      "expected_mode": "RESUME_ONLY+SCRIPT_ONLY",
+      "assertions": [
+        {"id": "9.1", "text": "只组合对应范围", "check": "skill_text_contains:只组合对应范围"},
+        {"id": "9.2", "text": "不自动插入分析、增强、拷打、学习或模拟面试", "check": "skill_text_contains:不自动插入分析、增强、拷打、学习或模拟面试"},
+        {"id": "9.3", "text": "完成所选范围后立即停止", "check": "skill_text_contains:完成所选范围后立即停止"}
+      ]
+    },
+    {
+      "id": 10,
+      "name": "项目来源缺失-只问来源并停止",
+      "prompt": "帮我用这个项目写一份简历。",
+      "expected_mode": "RESUME_ONLY",
+      "assertions": [
+        {"id": "10.1", "text": "存在项目来源检查点", "check": "skill_text_contains:CHECKPOINT · PROJECT ORIGIN"},
+        {"id": "10.2", "text": "用户回答前不得输出示例或改写", "check": "skill_text_contains:用户回答前不得分析候选简历要点、提供示例或改写正文"},
+        {"id": "10.3", "text": "只问来源一个问题", "check": "skill_text_contains:只问一个问题：“这个项目属于哪一种：开源项目、你自己的个人项目，还是实习项目？”"}
+      ]
     }
   ],
   "global_assertions": [
