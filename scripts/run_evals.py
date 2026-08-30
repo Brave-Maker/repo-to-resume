@@ -321,6 +321,73 @@ def _check_assertion(
         missing = [item for item in required if item not in combined]
         prompt_ok = all(item in prompts for item in ('"id": 17', '"id": 18', '"id": 19'))
         return not missing and prompt_ok, f"missing={missing}, star_prompts={prompt_ok}"
+    if op == "resume_bullet_label_contract":
+        skill = (ROOT / "SKILL.md").read_text(encoding="utf-8")
+        framework = (ROOT / "references" / "star-framework.md").read_text(encoding="utf-8")
+        resume = (ROOT / "references" / "star-resume-generator.md").read_text(encoding="utf-8")
+        gate = (ROOT / "references" / "quality-gate.md").read_text(encoding="utf-8")
+        required_by_file = {
+            "SKILL.md": (
+                "简短主题标签：正文",
+                "标签不计入正文字数",
+                "只计算首个分隔冒号后的正文",
+            ),
+            "star-framework.md": (
+                "中文标签使用 2-6 个汉字",
+                "英文标签使用 1-4 个词",
+                "标签不承担 STAR 要素",
+                "长度限制只计算首个分隔冒号后的正文",
+            ),
+            "star-resume-generator.md": (
+                "中文使用 `{2-6 个汉字的主题标签}：{正文}`",
+                "英文使用 `{1-4 word label}: {body}`",
+                "每条正文建议不超过 100 个汉字",
+                "标签和未填写的占位符均不计入正文长度",
+                "主题标签缺失、为空、过长或与相邻要点重复",
+            ),
+            "quality-gate.md": (
+                "逐条先解析首个分隔冒号",
+                "标签不计入正文字数",
+                "缺少标签、标签为空/过长/重复",
+                "回退简历生成阶段重写",
+            ),
+        }
+        texts = {
+            "SKILL.md": skill,
+            "star-framework.md": framework,
+            "star-resume-generator.md": resume,
+            "quality-gate.md": gate,
+        }
+        missing = [
+            f"{name}:{phrase}"
+            for name, phrases in required_by_file.items()
+            for phrase in phrases
+            if phrase not in texts[name]
+        ]
+
+        prompt_items = _load_json(ROOT / "test-prompts.json")
+        prompts_by_id = {item.get("id"): item for item in prompt_items}
+        prompt_requirements = {
+            23: (
+                "2 条中文简历要点",
+                "简短标签：正文",
+                "标签不计入字数",
+                "待补数据，不可直接投递",
+            ),
+            24: ("带量化占位符", "占位符不得被标签打断", "标签不计入正文建议长度"),
+            25: ("two English resume bullets", "Short label: body", "label words do not count"),
+        }
+        prompt_missing = []
+        for prompt_id, phrases in prompt_requirements.items():
+            item = prompts_by_id.get(prompt_id)
+            combined = "" if item is None else f"{item.get('prompt', '')}\n{item.get('expected', '')}"
+            prompt_missing.extend(
+                f"prompt-{prompt_id}:{phrase}" for phrase in phrases if phrase not in combined
+            )
+        return (
+            not missing and not prompt_missing,
+            f"missing={missing}, prompt_missing={prompt_missing}",
+        )
     if op == "learning_mermaid_html_contract":
         skill = (ROOT / "SKILL.md").read_text(encoding="utf-8")
         learning = (ROOT / "references" / "learning-path-generator.md").read_text(encoding="utf-8")
