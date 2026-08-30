@@ -176,5 +176,13 @@
     "scope": "RESUME_ONLY",
     "prompt": "This is my personal payment project. I implemented idempotent callback handling with an order-and-event key and guarded transitions with a state machine, reducing duplicate updates from 3.2% to 0. Write two English resume bullets with no more than 35 words in each body.",
     "expected": "Every bullet uses “Short label: body”; each concise English label summarizes and distinguishes the bullet without using S/T/A/R labels, while each body preserves STAR order and uses only supplied facts. The 35-word limit applies to the body after the colon; label words do not count."
+  },
+  {
+    "id": 26,
+    "mode": "SELF_PROJECT",
+    "project_origin": "SELF_OWNED",
+    "scope": "RESUME_ONLY",
+    "prompt": "这是我的个人项目，源码就在当前仓库。请根据源码把它写成一段完整的中文项目经历，不要只给零散简历要点。",
+    "expected": "读取并依据源码输出一个完整项目经历块，固定包含简短清晰、能直接识别用途的项目名称，说明所解决问题的项目背景，准确且有代码证据的技术栈，以及以带主题标签 bullet 呈现的负责内容。项目名称优先使用仓库或产品已有名称并补充用途，禁止为了显得高级而杜撰品牌名；技术栈不得仅凭依赖文件机械罗列；负责内容覆盖用户真实完成的架构、核心实现、可靠性或验证闭环，不冒充团队成果、不编造指标。"
   }
 ]
