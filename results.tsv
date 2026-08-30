@@ -26,3 +26,8 @@ timestamp	commit	skill	old_score	new_score	status	dimension	note	eval_mode
 2026-08-30T20:24:34+08:00	paired	repo-to-resume	标签格式与独立计长契约缺失	3-0 clear better	keep	可执行具体性	三位独立盲评在交换 A/B 顺序后仍一致确认标签格式、正文计长边界与发布自检提升输出稳定性	paired
 2026-08-30T20:47:38+08:00	ad6016a	repo-to-resume	81/81 evals; 标签契约仅在顶层	82/82 evals + 3/3 forward	keep	资源整合度	同步 STAR 框架、简历生成器和质量门禁；首次前向发现占位符状态漏标后补强场景 23，重跑 3/3，旧合同 18/18	full_test
 2026-08-30T20:47:38+08:00	paired	repo-to-resume	引用未同步且无标签自动合同	3-0 clear better	keep	资源整合度	三位盲评一致确认逐文件 G.17 可防止规则只堆顶层；静态合同与真实前向测试分开记录	paired
+2026-08-30T21:19:23+08:00	baseline-complete-project	repo-to-resume	-	5/5 content; implicit contract	baseline	effectiveness	带技能与无技能单次输出均命中四段格式，但旧版依赖执行者主动推理，未显式定义完整项目经历路由、命名和技术栈证据合同	full_test
+2026-08-30T21:19:23+08:00	5e40b27	repo-to-resume	5/5 content; implicit contract	5/5 + explicit route	keep	effectiveness	场景26真实前向测试命中 RESUME_ONLY + PROJECT_BLOCK，严格输出项目名称、项目背景、技术栈和5条负责内容；82/82 evals、18/18 contracts 无回归	full_test
+2026-08-30T21:19:23+08:00	paired	repo-to-resume	完整经历依赖推理且“完整”可能误触发 FULL_PIPELINE	3-0 clear better	keep	effectiveness	三位独立评委交换A/B顺序后均选择改后版；显式四段证据合同提升跨执行稳定性且未扩张范围	paired
+2026-08-30T21:11:01+08:00	2330487	repo-to-resume	-	-	pass	self-check	self-check: evals 82 passed, contracts 18 passed	self_check
+2026-08-30T21:30:38+08:00	5e40b27	repo-to-resume	-	-	pass	self-check	self-check: evals 82 passed, contracts 18 passed	self_check
