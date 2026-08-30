@@ -152,5 +152,29 @@
     "scope": "LEARNING_ONLY",
     "prompt": "只给我学习路径，不要网页，但架构和调用链要讲清楚。",
     "expected": "只生成 Markdown 学习路径，不生成 HTML；学习路径仍包含 Mermaid 架构图和核心链路图，并遵守显式“不要网页”的范围边界。"
+  },
+  {
+    "id": 23,
+    "mode": "SELF_PROJECT",
+    "project_origin": "SELF_OWNED",
+    "scope": "RESUME_ONLY",
+    "prompt": "这是我的个人项目。我设计了缺陷自动修复流程，串联缺陷拉取、代码定位、方案审批、代码修改、编译验证、自测与代码评审提交。请写 2 条中文简历要点，每条正文不超过 100 个汉字。",
+    "expected": "每条要点均使用“简短标签：正文”格式；标签准确概括该条主题、简短且彼此有区分度，不使用 S/T/A/R 机械标签；冒号后的正文保持完整 STAR 顺序。100 个汉字的限制只计算正文，标签不计入字数。"
+  },
+  {
+    "id": 24,
+    "mode": "REAL_INTERNSHIP",
+    "project_origin": "INTERNSHIP",
+    "scope": "RESUME_ONLY",
+    "prompt": "这是实习项目。我负责订单查询缓存改造，使用 Redis 缓存热点商品并处理缓存失效，目前没有可信的性能数字。请写 1 条带量化占位符的中文简历要点。",
+    "expected": "要点使用“简短标签：正文”格式，标签总结缓存改造主题；正文包含情境、个人任务、技术行动和待补结果，占位符不得被标签打断，不得发明数字，并明确标记不可直接投递。标签不计入正文建议长度。"
+  },
+  {
+    "id": 25,
+    "mode": "SELF_PROJECT",
+    "project_origin": "SELF_OWNED",
+    "scope": "RESUME_ONLY",
+    "prompt": "This is my personal payment project. I implemented idempotent callback handling with an order-and-event key and guarded transitions with a state machine, reducing duplicate updates from 3.2% to 0. Write two English resume bullets with no more than 35 words in each body.",
+    "expected": "Every bullet uses “Short label: body”; each concise English label summarizes and distinguishes the bullet without using S/T/A/R labels, while each body preserves STAR order and uses only supplied facts. The 35-word limit applies to the body after the colon; label words do not count."
   }
 ]
