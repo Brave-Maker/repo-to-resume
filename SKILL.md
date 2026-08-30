@@ -51,7 +51,7 @@ description: 将本地路径、GitHub 仓库、开源/他人项目、真实或�
 
 不生成或改写简历要点时，不强制追问 `project_origin`。例如只分析代码、只生成学习路径、只拷打用户已提供的要点、只做模拟面试、只审查现有简历或只调整不改变事实的排版，可按该步骤的最小输入继续。文件修改授权不能替代项目来源：若授权修改但来源缺失，可先完成审查和纯格式修订；涉及职责、角色或项目内容改写时仍回到来源检查点。
 
-`ARTIFACT` 执行沿用 manifest 的 `mode` 字段存储 `source_mode`，顶层 `project_origin` 存储项目来源。存在 `current_artifacts.resume`、`resume_clean` 或任一 `claims[].resume_text` 时，`project_origin` 必须存在并通过 `scripts/validate_manifest.py` 校验。只有分析、不涉及经历来源时可用 `UNDERSTAND_ONLY`。`task_scope` 属于本次执行计划，记录在对话与产物摘要中，不写入当前 manifest schema。
+`ARTIFACT` 执行沿用 manifest 的 `mode` 字段存储 `source_mode`，顶层 `project_origin` 存储项目来源。存在 `current_artifacts.resume`、`resume_clean` 或任一 `claims[].resume_text` 时，`project_origin` 必须存在并通过 `scripts/validate_manifest.py` 校验。单文件 `FILE_REVISION` 不创建 manifest，也不写入 `current_artifacts`；它只保存用户已授权的现有简历修订版。只有分析、不涉及经历来源时可用 `UNDERSTAND_ONLY`。`task_scope` 属于本次执行计划，记录在对话与产物摘要中，不写入当前 manifest schema。
 
 ### 本次任务范围
 
@@ -72,7 +72,7 @@ description: 将本地路径、GitHub 仓库、开源/他人项目、真实或�
 
 用户同时要求多个产物时，只组合对应范围，不自动插入分析、增强、拷打、学习或模拟面试。没有“只”字不等于完整流程；“帮我写简历”“分析这个项目”“准备一轮模拟面试”分别默认最小对应范围。只有“全部做完、完整准备、端到端处理”等明确要求执行多个阶段的表达才选 `FULL_PIPELINE`；“完整项目经历”“写成完整经历”描述的是 Phase 4 的交付格式，仍为 `RESUME_ONLY`，不得仅因出现“完整”而扩张范围。
 
-现有简历文件是顺序例外：未授权写回时只选 `QUALITY_CHECK_ONLY`；明确授权修改时选择 `QUALITY_CHECK_ONLY + RESUME_ONLY`，先执行 Phase 8 的文件审查预检，再进入 Phase 4 生成版本化修订文件。这不是 `FULL_PIPELINE`，不得插入贡献映射、增强、拷打、学习或模拟面试。
+现有简历文件是顺序例外：未授权写回时只选 `QUALITY_CHECK_ONLY`；明确授权修改时选择 `QUALITY_CHECK_ONLY + RESUME_ONLY`，先执行 Phase 8 的文件审查预检，再进入 Phase 4 生成版本化修订文件。这两个范围共同组成一个 `FILE_REVISION` 工作流，不是 `FULL_PIPELINE`，不得插入贡献映射、增强、拷打、学习或模拟面试。
 
 ### 最小依赖与停止规则
 
@@ -119,7 +119,7 @@ description: 将本地路径、GitHub 仓库、开源/他人项目、真实或�
 3. 若范围含简历正文生成或事实改写，从用户原话提取 `project_origin`；未明确时先完成不改变事实的文件审查，再在内容改写前进入来源检查点并停止。没有简历文件、直接请求生成新要点时仍先触发来源检查点。
 4. 列出本次会执行的阶段、明确跳过的阶段和停止点；显式“只/不要/不需要”是硬边界。
 5. 确定输出语言：用户明确指定 > 用户当前使用的语言 > 默认中文；仅在范围含代码分析时确认扫描范围与跳过目录。
-6. 单个 `*_ONLY` 默认 `DIRECT`：在对话中交付，不创建分析目录或 manifest。用户明确要求落盘、说“开始学习”而触发 HTML，或多个阶段需共享事实状态时，切换为 `ARTIFACT`。
+6. 单个 `*_ONLY` 默认 `DIRECT`：在对话中交付，不创建分析目录或 manifest。现有简历且 `resume_file_action=EDIT_AUTHORIZED` 时使用 `FILE_REVISION`：只创建与原文件相邻的 `-vN` 修订版，不创建分析目录或 manifest，不写 `current_artifacts`。用户要求纳入完整材料、多个阶段需共享事实状态或说“开始学习”而触发 HTML 时才切换为 `ARTIFACT`；`ARTIFACT` 中的简历仍须已确认 `project_origin`。
 7. `ARTIFACT` 执行才在被分析项目根目录创建 `{项目名}-analysis/`，并按 `references/evidence-manifest.schema.json` 初始化 `evidence-manifest.json`。检测到 `schema_version=1.0` 先运行 `python scripts/migrate_manifest.py <manifest> --output <临时文件>`，校验迁移结果并让用户确认差异后原子替换；其他旧版本停止并报告不支持。`1.1` 版本先运行 `python scripts/validate_manifest.py <manifest>`，通过后增量更新。校验只缺 `project_origin` 时，先询问项目来源、写入用户回答并重新校验，不得猜测。
 
 🔴 CHECKPOINT · PROJECT ORIGIN · 🛑 STOP
@@ -130,11 +130,13 @@ description: 将本地路径、GitHub 仓库、开源/他人项目、真实或�
 
 展示 `source_mode`、`project_origin`（简历相关任务）、`task_scope`、执行阶段、停止点、预计产物和风险路径后暂停。用户已明确给出单步骤边界、项目来源且不涉及写代码或范围扩张时，可直接执行；`FULL_PIPELINE` 或组合多个范围时等待确认。用户已授权自动完成时写入自动确认记录并继续，但自动确认不能替代缺失的项目来源。
 
+`QUALITY_CHECK_ONLY + RESUME_ONLY` 仅因同一份现有简历的 `EDIT_AUTHORIZED` 形成时，按一个 `FILE_REVISION` 工作流处理；展示范围与版本化输出路径后直接继续，不重复索取范围确认。该例外不能替代内容事实改写所需的 `PROJECT ORIGIN`。
+
 ### 阶段门禁
 
 进入每个 Phase 前检查：该 Phase 是否在 `task_scope` 中，或是否属于已确认的 `FULL_PIPELINE` 路径。否则跳过，不加载该阶段资源、不生成该阶段产物，也不因发现风险而自动追加该阶段。风险只记录为可选下一步。单步骤完成后立即结束。
 
-下文所有“写入当前版本”“更新 `current_artifacts`”“更新 manifest”仅适用于 `ARTIFACT` 或 `FULL_PIPELINE`。`DIRECT` 执行把同等内容交付在对话中，不创建占位文件，也不为满足旧产物契约切换为多阶段流程。
+下文所有“写入当前版本”“更新 `current_artifacts`”“更新 manifest”仅适用于 `ARTIFACT` 或 `FULL_PIPELINE`。`DIRECT` 执行把同等内容交付在对话中，不创建占位文件，也不为满足旧产物契约切换为多阶段流程。`FILE_REVISION` 只写已授权简历的相邻版本，不创建或更新 manifest。
 
 ### Phase 1：项目与业务链路分析
 
