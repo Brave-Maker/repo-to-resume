@@ -22,3 +22,5 @@ timestamp	commit	skill	old_score	new_score	status	dimension	note	eval_mode
 2026-08-18T00:54:39+08:00	9376e83	repo-to-resume	0/5 new contracts	5/5 pass	keep	effectiveness	真实前向验证：学习路径含 flowchart+sequenceDiagram+环节契约；开始学习生成浅色 HTML 并 10/10 结构+浅色渲染通过；不要网页仅出 Markdown；自动回归 64/64、合同 18/18	full_test
 2026-08-18T00:54:39+08:00	paired	repo-to-resume	学习模块缺 Mermaid 与浅色 HTML	3-0 clear better	keep	effectiveness	三位独立评审一致确认证据化 Mermaid 双图、环节契约、开始学习浅色 HTML 与失败回退为明确提升	paired
 2026-08-28T22:29:31+08:00	4173653	repo-to-resume	-	-	pass	self-check	self-check: evals 81 passed, contracts 18 passed	self_check
+2026-08-30T20:24:34+08:00	ef99432	repo-to-resume	0/3 label scenarios	3/3 pass	keep	可执行具体性	真实前向验证覆盖中文多要点、量化占位符和英文限长；16/16 检查通过，标签不计入正文字数	full_test
+2026-08-30T20:24:34+08:00	paired	repo-to-resume	标签格式与独立计长契约缺失	3-0 clear better	keep	可执行具体性	三位独立盲评在交换 A/B 顺序后仍一致确认标签格式、正文计长边界与发布自检提升输出稳定性	paired
