@@ -18,5 +18,10 @@
     "id": "negative-audit-only",
     "prompt": "只检查这份 PDF 简历并给建议，不要改文件。",
     "expected": "自动发现时路由到 resume-auditor，而不是 resume-writer。"
+  },
+  {
+    "id": "minimal-key-methods",
+    "prompt": "这是我的个人支付项目。我负责解决第三方重复回调与消息一致性问题，实现了业务幂等键、数据库唯一约束、Redis 分布式锁、Lua 脚本、事务消息、Kafka 重试、死信队列、Prometheus 监控和 OpenTelemetry 链路追踪。验证中连续发送 100 次重复回调，只产生 1 次有效状态变更。请写一条中文 STAR 简历要点。",
+    "expected": "围绕问题、关键决策和结果组织因果链，只保留业务幂等键与事务消息等最小充分方法，通常不超过 2 个；省略同目标的唯一约束及 Redis、Lua、Kafka、死信队列、监控和追踪清单，不能只把顿号换成其他连接词。"
   }
 ]

@@ -388,6 +388,26 @@ def _check_assertion(
             not missing and not prompt_missing,
             f"missing={missing}, prompt_missing={prompt_missing}",
         )
+    if op == "resume_key_method_contract":
+        skill = (ROOT / "skills" / "resume-writer" / "SKILL.md").read_text(encoding="utf-8")
+        framework = (ROOT / "references" / "star-framework.md").read_text(encoding="utf-8")
+        resume = (ROOT / "references" / "star-resume-generator.md").read_text(encoding="utf-8")
+        gate = (ROOT / "references" / "quality-gate.md").read_text(encoding="utf-8")
+        prompts = _load_json(ROOT / "skills" / "resume-writer" / "test-prompts.json")
+        combined = "\n".join((skill, framework, resume, gate))
+        required = [
+            "最小充分方法集",
+            "通常为 1-2 个",
+            "删除测试",
+            "结合/通过/以及",
+            "回退简历生成阶段重写",
+        ]
+        missing = [item for item in required if item not in combined]
+        prompt = next((item for item in prompts if item.get("id") == "minimal-key-methods"), {})
+        prompt_text = f"{prompt.get('prompt', '')}\n{prompt.get('expected', '')}"
+        prompt_required = ("业务幂等键", "事务消息", "通常不超过 2 个", "不能只把顿号换成其他连接词")
+        prompt_missing = [item for item in prompt_required if item not in prompt_text]
+        return not missing and not prompt_missing, f"missing={missing}, prompt_missing={prompt_missing}"
     if op == "learning_mermaid_html_contract":
         skill = (ROOT / "SKILL.md").read_text(encoding="utf-8")
         learning = (ROOT / "references" / "learning-path-generator.md").read_text(encoding="utf-8")

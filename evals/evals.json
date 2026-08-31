@@ -155,6 +155,7 @@
     {"id": "G.14", "text": "生成或改写简历前必须确认项目来源", "check": "resume_requires_project_origin"},
     {"id": "G.15", "text": "每条简历要点均为完整 STAR，缺少量化证据时使用受门禁约束的占位符", "check": "star_bullet_contract"},
     {"id": "G.16", "text": "学习路径包含证据化 Mermaid 与环节详解，开始学习时生成可降级的浅色 HTML", "check": "learning_mermaid_html_contract"},
-    {"id": "G.17", "text": "每条简历要点使用简短主题标签，长度限制只计算正文", "check": "resume_bullet_label_contract"}
+    {"id": "G.17", "text": "每条简历要点使用简短主题标签，长度限制只计算正文", "check": "resume_bullet_label_contract"},
+    {"id": "G.18", "text": "简历行动只保留能解释决策或结果的最小充分方法集", "check": "resume_key_method_contract"}
   ]
 }
