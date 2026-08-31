@@ -61,3 +61,4 @@ timestamp	commit	skill	old_score	new_score	status	dimension	note	eval_mode
 2026-08-31T17:34:11+08:00	081b25b	resume-writer	改前无显式主次时保留 3 个方法	改后仅保留 2 个关键方法	keep	effectiveness	真实前向测试以最小充分方法集和删除测试保留业务幂等键、事务消息，省略 7 个同目标或支撑性名词；83/83 evals、18/18 contracts、10/10 plugin skills 通过	full_test
 2026-08-31T17:34:11+08:00	paired	resume-writer	方法、工具和能力易被连接词串成清单	3-0 clear better	keep	effectiveness	三位独立评审一致确认最小充分方法集贯穿生成、恢复、自检和质量门禁；不可拆因果链例外避免机械限项	paired
 2026-08-31T17:39:10+08:00	081b25b	repo-to-resume	-	-	pass	self-check	self-check: evals 83 passed, contracts 18 passed	self_check
+2026-08-31T19:00:12+08:00	ffdebd0	repo-to-resume	-	-	pass	self-check	self-check: evals 83 passed, contracts 18 passed	self_check
