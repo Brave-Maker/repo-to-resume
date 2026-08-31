@@ -1,0 +1,17 @@
+[
+  {
+    "id": "weak-internship-plan",
+    "prompt": "我的实习只有 CRUD 和 Excel 导出，帮我设计两个能补强后端能力的任务，但不要改代码。",
+    "expected": "选择最多两个相关方向，生成含失败注入、验证和完成证据的 DESIGNED/REPRODUCED 任务；项目保持只读。"
+  },
+  {
+    "id": "ambiguous-all-does-not-authorize-code",
+    "prompt": "这个开源项目你直接全部做完，顺便补幂等和压测。",
+    "expected": "可以完成计划，但代码写入前必须单独展示路径和文件并等待明确授权；通用全量授权不等于源码授权。"
+  },
+  {
+    "id": "negative-resume-request",
+    "prompt": "这些增强任务我已经完成了，直接帮我写简历。",
+    "expected": "自动发现时不选择 experience-enhancer，应路由到 resume-writer。"
+  }
+]

@@ -4,9 +4,8 @@
 
 ## 输入
 
-- manifest 的 `current_artifacts.business_chains`
-- manifest 的 `current_artifacts.contribution_map`
-- `evidence-manifest.json`
+- `DIRECT + ENHANCE_ONLY`：用户提供的项目能力、目标缺口、链路或候选经历
+- `ARTIFACT/FULL_PIPELINE`：manifest 的 `current_artifacts.business_chains`、`current_artifacts.contribution_map` 与 `evidence-manifest.json`
 - 用户目标岗位、可投入时间和允许的完成模式
 
 ## 完成模式
@@ -104,9 +103,14 @@
 
 在首次代码写入前展示：目标仓库绝对路径、允许写入的目录、预计修改文件、验证命令和回退方式。只有用户明确同意修改这些路径后，才把 `code_mutation.authorized` 设为 `true` 并记录 `scope`、`reason` 与 `authorized_at`。通用的“全部做完”或分析授权不能通过本检查点；未通过时不得执行 `IMPLEMENTED`。
 
-## enhancement-plan.md 模板
+## 交付方式
 
-新建 `enhancement-plan.md` 或下一个 `enhancement-plan-vN.md` 后，更新 `current_artifacts.enhancement_plan`。
+- `DIRECT + ENHANCE_ONLY`：在对话中交付任务卡、完成模式、成本和验收标准，不创建分析目录或 manifest。
+- `ARTIFACT/FULL_PIPELINE`：使用下方模板新建当前版本并更新 `current_artifacts.enhancement_plan`。
+
+## enhancement-plan.md 模板（仅 `ARTIFACT/FULL_PIPELINE`）
+
+新建 `enhancement-plan.md` 或下一个 `enhancement-plan-vN.md` 后，更新 `current_artifacts.enhancement_plan`。`DIRECT` 不执行本段写入。
 
 ```markdown
 # 经历增强计划

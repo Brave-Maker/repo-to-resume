@@ -84,6 +84,17 @@
 
 ## 经历增强
 
+`DIRECT + ENHANCE_ONLY` 使用：
+
+```markdown
+> 增强计划完成 · 未修改项目源码 · {N} 个任务
+
+1. **{任务}**：{模式}，验收为 {达标标准}
+2. **{任务}**：{模式}，验收为 {达标标准}
+```
+
+`ARTIFACT/FULL_PIPELINE` 使用：
+
 ```markdown
 > 增强计划完成 · `{current_artifacts.enhancement_plan}` · {N} 个任务
 
