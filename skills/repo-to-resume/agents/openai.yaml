@@ -1,4 +1,0 @@
-interface:
-  display_name: "Repo to Resume"
-  short_description: "编排完整的项目求职准备流程"
-  default_prompt: "Use $repo-to-resume to prepare complete, evidence-grounded resume and interview materials from this project."

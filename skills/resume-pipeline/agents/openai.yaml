@@ -1,0 +1,4 @@
+interface:
+  display_name: "Resume Pipeline"
+  short_description: "编排完整的项目求职准备流程"
+  default_prompt: "Use $resume-pipeline to prepare complete, evidence-grounded resume and interview materials from this project."
