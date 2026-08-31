@@ -1,4 +1,0 @@
-interface:
-  display_name: "Experience Enhancer"
-  short_description: "把项目与经历缺口转成可执行、可验证的增强任务"
-  default_prompt: "Use $experience-enhancer to turn this weak project experience into a small set of verifiable engineering tasks."

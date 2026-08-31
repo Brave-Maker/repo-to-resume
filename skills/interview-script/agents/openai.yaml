@@ -1,4 +1,0 @@
-interface:
-  display_name: "Interview Script"
-  short_description: "把项目事实整理成不同长度的一致面试话术与追问备忘"
-  default_prompt: "Use $interview-script to prepare 15-second, 30-second, and 2-minute answers for these project claims."

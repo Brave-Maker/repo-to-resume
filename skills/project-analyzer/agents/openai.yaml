@@ -1,4 +1,0 @@
-interface:
-  display_name: "Project Analyzer"
-  short_description: "分析代码架构、关键模块与端到端业务链路，保留可核验代码证据"
-  default_prompt: "Use $project-analyzer to analyze this repository architecture and core business chains without writing resume content."

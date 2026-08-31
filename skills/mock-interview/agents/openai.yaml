@@ -1,4 +1,0 @@
-interface:
-  display_name: "Mock Interview"
-  short_description: "开展一次一题的项目模拟面试并给出行为锚定反馈"
-  default_prompt: "Use $mock-interview to interview me one question at a time about this project and score only my actual answers."

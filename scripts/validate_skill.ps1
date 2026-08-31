@@ -36,8 +36,8 @@ if (Test-Path -LiteralPath $skillPath) {
     Assert-Check ($skillText -match 'evidence-manifest\.json') 'Manifest contract is not referenced'
     Assert-Check ($skillText -match 'BLOCKED') 'Failure status is not encoded'
 
-    $runtimePattern = 'Claude Code skill|Claude Code users?|Cursor only|~/\.claude/skills/[a-z]|/plugin install\b'
-    Assert-Check (-not [regex]::IsMatch($skillText, $runtimePattern, [Text.RegularExpressions.RegexOptions]::IgnoreCase)) 'Runtime-specific red flag found in SKILL.md'
+    $runtimePattern = 'codex plugin|\.codex-plugin|agents/openai\.yaml|/plugin install\b'
+    Assert-Check (-not [regex]::IsMatch($skillText, $runtimePattern, [Text.RegularExpressions.RegexOptions]::IgnoreCase)) 'Host-specific packaging found in SKILL.md'
 
     $referenceMatches = [regex]::Matches($skillText, 'references/[a-z0-9.-]+')
     foreach ($match in $referenceMatches) {
@@ -120,8 +120,9 @@ else {
     $manifestMigrator = Join-Path $SkillRoot 'scripts\migrate_manifest.py'
     $evalRunner = Join-Path $SkillRoot 'scripts\run_evals.py'
     $contractTests = Join-Path $SkillRoot 'scripts\test_contracts.py'
-    $pluginSkillTests = Join-Path $SkillRoot 'scripts\test_plugin_skills.py'
-    foreach ($script in @($manifestValidator, $manifestMigrator, $evalRunner, $contractTests, $pluginSkillTests)) {
+    $skillCollectionTests = Join-Path $SkillRoot 'scripts\test_skill_collection.py'
+    $skillInstaller = Join-Path $SkillRoot 'scripts\install_skills.py'
+    foreach ($script in @($manifestValidator, $manifestMigrator, $evalRunner, $contractTests, $skillCollectionTests, $skillInstaller)) {
         Assert-Check (Test-Path -LiteralPath $script) "Required validation script missing: $script"
     }
     if ($failures.Count -eq 0) {
@@ -131,8 +132,8 @@ else {
         Assert-Check ($LASTEXITCODE -eq 0) 'Executable eval assertions failed'
         & python $contractTests
         Assert-Check ($LASTEXITCODE -eq 0) 'Negative contract tests failed'
-        & python $pluginSkillTests
-        Assert-Check ($LASTEXITCODE -eq 0) 'Plugin skill contract tests failed'
+        & python $skillCollectionTests
+        Assert-Check ($LASTEXITCODE -eq 0) 'Agent Skills collection contract tests failed'
     }
 }
 
@@ -144,7 +145,7 @@ $timestamp = Get-Date -Format 'yyyy-MM-ddTHH:mm:ssK'
 $status = if ($failures.Count -eq 0) { 'pass' } else { 'fail' }
 $note = 'self-check'
 if ($evalOutput -and $evalOutput -match 'Eval assertions: (\d+) passed, (\d+) failed') {
-    $note = "self-check: evals $($matches[1]) passed, contracts 18 passed"
+    $note = "self-check: evals $($matches[1]) passed, contracts 18 passed, portable skills 11 passed"
 }
 $record = @($timestamp, $gitCommit, 'repo-to-resume', '-', '-', $status, 'self-check', $note, 'self_check') -join "`t"
 Add-Content -LiteralPath $resultsPath -Value $record -Encoding UTF8

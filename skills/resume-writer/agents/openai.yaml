@@ -1,4 +1,0 @@
-interface:
-  display_name: "Resume Writer"
-  short_description: "生成来源准确、证据可追溯且可抗追问的项目简历内容"
-  default_prompt: "Use $resume-writer to turn these confirmed project facts into concise, defensible resume bullets."

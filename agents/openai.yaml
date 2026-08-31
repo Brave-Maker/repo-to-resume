@@ -1,4 +1,0 @@
-interface:
-  display_name: "Repo to Resume"
-  short_description: "分析代码与经历，生成可抗追问的简历、学习路径和完整面试材料"
-  default_prompt: "Use $repo-to-resume to analyze this project, build defensible resume claims, and prepare me for interviews."

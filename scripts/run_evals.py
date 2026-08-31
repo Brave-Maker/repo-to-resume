@@ -224,7 +224,7 @@ def _check_assertion(
         return "## 反例黑名单" in (ROOT / "SKILL.md").read_text(encoding="utf-8"), "blacklist"
     if op == "runtime_neutral":
         text = (ROOT / "SKILL.md").read_text(encoding="utf-8")
-        pattern = re.compile(r"Claude Code skill|Cursor only|~/\.claude/skills/[a-z]|/plugin install\b", re.I)
+        pattern = re.compile(r"codex plugin|\.codex-plugin|agents/openai\.yaml|/plugin install\b", re.I)
         return pattern.search(text) is None, "runtime scan"
     if op == "no_fabricated_interview_scores":
         text = (ROOT / "SKILL.md").read_text(encoding="utf-8")

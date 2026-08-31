@@ -1,4 +1,0 @@
-interface:
-  display_name: "Claim Grill"
-  short_description: "逐条验证简历声明能否经住项目追问"
-  default_prompt: "Use $claim-grill to challenge this resume claim one question at a time without rewriting it."

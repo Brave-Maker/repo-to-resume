@@ -8,7 +8,7 @@
 
 ## 快速开始
 
-1. 按[安装说明](#安装)安装插件并新建一个 Codex 会话。
+1. 按[安装说明](#安装)把技能集安装到当前 Agent 支持的 skills 目录，并新建会话。
 2. 单项任务直接调用对应窄技能；组合任务或完整流程调用 `$resume-pipeline`。
 3. 在提示词中给出材料、目标产物和明确排除项。
 
@@ -32,9 +32,9 @@ $resume-pipeline 分析 C:\work\my-project，生成简历和面试话术；跳�
 背景：<目标岗位；涉及简历改写时说明项目来源>
 ```
 
-## 多技能插件
+## Agent Skills 技能集
 
-Codex 插件安装会发现 10 个窄入口；单一任务不再加载完整根流程：
+本项目遵循开放的 [Agent Skills 规范](https://agentskills.io/specification)。完整安装后会发现 10 个窄入口；单一任务不再加载完整根流程：
 
 | 技能 | 负责内容 | 典型请求 |
 |---|---|---|
@@ -49,14 +49,14 @@ Codex 插件安装会发现 10 个窄入口；单一任务不再加载完整根�
 | `$resume-auditor` | 只读 STAR、水项、加粗和跨产物质量审查 | “检查 PDF 简历，但不要修改” |
 | `$resume-pipeline` | 明确多阶段或完整流程的证据链编排 | “分析项目、写简历并准备话术” |
 
-根 `$repo-to-resume` 保留为旧式单技能安装的兼容入口。
+根 `$repo-to-resume` 保留为单一总入口，适合只安装一个技能或继续使用原有调用方式。
 
 ### 如何选择入口
 
 - **只有一个产物**：直接使用对应窄技能，完成后立即停止。
 - **同一次请求包含两个及以上产物**：使用 `$resume-pipeline`，它只组合点名的步骤。
 - **明确要求全部做完或端到端准备**：使用 `$resume-pipeline` 的完整流程。
-- **旧式 skills 目录安装**：使用 `$repo-to-resume` 兼容入口；该方式不会发现 10 个子技能。
+- **只安装根技能**：使用 `$repo-to-resume` 总入口；完整技能集则优先使用上面的窄入口。
 
 “完整项目经历”描述的是简历交付格式，不会触发完整流程；“帮我看懂项目”默认进入项目分析，只有明确要求学习路径、模块课程、测验或学习网页时才进入项目学习。
 
@@ -231,88 +231,64 @@ Phase 8  执行最终质量门禁
 
 ## 安装
 
-### Codex 多技能插件
+前置条件：Git、Python 3.9+，以及一个支持 [Agent Skills 开放格式](https://agentskills.io/) 的智能体。安装器不调用任何特定厂商 CLI，只把每个技能打包为独立、可移植的 `SKILL.md + references/ + scripts/` 目录。
 
-前置条件：本机已安装支持 `codex plugin` 命令的 Codex CLI，并可使用 Git。推荐通过个人 marketplace 安装，这样 Codex 会发现全部 10 个技能。
+### 安装完整技能集
 
-1. 将仓库克隆到个人插件源码目录：
+1. 将仓库克隆到任意源码目录：
 
 ```powershell
-git clone https://github.com/Brave-Maker/repo-to-resume.git "$env:USERPROFILE\plugins\repo-to-resume"
+git clone https://github.com/Brave-Maker/repo-to-resume.git "$env:USERPROFILE\repo-to-resume"
 ```
 
 macOS/Linux 使用：
 
 ```bash
-git clone https://github.com/Brave-Maker/repo-to-resume.git "$HOME/plugins/repo-to-resume"
+git clone https://github.com/Brave-Maker/repo-to-resume.git "$HOME/repo-to-resume"
 ```
 
-2. 在 `~/.agents/plugins/marketplace.json` 的 `plugins` 数组中加入本地条目；目录或文件不存在时先创建。已有 marketplace 时只合并条目，不要覆盖其他插件：
-
-```json
-{
-  "name": "personal",
-  "interface": {
-    "displayName": "Personal"
-  },
-  "plugins": [
-    {
-      "name": "repo-to-resume",
-      "source": {
-        "source": "local",
-        "path": "./plugins/repo-to-resume"
-      },
-      "policy": {
-        "installation": "AVAILABLE",
-        "authentication": "ON_INSTALL"
-      },
-      "category": "Productivity"
-    }
-  ]
-}
-```
-
-如果 `personal` marketplace 尚未注册，再执行：
+2. 选择当前 Agent 的 skills 目录作为 `--target`。项目级通用目录可使用 `.agents/skills`：
 
 ```powershell
-codex plugin marketplace add "$env:USERPROFILE\.agents\plugins"
+python "$env:USERPROFILE\repo-to-resume\scripts\install_skills.py" --target ".agents\skills"
 ```
 
-macOS/Linux 对应命令为 `codex plugin marketplace add "$HOME/.agents/plugins"`。
+```bash
+python3 "$HOME/repo-to-resume/scripts/install_skills.py" --target ".agents/skills"
+```
 
-3. 安装并确认状态：
+用户级目录和其他项目级目录由具体 Agent 决定，直接把对应路径传给 `--target` 即可。安装后新建会话，让宿主重新发现技能。
+
+### 只安装部分技能
+
+`--skill` 可以重复使用；不传时默认安装根入口与全部 10 个窄技能：
 
 ```powershell
-codex plugin add repo-to-resume@personal
-codex plugin list
+python scripts/install_skills.py --target ".agents\skills" --skill project-analyzer --skill resume-writer
 ```
 
-安装或更新后必须新建会话，当前会话不会热加载技能列表。
+只需要总入口时：
+
+```powershell
+python scripts/install_skills.py --target ".agents\skills" --skill repo-to-resume
+```
 
 ### 更新与卸载
 
-仓库发布新版本后执行：
+仓库发布新版本后拉取源码，并只替换由本安装器管理的技能目录：
 
 ```powershell
-git -C "$env:USERPROFILE\plugins\repo-to-resume" pull --ff-only
-codex plugin add repo-to-resume@personal
+git -C "$env:USERPROFILE\repo-to-resume" pull --ff-only
+python "$env:USERPROFILE\repo-to-resume\scripts\install_skills.py" --target ".agents\skills" --replace
 ```
 
-卸载插件不会删除你单独克隆的源码目录：
+卸载同样只处理带有本项目安装标记的目录，不会删除源码仓库，也不会触碰同一目录下的其他技能：
 
 ```powershell
-codex plugin remove repo-to-resume@personal
+python "$env:USERPROFILE\repo-to-resume\scripts\install_skills.py" --target ".agents\skills" --uninstall
 ```
 
-### 兼容单技能安装
-
-只需要旧的 `$repo-to-resume` 根入口时，可克隆到 Agent skills 目录：
-
-```powershell
-git clone https://github.com/Brave-Maker/repo-to-resume.git "$env:USERPROFILE\.codex\skills\repo-to-resume"
-```
-
-其他运行环境将目标路径替换为对应的 skills 目录即可。该方式只发现根 `SKILL.md`，不会加载插件中的独立子技能。
+安装器拒绝覆盖没有本项目标记的同名目录；遇到该错误时先移动现有目录，或改用另一个 `--target`。
 
 ## 使用
 
@@ -378,17 +354,17 @@ $resume-pipeline 分析 C:\work\my-project，目标岗位是 Java 后端，完�
 
 ```text
 repo-to-resume/
-|- .codex-plugin/plugin.json       # Codex 多技能插件清单
-|- skills/                         # 10 个可独立发现的插件技能
+|- skill-collection.json           # 宿主无关的技能集合与版本清单
+|- skills/                         # 10 个可独立发现的 Agent Skills 源技能
 |- SKILL.md                       # 主流程、路由与行为契约
-|- agents/openai.yaml             # 智能体展示与默认提示词
 |- references/                    # 分析、包装、拷打和质量门禁模块
 |- scripts/
+|  |- install_skills.py           # 安装到任意 Agent 的 skills 目录
 |  |- validate_manifest.py        # manifest 数据结构与语义校验
 |  |- migrate_manifest.py         # 旧版 manifest 迁移
 |  |- run_evals.py                # 评估断言执行器
 |  |- test_contracts.py           # 负向契约测试
-|  |- test_plugin_skills.py       # 10 个子技能与路由结构契约
+|  |- test_skill_collection.py    # 11 个可移植技能包与安装契约
 |  `- validate_skill.ps1          # 一键仓库自检
 |- evals/                          # 评估配置、manifest 样例与回归场景
 |- artifacts/                      # Darwin 优化与验证结果卡
@@ -415,9 +391,9 @@ python scripts/validate_manifest.py <manifest路径> --analysis-dir <分析目�
 
 ```text
 Manifest validation passed
-Eval assertions: 82 passed, 0 failed
+Eval assertions: 83 passed, 0 failed
 Contract tests: 18 passed, 0 failed
-Plugin skill contracts: 10 skills passed
+Agent Skills collection contracts: 11 skills passed
 ```
 
 每个 `skills/<name>/test-prompts.json` 同时维护该技能的正向、边界和负向提示。修改触发词、交付模式或停止规则时，应同步新增最接近冲突边界的测试提示，而不是只修改说明文字。
