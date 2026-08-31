@@ -4,13 +4,14 @@
 
 ## 输入
 
-- `evidence-manifest.json`
-- manifest 的 `current_artifacts.resume`
-- manifest 的 `current_artifacts.project_analysis`
-- manifest 的 `current_artifacts.business_chains`
-- 可选：manifest 的 `current_artifacts.enhancement_plan`
+按执行方式选择输入，不要要求单步骤用户补齐完整流程材料：
 
-任何映射缺失或目标文件不存在时停止拷打，先修复 manifest；不要猜测固定文件名或最高 `-vN`。
+| 执行方式 | 必需输入 | 可选证据 |
+|---|---|---|
+| `DIRECT` | 用户提供的一条或多条简历要点 | 用户提供的代码、项目摘要或测试口径 |
+| `ARTIFACT/FULL_PIPELINE` | `evidence-manifest.json`、`current_artifacts.resume` | `current_artifacts.project_analysis`、`business_chains`、`enhancement_plan` |
+
+`DIRECT` 不要求 manifest。`ARTIFACT/FULL_PIPELINE` 的 manifest 映射缺失或目标文件不存在时停止拷打，先修复映射；不要猜测固定文件名或最高 `-vN`。
 
 ## 交互原则
 
@@ -25,7 +26,9 @@
 
 ### 1. 事实确认
 
-“你说你完成了 `{声明}`，具体发生在什么背景下？最终交付物是什么？”
+首轮只问：“你说你完成了 `{声明}`，具体发生在什么背景下？”
+
+用户回答后仍缺交付对象时，下一轮再问：“这项工作的最终交付物是什么？”
 
 验证项目是否真实存在、声明是否有明确对象和结果。
 

@@ -1,0 +1,17 @@
+[
+  {
+    "id": "direct-high-risk",
+    "prompt": "这是实习项目。只拷打这一条简历，不要改写：使用 Redis 优化订单查询，性能提升 80%。现在开始问我。",
+    "expected": "保留原文并只提出一个针对事实、角色或数字口径的问题；不改写简历，不启动仓库分析。"
+  },
+  {
+    "id": "multiple-claims-sequential",
+    "prompt": "我有两条项目经历想逐条找漏洞。请一次只问一个问题，完成第一条后再处理第二条。",
+    "expected": "先索取或锁定第一条声明，六层追问按轮次进行；不得一次输出问题清单或并行处理两条。"
+  },
+  {
+    "id": "negative-rewrite-only",
+    "prompt": "只把这条简历改得更专业，不要拷打，也不要问面试问题。",
+    "expected": "自动发现时不应选择 claim-grill；应由后续 resume-writer 或现有根工作流的 RESUME_ONLY 处理。"
+  }
+]
