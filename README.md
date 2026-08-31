@@ -6,24 +6,59 @@
 
 完整流程会理解项目与业务链路，区分项目能力、个人贡献、复现成果、方案设计和叙事补全，再生成简历、学习路径、面试话术与质量报告。即使没有正式实习，也可以从自研项目、开源项目或其他项目中提炼可讲内容。
 
+## 快速开始
+
+1. 按[安装说明](#安装)安装插件并新建一个 Codex 会话。
+2. 单项任务直接调用对应窄技能；组合任务或完整流程调用 `$resume-pipeline`。
+3. 在提示词中给出材料、目标产物和明确排除项。
+
+```text
+$project-analyzer 只分析 C:\work\my-project 的订单链路，不写简历。
+
+$resume-writer 这是我的个人项目。根据这些已确认事实写 3 条 Java 后端简历要点。
+
+$resume-auditor 只读检查 C:\resume\resume.pdf 的 STAR、水项和加粗，不修改文件。
+
+$resume-pipeline 分析 C:\work\my-project，生成简历和面试话术；跳过模拟面试。
+```
+
+最稳妥的提示结构是：
+
+```text
+材料：<仓库路径、Git URL、简历文件或工作记录>
+目标：<本次唯一产物，或明确列出的多个产物>
+范围：<需要读取的目录、模块、要点或面试题量>
+排除：<不要执行的步骤>
+背景：<目标岗位；涉及简历改写时说明项目来源>
+```
+
 ## 多技能插件
 
 Codex 插件安装会发现 10 个窄入口；单一任务不再加载完整根流程：
 
-| 技能 | 负责内容 |
-|---|---|
-| `$project-analyzer` | 项目架构、模块和端到端业务链 |
-| `$contribution-mapper` | 个人角色、来源与贡献归因 |
-| `$experience-enhancer` | 可执行、可验证的经历增强任务 |
-| `$resume-writer` | 简历要点、完整项目经历和授权后的版本化修订 |
-| `$claim-grill` | 一次一问的单条声明压力验证 |
-| `$project-learning` | Mermaid 学习路径和浅色交互学习页 |
-| `$interview-script` | 15 秒、30 秒、2 分钟与深挖话术 |
-| `$mock-interview` | 一次一题模拟面试和真实回答评分 |
-| `$resume-auditor` | 只读 STAR、水项、加粗和跨产物质量审查 |
-| `$resume-pipeline` | 明确多阶段或完整流程的证据链编排 |
+| 技能 | 负责内容 | 典型请求 |
+|---|---|---|
+| `$project-analyzer` | 项目架构、模块和端到端业务链 | “帮我看懂这个项目的架构和请求链路” |
+| `$contribution-mapper` | 个人角色、来源与贡献归因 | “区分哪些是团队成果、哪些确实是我做的” |
+| `$experience-enhancer` | 可执行、可验证的经历增强任务 | “这段实习太弱，设计两个可以验证的补强任务” |
+| `$resume-writer` | 简历要点、完整项目经历和授权后的版本化修订 | “把这些事实改成 3 条简历要点” |
+| `$claim-grill` | 一次一问的单条声明压力验证 | “只拷打这条 Redis 优化声明” |
+| `$project-learning` | Mermaid 学习路径和浅色交互学习页 | “生成分模块学习路径和达标测验” |
+| `$interview-script` | 15 秒、30 秒、2 分钟与深挖话术 | “准备项目介绍的 30 秒和 2 分钟版本” |
+| `$mock-interview` | 一次一题模拟面试和真实回答评分 | “现在开始模拟面试，一次问一题” |
+| `$resume-auditor` | 只读 STAR、水项、加粗和跨产物质量审查 | “检查 PDF 简历，但不要修改” |
+| `$resume-pipeline` | 明确多阶段或完整流程的证据链编排 | “分析项目、写简历并准备话术” |
 
 根 `$repo-to-resume` 保留为旧式单技能安装的兼容入口。
+
+### 如何选择入口
+
+- **只有一个产物**：直接使用对应窄技能，完成后立即停止。
+- **同一次请求包含两个及以上产物**：使用 `$resume-pipeline`，它只组合点名的步骤。
+- **明确要求全部做完或端到端准备**：使用 `$resume-pipeline` 的完整流程。
+- **旧式 skills 目录安装**：使用 `$repo-to-resume` 兼容入口；该方式不会发现 10 个子技能。
+
+“完整项目经历”描述的是简历交付格式，不会触发完整流程；“帮我看懂项目”默认进入项目分析，只有明确要求学习路径、模块课程、测验或学习网页时才进入项目学习。
 
 ## 三轴路由
 
@@ -72,6 +107,17 @@ Codex 插件安装会发现 10 个窄入口；单一任务不再加载完整根�
 支持本地目录、Git 仓库、压缩包、已有简历和零散工作记录。分析代码时会优先读取真实入口、调用链、数据流和工程约束，不依赖一份写得漂亮的 README。
 
 单步骤默认直接在对话中交付，不创建分析目录或 `evidence-manifest.json`。缺少输入时只索取当前步骤所需的最小材料；简历任务缺少项目来源时，只询问来源并停止。如果确实需要扩大范围，会先说明原因并等待确认。多个明确任务可以组合，例如“改两条简历并准备话术”，但不会自动插入未请求的分析、增强、拷打或学习步骤。
+
+### 交付模式
+
+| 模式 | 适用场景 | 写入行为 |
+|---|---|---|
+| `DIRECT` | 单步骤、只需对话结果 | 不创建分析目录或 manifest |
+| `FILE_ARTIFACT` | 明确要求保存学习 Markdown 或生成 HTML | 创建版本化学习文件，不创建 manifest |
+| `FILE_REVISION` | 明确授权修改现有简历文件 | 创建相邻的 `-vN` 修订版，不覆盖原文件 |
+| `ARTIFACT` | 多阶段任务需要共享事实状态 | 创建版本化产物并更新 `evidence-manifest.json` |
+
+请求生成文件只授权对应产物，不授权修改目标项目源码；请求“优化简历”默认仍是只读审查，只有“修改、写回、保存修订版”等明确表达才构成文件写入授权。
 
 ## 它解决什么问题
 
@@ -187,14 +233,76 @@ Phase 8  执行最终质量门禁
 
 ### Codex 多技能插件
 
-把仓库放在个人插件目录，再通过个人 marketplace 安装 `repo-to-resume`。Windows 的默认插件源码位置为：
+前置条件：本机已安装支持 `codex plugin` 命令的 Codex CLI，并可使用 Git。推荐通过个人 marketplace 安装，这样 Codex 会发现全部 10 个技能。
+
+1. 将仓库克隆到个人插件源码目录：
 
 ```powershell
 git clone https://github.com/Brave-Maker/repo-to-resume.git "$env:USERPROFILE\plugins\repo-to-resume"
+```
+
+macOS/Linux 使用：
+
+```bash
+git clone https://github.com/Brave-Maker/repo-to-resume.git "$HOME/plugins/repo-to-resume"
+```
+
+2. 在 `~/.agents/plugins/marketplace.json` 的 `plugins` 数组中加入本地条目；目录或文件不存在时先创建。已有 marketplace 时只合并条目，不要覆盖其他插件：
+
+```json
+{
+  "name": "personal",
+  "interface": {
+    "displayName": "Personal"
+  },
+  "plugins": [
+    {
+      "name": "repo-to-resume",
+      "source": {
+        "source": "local",
+        "path": "./plugins/repo-to-resume"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}
+```
+
+如果 `personal` marketplace 尚未注册，再执行：
+
+```powershell
+codex plugin marketplace add "$env:USERPROFILE\.agents\plugins"
+```
+
+macOS/Linux 对应命令为 `codex plugin marketplace add "$HOME/.agents/plugins"`。
+
+3. 安装并确认状态：
+
+```powershell
+codex plugin add repo-to-resume@personal
+codex plugin list
+```
+
+安装或更新后必须新建会话，当前会话不会热加载技能列表。
+
+### 更新与卸载
+
+仓库发布新版本后执行：
+
+```powershell
+git -C "$env:USERPROFILE\plugins\repo-to-resume" pull --ff-only
 codex plugin add repo-to-resume@personal
 ```
 
-个人 marketplace 需要包含指向 `./plugins/repo-to-resume` 的本地条目。安装后新建会话，Codex 才会重新发现全部子技能。
+卸载插件不会删除你单独克隆的源码目录：
+
+```powershell
+codex plugin remove repo-to-resume@personal
+```
 
 ### 兼容单技能安装
 
@@ -208,19 +316,39 @@ git clone https://github.com/Brave-Maker/repo-to-resume.git "$env:USERPROFILE\.c
 
 ## 使用
 
-显式调用：
+### 单技能示例
 
 ```text
-$repo-to-resume 只分析 C:\work\my-project 的订单核心链路，不写简历。
+$project-analyzer 分析 C:\work\shop 的 src/order/，追踪两条核心链路；跳过 tests 和 vendor。
 
-$repo-to-resume 这是实习项目，只改这一条简历：负责订单查询缓存环节，使用 Redis 优化接口，性能提升 80%。
+$contribution-mapper 这是 mentor 给的整体方案，我只实现了退款状态机。帮我做贡献归因。
 
-$repo-to-resume 基于这份简历只做一轮模拟面试，不重写简历。
+$experience-enhancer 我只有一个基础 CRUD 项目，目标是 Java 后端，用一周补两个可验证的工程能力。
 
-$repo-to-resume 分析 C:\work\my-project，目标岗位是 Java 后端，完整完成整套材料。
+$resume-writer 这是实习项目。只把“退款状态机”改成一条中文 STAR 简历要点，不要补数字。
+
+$claim-grill 逐层追问这条“使用 Redis 将接口性能提升 80%”的声明，一次只问一个问题。
+
+$project-learning 根据这个仓库生成 Mermaid 架构图、核心请求链路、模块学习顺序和达标测验。
+
+$interview-script 根据已确认的项目事实生成 15 秒、30 秒和 2 分钟介绍，不做模拟面试。
+
+$mock-interview 基于 resume.pdf 面试 Java 后端，一次只问一题；我提前结束时不要给总分。
+
+$resume-auditor 只读检查 resume.tex 和 PDF，按 STAR、水项、加粗的顺序给建议，不写回。
 ```
 
-也可以自然语言触发：
+### 组合与完整流程
+
+```text
+$resume-pipeline 这是我的个人项目。只生成 3 条简历要点，并准备对应的 30 秒和 2 分钟话术。
+
+$resume-pipeline 分析 C:\work\my-project，目标岗位是 Java 后端，完整完成整套材料。
+```
+
+组合请求不会自动补齐未点名阶段。例如“改两条简历并准备话术”不会插入项目分析、经历增强、逐条拷打、学习路径或模拟面试。
+
+### 自然语言触发
 
 ```text
 帮我分析这个 GitHub 项目，提炼成可面试的项目经历。
@@ -243,6 +371,8 @@ $repo-to-resume 分析 C:\work\my-project，目标岗位是 Java 后端，完整
 - 修改源码前必须单独展示写入范围、预计文件和验证命令，并取得明确授权。
 - 未经实际回答，不会虚构模拟面试得分；此时只生成待实战问题集和预评估风险。
 - 估算数据会保留口径和来源，不会仅凭 Redis、MQ、线程池等技术名词编造性能百分比。
+- 远程 Git 仓库如需检出，只使用系统临时目录；单步骤分析不会在目标仓库创建报告或索引。
+- 交互学习页使用固定浅色模板；Mermaid 无法加载时保留源码和文字链路，不留下空白图。
 
 ## 仓库结构
 
@@ -258,9 +388,11 @@ repo-to-resume/
 |  |- migrate_manifest.py         # 旧版 manifest 迁移
 |  |- run_evals.py                # 评估断言执行器
 |  |- test_contracts.py           # 负向契约测试
+|  |- test_plugin_skills.py       # 10 个子技能与路由结构契约
 |  `- validate_skill.ps1          # 一键仓库自检
-|- evals/                          # 评估配置与六个回归场景
-`- test-prompts.json               # 真实前向测试提示词
+|- evals/                          # 评估配置、manifest 样例与回归场景
+|- artifacts/                      # Darwin 优化与验证结果卡
+`- test-prompts.json               # 根兼容入口的真实前向测试提示词
 ```
 
 ## 验证
@@ -278,6 +410,35 @@ python scripts/validate_manifest.py <manifest路径> --analysis-dir <分析目�
 ```
 
 当前回归套件覆盖 6 个代表性场景，以及来源门禁、弱实习、项目迁移、现有简历、范围路由、版本化产物、中文输出一致性和未授权源码修改等关键路径。`test-prompts.json` 还包含“来源未知时停止、开源/个人项目允许真实全流程、实习项目聚焦高价值环节或核心闭环”等前向场景。具体断言数量以 `scripts/validate_skill.ps1` 的输出为准。
+
+当前版本预期结果：
+
+```text
+Manifest validation passed
+Eval assertions: 82 passed, 0 failed
+Contract tests: 18 passed, 0 failed
+Plugin skill contracts: 10 skills passed
+```
+
+每个 `skills/<name>/test-prompts.json` 同时维护该技能的正向、边界和负向提示。修改触发词、交付模式或停止规则时，应同步新增最接近冲突边界的测试提示，而不是只修改说明文字。
+
+## 常见问题
+
+### 为什么只让我确认项目来源，没有直接写简历？
+
+生成或事实性改写简历前必须区分开源、个人和实习项目。来源决定可以使用的职责动词与归因范围；确认前不会先生成看似可用的草稿。
+
+### “优化简历”会直接修改文件吗？
+
+不会。默认由 `$resume-auditor` 只读审查。只有明确要求修改、写回或保存修订版时，才由 `$resume-writer` 创建相邻的 `-vN` 文件；原文件不会被覆盖。
+
+### `$claim-grill` 和 `$mock-interview` 有什么区别？
+
+`$claim-grill` 聚焦一条简历声明的事实、角色、实现、选型、验证和边界；`$mock-interview` 基于整份材料进行一次一题的完整面试。没有用户真实回答时，两者都不会虚构得分。
+
+### 为什么单步骤没有生成 `evidence-manifest.json`？
+
+这是预期行为。`DIRECT` 只交付当前结果；只有多个阶段需要共享事实和版本状态时才启用 `ARTIFACT` 与 manifest。
 
 ## 设计目标
 
