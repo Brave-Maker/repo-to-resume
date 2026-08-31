@@ -31,3 +31,33 @@ timestamp	commit	skill	old_score	new_score	status	dimension	note	eval_mode
 2026-08-30T21:19:23+08:00	paired	repo-to-resume	完整经历依赖推理且“完整”可能误触发 FULL_PIPELINE	3-0 clear better	keep	effectiveness	三位独立评委交换A/B顺序后均选择改后版；显式四段证据合同提升跨执行稳定性且未扩张范围	paired
 2026-08-30T21:11:01+08:00	2330487	repo-to-resume	-	-	pass	self-check	self-check: evals 82 passed, contracts 18 passed	self_check
 2026-08-30T21:30:38+08:00	5e40b27	repo-to-resume	-	-	pass	self-check	self-check: evals 82 passed, contracts 18 passed	self_check
+2026-08-30T22:25:14+08:00	893b934	repo-to-resume	-	-	pass	self-check	self-check: evals 82 passed, contracts 18 passed	self_check
+2026-08-30T22:38:27+08:00	5b663b0	repo-to-resume	-	-	pass	self-check	self-check: evals 82 passed, contracts 18 passed	self_check
+2026-08-30T22:38:25+08:00	baseline-resume-audit	repo-to-resume	-	27/28 implicit; 29 blocked	baseline	effectiveness	旧版仅显式覆盖 STAR 与只读范围；水项、分区加粗、TeX/PDF 核验与写入授权依赖推理，场景 29 被 project_origin 提前阻断	full_test
+2026-08-30T22:38:25+08:00	3a8df55	repo-to-resume	27/28 implicit; 29 blocked	3/3 scenarios pass	keep	effectiveness	真实前向验证固定 STAR→水项→加粗，覆盖 TeX/PDF、1-2 组重点与授权写入；82/82、18/18 无回归	full_test
+2026-08-30T22:38:25+08:00	paired	repo-to-resume	审查顺序、水项、加粗和授权未编码	3-0 clear better	keep	effectiveness	三位独立评委交换 A/B 后均选择改后版；三阶段只读审查显著提升执行稳定性	paired
+2026-08-30T22:38:25+08:00	3141e16	repo-to-resume	ARTIFACT/manifest 与纯格式修订存在冲突	9/9 pass	keep	architecture	场景 29 验证 FILE_REVISION 不建 manifest、不写 current_artifacts、不重复确认且不覆盖原文件	full_test
+2026-08-30T22:38:25+08:00	paired	repo-to-resume	单文件修订与 ARTIFACT 边界含混	3-0 better	keep	architecture	三位评委均保留 FILE_REVISION 隔离；两票 clear、一票 slight	paired
+2026-08-30T22:38:25+08:00	5b663b0	repo-to-resume	FILE_REVISION 写入失败无专门兜底	5/5 failure branches	keep	failure-recovery	不可写目录、版本竞争和验证失败推演全部闭环，原文件始终不变	full_test
+2026-08-30T22:38:25+08:00	paired	repo-to-resume	版本选择与发布非原子	3-0 clear better	keep	failure-recovery	三位评委一致确认原子写入与 if-then 兜底明确提升可靠性且未扩大权限	paired
+2026-08-31T15:27:34+08:00	80e4512	claim-grill	旧根流程允许 DIRECT，但引用强制要求 manifest	2/2 positive + 1/1 negative pass	keep	effectiveness	独立前向测试保持一次一问、不改写、不扩张；共享引用已显式区分 DIRECT 与 ARTIFACT	full_test
+2026-08-31T15:27:34+08:00	170cca6	resume-pipeline	根入口与插件编排器同名	plugin validation pass	keep	architecture	编排器改名为 resume-pipeline，避免旧安装与插件入口发生同名注册覆盖	full_test
+2026-08-31T15:27:34+08:00	paired	claim-grill	单体内嵌 Phase 5，无法独立发现且输入契约冲突	3-0 clear better	keep	architecture/effectiveness	三位独立评审一致确认独立发现、窄路由、DIRECT 输入和失败恢复均有明确提升	paired
+2026-08-31T16:00:27+08:00	231ac63	project-analyzer	单体分析阶段不可独立发现，DIRECT/落盘与范围规则存在歧义	3/3 routing + real forward pass	keep	effectiveness	真实仓库前向测试遵守限定目录、跳过测试、只读交付与分析后停止；范围复核全部通过	full_test
+2026-08-31T16:00:27+08:00	paired	project-analyzer	分析入口内嵌根流程，业务链引用会继续贡献候选与增强任务	3-0 clear better	keep	architecture/effectiveness	三位独立评审一致确认独立发现、硬范围、DIRECT 零持久化和 ANALYZE_ONLY 停止边界均显著提升	paired
+2026-08-31T16:34:42+08:00	9784fda	repo-to-resume	-	-	pass	self-check	self-check: evals 82 passed, contracts 18 passed	self_check
+2026-08-31T16:51:14+08:00	cb9f6b7	contribution-mapper	单体贡献阶段不可独立发现	5/5 facts-writing forward group pass	keep	architecture/effectiveness	个人归因、证据不足和不冒领团队成果边界通过独立前向检查；DIRECT 不要求 manifest	full_test
+2026-08-31T16:51:14+08:00	4428ab5	experience-enhancer	增强阶段依赖完整根流程	5/5 facts-writing forward group pass	keep	architecture/effectiveness	薄弱经历可直接转为可验证任务卡；未获源码写入授权时只交付计划	full_test
+2026-08-31T16:51:14+08:00	3a15039	resume-writer	简历写作与审查/文件授权耦合	5/5 facts-writing forward group pass	keep	architecture/effectiveness	来源门禁、FILE_REVISION 预检和版本化写入边界通过独立前向检查	full_test
+2026-08-31T16:51:14+08:00	fc142ef	project-learning	学习路径与分析、HTML manifest 规则耦合	5/5 learning-interview forward group pass	keep	architecture/effectiveness	MARKDOWN_ONLY、FILE_ARTIFACT 与 ARTIFACT 已分离；分析和系统学习触发互斥	full_test
+2026-08-31T16:51:14+08:00	01e53c7	interview-script	逐字稿与模拟面试共用入口	5/5 learning-interview forward group pass	keep	architecture/effectiveness	分层话术请求不会启动逐题模拟，交付后按范围停止	full_test
+2026-08-31T16:51:14+08:00	6d40ff3	mock-interview	模拟交互与静态材料生成边界不清	5/5 learning-interview forward group pass	keep	architecture/effectiveness	一次一题、无真实回答不评分、部分轮次不生成总分等边界通过前向检查	full_test
+2026-08-31T16:51:14+08:00	e994b29	resume-auditor	只读审查与授权写回可能冲突	5/5 facts-writing forward group pass	keep	architecture/effectiveness	只读审查保持零写入；明确修改请求直接交给 resume-writer 文件修订流程	full_test
+2026-08-31T16:51:14+08:00	9784fda	resume-pipeline	插件仅有 3 个入口且根技能承担全部路由	13/13 routing + 10 skills pass	keep	architecture/effectiveness	10 个独立入口与多阶段编排路由全部命中；38 条技能提示和结构契约通过	full_test
+2026-08-31T16:51:14+08:00	paired	multi-skill-plugin	基线 3 个插件技能	3-0 clear better	keep	9-dimension rubric	三位独立评审一致判定 10 技能拆分明显更优；修复最终路由重叠、独立输入和 FILE_ARTIFACT 契约	paired
+2026-08-31T16:55:07+08:00	87a96e3	repo-to-resume	-	-	pass	self-check	self-check: evals 82 passed, contracts 18 passed	self_check
+2026-08-31T17:05:18+08:00	87a96e3	repo-to-resume	-	-	pass	self-check	self-check: evals 82 passed, contracts 18 passed	self_check
+2026-08-31T17:28:33+08:00	359bdcf	repo-to-resume	-	-	pass	self-check	self-check: evals 83 passed, contracts 18 passed	self_check
+2026-08-31T17:34:11+08:00	081b25b	resume-writer	改前无显式主次时保留 3 个方法	改后仅保留 2 个关键方法	keep	effectiveness	真实前向测试以最小充分方法集和删除测试保留业务幂等键、事务消息，省略 7 个同目标或支撑性名词；83/83 evals、18/18 contracts、10/10 plugin skills 通过	full_test
+2026-08-31T17:34:11+08:00	paired	resume-writer	方法、工具和能力易被连接词串成清单	3-0 clear better	keep	effectiveness	三位独立评审一致确认最小充分方法集贯穿生成、恢复、自检和质量门禁；不可拆因果链例外避免机械限项	paired
+2026-08-31T17:39:10+08:00	081b25b	repo-to-resume	-	-	pass	self-check	self-check: evals 83 passed, contracts 18 passed	self_check
