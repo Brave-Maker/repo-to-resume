@@ -1,0 +1,17 @@
+[
+  {
+    "id": "layered-script",
+    "prompt": "根据这两条简历要点准备 15 秒、30 秒和 2 分钟项目话术，再列深挖问题。",
+    "expected": "三种长度共享同一事实和角色，逐级增加实现、取舍、验证与边界，并给项目相关追问。"
+  },
+  {
+    "id": "risky-number",
+    "prompt": "我的要点写性能提升 80%，但没有测试口径。先帮我准备话术。",
+    "expected": "不替数字补口径；只问一个最高风险事实，无法确认时移除数字或标训练稿。"
+  },
+  {
+    "id": "negative-live-interview",
+    "prompt": "现在开始模拟面试，一次问我一道题，最后评分。",
+    "expected": "自动发现时不选择 interview-script，应路由到 mock-interview。"
+  }
+]

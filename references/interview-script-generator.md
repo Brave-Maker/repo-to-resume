@@ -4,15 +4,13 @@
 
 ## 输入
 
-- manifest 的 `current_artifacts.resume`
-- `claim-grill-report.md`
-- `evidence-manifest.json`
-- manifest 的 `current_artifacts.business_chains`
-- manifest 的 `current_artifacts.learning_path`（如存在）
+- `DIRECT + SCRIPT_ONLY`：用户提供的简历要点、项目事实、目标岗位和可选学习材料
+- `ARTIFACT/FULL_PIPELINE`：manifest 的当前简历、拷打报告、业务链路、学习路径和 `evidence-manifest.json`
 
 ## 输出
 
-- 新建当前版本的面试话术，并更新 `current_artifacts.interview_scripts`
+- `DIRECT + SCRIPT_ONLY`：在对话中交付分层话术，不创建文件或 manifest
+- `ARTIFACT/FULL_PIPELINE`：新建当前版本话术，并更新 `current_artifacts.interview_scripts`
 
 ## 每条声明的四层结构
 
