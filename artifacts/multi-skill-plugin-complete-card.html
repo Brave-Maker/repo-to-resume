@@ -1,0 +1,294 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>repo-to-resume 多技能拆分完成</title>
+  <style>
+    :root {
+      --ink: #172033;
+      --muted: #5c667a;
+      --paper: #f5f7f9;
+      --surface: #ffffff;
+      --line: #d7dde5;
+      --green: #167b62;
+      --green-soft: #e8f5ef;
+      --blue: #2463a9;
+      --blue-soft: #eaf2fb;
+      --coral: #b84f3d;
+      --coral-soft: #fff0ec;
+      --gold: #8a6517;
+      --gold-soft: #fff7df;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: #e9edf1;
+      color: var(--ink);
+      font-family: "Microsoft YaHei", "Noto Sans SC", Arial, sans-serif;
+      letter-spacing: 0;
+    }
+
+    .card {
+      width: 960px;
+      min-height: 1200px;
+      margin: 40px auto;
+      padding: 58px 62px 50px;
+      background: var(--paper);
+      border: 1px solid #cfd6de;
+      box-shadow: 0 20px 50px rgba(23, 32, 51, 0.12);
+    }
+
+    .eyebrow {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 16px;
+      color: var(--green);
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 28px;
+      height: 4px;
+      background: var(--green);
+    }
+
+    h1 {
+      margin: 0;
+      max-width: 760px;
+      font-size: 46px;
+      line-height: 1.18;
+      font-weight: 800;
+    }
+
+    .subtitle {
+      margin: 18px 0 32px;
+      max-width: 760px;
+      color: var(--muted);
+      font-size: 18px;
+      line-height: 1.7;
+    }
+
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-bottom: 34px;
+    }
+
+    .metric {
+      min-height: 118px;
+      padding: 20px 18px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-top: 4px solid var(--green);
+      border-radius: 6px;
+    }
+
+    .metric:nth-child(2) { border-top-color: var(--blue); }
+    .metric:nth-child(3) { border-top-color: var(--coral); }
+    .metric:nth-child(4) { border-top-color: var(--gold); }
+
+    .metric strong {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 31px;
+      line-height: 1;
+    }
+
+    .metric span {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .section-title {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin: 0 0 14px;
+      font-size: 19px;
+    }
+
+    .section-title span {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 400;
+    }
+
+    .skill-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 28px;
+    }
+
+    .skill {
+      display: grid;
+      grid-template-columns: 38px 1fr;
+      gap: 12px;
+      min-height: 76px;
+      padding: 14px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 6px;
+    }
+
+    .skill-index {
+      display: grid;
+      place-items: center;
+      width: 38px;
+      height: 38px;
+      color: var(--blue);
+      background: var(--blue-soft);
+      border-radius: 4px;
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .skill:nth-child(3n+2) .skill-index {
+      color: var(--green);
+      background: var(--green-soft);
+    }
+
+    .skill:nth-child(3n) .skill-index {
+      color: var(--coral);
+      background: var(--coral-soft);
+    }
+
+    .skill b {
+      display: block;
+      margin-bottom: 4px;
+      font-family: Consolas, "SFMono-Regular", monospace;
+      font-size: 14px;
+    }
+
+    .skill p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .flow {
+      display: grid;
+      grid-template-columns: 1fr 46px 1fr 46px 1fr;
+      align-items: stretch;
+      margin-bottom: 28px;
+    }
+
+    .flow-step {
+      min-height: 96px;
+      padding: 16px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: var(--surface);
+    }
+
+    .flow-step b {
+      display: block;
+      margin-bottom: 7px;
+      color: var(--green);
+      font-size: 15px;
+    }
+
+    .flow-step p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .arrow {
+      display: grid;
+      place-items: center;
+      color: var(--muted);
+      font-size: 22px;
+    }
+
+    .verdict {
+      display: grid;
+      grid-template-columns: 150px 1fr;
+      gap: 20px;
+      padding: 20px;
+      background: var(--green-soft);
+      border-left: 5px solid var(--green);
+      border-radius: 4px;
+    }
+
+    .verdict strong {
+      color: var(--green);
+      font-size: 22px;
+      line-height: 1.25;
+    }
+
+    .verdict p {
+      margin: 0;
+      font-size: 14px;
+      line-height: 1.65;
+    }
+
+    footer {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 28px;
+      padding-top: 18px;
+      color: var(--muted);
+      border-top: 1px solid var(--line);
+      font-size: 12px;
+    }
+  </style>
+</head>
+<body>
+  <main class="card">
+    <div class="eyebrow">DARWIN SKILL 2.0 · MULTI-SKILL RELEASE</div>
+    <h1>repo-to-resume<br>已拆分为 10 个独立技能</h1>
+    <p class="subtitle">单任务只加载对应能力；需要多个产物时由编排技能组合执行。旧式根技能继续保留，现有安装仍可兼容。</p>
+
+    <section class="metrics" aria-label="验证指标">
+      <div class="metric"><strong>10</strong><span>可独立发现<br>技能入口</span></div>
+      <div class="metric"><strong>13/13</strong><span>真实语义<br>路由通过</span></div>
+      <div class="metric"><strong>3:0</strong><span>独立盲评<br>明显更优</span></div>
+      <div class="metric"><strong>82/82</strong><span>既有评测<br>无回归</span></div>
+    </section>
+
+    <h2 class="section-title">技能地图 <span>38 条正向 / 负向测试提示</span></h2>
+    <section class="skill-grid" aria-label="技能列表">
+      <article class="skill"><div class="skill-index">01</div><div><b>project-analyzer</b><p>架构、入口与端到端业务链</p></div></article>
+      <article class="skill"><div class="skill-index">02</div><div><b>contribution-mapper</b><p>个人角色、来源与证据归因</p></div></article>
+      <article class="skill"><div class="skill-index">03</div><div><b>experience-enhancer</b><p>可执行、可验证的增强任务</p></div></article>
+      <article class="skill"><div class="skill-index">04</div><div><b>resume-writer</b><p>简历要点与版本化文件修订</p></div></article>
+      <article class="skill"><div class="skill-index">05</div><div><b>claim-grill</b><p>一次一问的声明压力验证</p></div></article>
+      <article class="skill"><div class="skill-index">06</div><div><b>project-learning</b><p>Mermaid 学习路径与交互页</p></div></article>
+      <article class="skill"><div class="skill-index">07</div><div><b>interview-script</b><p>15 秒到深挖版本的话术</p></div></article>
+      <article class="skill"><div class="skill-index">08</div><div><b>mock-interview</b><p>一次一题、基于真实回答评分</p></div></article>
+      <article class="skill"><div class="skill-index">09</div><div><b>resume-auditor</b><p>只读 STAR、水项与格式审查</p></div></article>
+      <article class="skill"><div class="skill-index">10</div><div><b>resume-pipeline</b><p>显式组合任务与完整流程编排</p></div></article>
+    </section>
+
+    <h2 class="section-title">新的执行模型 <span>按意图缩小上下文</span></h2>
+    <section class="flow" aria-label="执行模型">
+      <article class="flow-step"><b>识别意图</b><p>单项、组合或完整流程；显式排除项始终优先。</p></article>
+      <div class="arrow">→</div>
+      <article class="flow-step"><b>加载窄技能</b><p>只读取当前职责所需规则与共享引用。</p></article>
+      <div class="arrow">→</div>
+      <article class="flow-step"><b>按边界停止</b><p>DIRECT、文件产物和流水线状态互不冒用。</p></article>
+    </section>
+
+    <section class="verdict">
+      <strong>KEEP<br>明显更优</strong>
+      <p>三位独立评审一致保留拆分版。最终修复了“看懂项目”与“系统学习项目”的触发重叠，并统一了独立 HTML 文件与 manifest 流水线的交付契约。</p>
+    </section>
+
+    <footer>
+      <span>Plugin 1.2.0 · local cache refreshed</span>
+      <span>Contracts 18/18 · Skills 10/10</span>
+    </footer>
+  </main>
+</body>
+</html>
