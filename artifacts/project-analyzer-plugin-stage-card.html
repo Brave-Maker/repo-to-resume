@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Project Analyzer Plugin Stage</title>
+  <style>
+    :root {
+      color-scheme: light;
+      font-family: Inter, "Segoe UI", Arial, sans-serif;
+      color: #17211d;
+      background: #dfe7e2;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      min-height: 100%;
+      margin: 0;
+    }
+
+    body {
+      display: grid;
+      place-items: center;
+      padding: 40px;
+    }
+
+    .card {
+      width: 960px;
+      min-height: 1180px;
+      overflow: hidden;
+      border: 1px solid #b9c6bf;
+      border-top: 10px solid #087f73;
+      border-radius: 8px;
+      background: #ffffff;
+      box-shadow: 0 24px 70px rgba(23, 33, 29, 0.13);
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      gap: 24px;
+      padding: 42px 52px 30px;
+      border-bottom: 1px solid #dce4df;
+    }
+
+    .brand, .date, .eyebrow, .metric-label, .section-label {
+      margin: 0;
+      font-size: 15px;
+      font-weight: 750;
+      line-height: 1.5;
+      letter-spacing: 0;
+    }
+
+    .brand, .eyebrow, .section-label { color: #087f73; }
+    .date { color: #64716a; text-align: right; }
+
+    main { padding: 52px; }
+
+    h1 {
+      max-width: 800px;
+      margin: 12px 0 20px;
+      font-size: 56px;
+      line-height: 1.08;
+      letter-spacing: 0;
+    }
+
+    .lead {
+      max-width: 800px;
+      margin: 0;
+      color: #4a5750;
+      font-size: 22px;
+      line-height: 1.65;
+      letter-spacing: 0;
+    }
+
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      margin: 44px 0;
+      border-top: 1px solid #cfd9d3;
+      border-bottom: 1px solid #cfd9d3;
+    }
+
+    .metric {
+      min-height: 154px;
+      padding: 27px 24px 24px;
+      border-right: 1px solid #cfd9d3;
+    }
+
+    .metric:last-child { border-right: 0; }
+    .metric-label { color: #65716b; }
+
+    .metric-value {
+      margin: 8px 0 0;
+      color: #17211d;
+      font-size: 46px;
+      font-weight: 800;
+      line-height: 1;
+      letter-spacing: 0;
+    }
+
+    .metric-note {
+      margin: 10px 0 0;
+      color: #64716a;
+      font-size: 15px;
+      line-height: 1.5;
+    }
+
+    .changes {
+      display: grid;
+      grid-template-columns: 150px minmax(0, 1fr);
+      margin-top: 18px;
+      border-top: 1px solid #dce4df;
+    }
+
+    .change-number, .change-copy {
+      min-height: 132px;
+      padding: 24px 0;
+      border-bottom: 1px solid #dce4df;
+    }
+
+    .change-number {
+      color: #e85d3f;
+      font-size: 42px;
+      font-weight: 800;
+      line-height: 1;
+    }
+
+    .change-copy h2 {
+      margin: 0 0 8px;
+      font-size: 23px;
+      line-height: 1.35;
+      letter-spacing: 0;
+    }
+
+    .change-copy p {
+      margin: 0;
+      color: #526058;
+      font-size: 17px;
+      line-height: 1.65;
+    }
+
+    footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 24px;
+      margin-top: 44px;
+      padding-top: 24px;
+      border-top: 4px solid #f3b43f;
+      color: #526058;
+      font-size: 15px;
+      line-height: 1.5;
+    }
+
+    footer strong { color: #17211d; }
+  </style>
+</head>
+<body>
+  <article class="card">
+    <header>
+      <p class="brand">Darwin.skill / Repo to Resume</p>
+      <p class="date">2026-08-31<br>Stage 2</p>
+    </header>
+
+    <main>
+      <p class="eyebrow">MULTI-SKILL EXTRACTION</p>
+      <h1>Project analysis now stops where analysis should.</h1>
+      <p class="lead">A dedicated skill owns architecture and business-chain discovery, with strict scope, evidence, and delivery boundaries.</p>
+
+      <section class="metrics" aria-label="Validation metrics">
+        <div class="metric">
+          <p class="metric-label">Paired verdict</p>
+          <p class="metric-value">3-0</p>
+          <p class="metric-note">clear better</p>
+        </div>
+        <div class="metric">
+          <p class="metric-label">Regression</p>
+          <p class="metric-value">82/82</p>
+          <p class="metric-note">existing assertions</p>
+        </div>
+        <div class="metric">
+          <p class="metric-label">Contracts</p>
+          <p class="metric-value">18/18</p>
+          <p class="metric-note">manifest checks</p>
+        </div>
+      </section>
+
+      <p class="section-label">KEPT IMPROVEMENTS</p>
+      <section class="changes">
+        <div class="change-number">01</div>
+        <div class="change-copy">
+          <h2>Three focused plugin entries</h2>
+          <p><strong>$project-analyzer</strong> joins the pipeline and claim grill as an independently discoverable, narrowly routed capability.</p>
+        </div>
+
+        <div class="change-number">02</div>
+        <div class="change-copy">
+          <h2>User scope is a hard boundary</h2>
+          <p>CodeGraph is preferred when indexed, excluded directories stay unread, and out-of-scope links remain explicitly unverified.</p>
+        </div>
+
+        <div class="change-number">03</div>
+        <div class="change-copy">
+          <h2>Analysis no longer leaks into packaging</h2>
+          <p>DIRECT leaves no persistent artifact; ANALYZE_ONLY skips contribution candidates, enhancement tasks, resume text, and learning output.</p>
+        </div>
+      </section>
+
+      <footer>
+        <span><strong>Next extraction:</strong> project-learning</span>
+        <span>Train your Skills like you train your models</span>
+      </footer>
+    </main>
+  </article>
+</body>
+</html>
