@@ -1,13 +1,11 @@
 # 学习路径生成器
 
-基于代码分析、业务链路、简历声明和拷打漏洞生成三层递进式学习路径：先建立系统全景图，再按“模块重要度 + 声明风险”深入，最后练习跨模块追问。
+基于用户提供的项目代码、说明材料或现有分析生成三层递进式学习路径：先建立系统全景图，再按模块重要度与已知声明风险深入，最后练习跨模块追问。简历声明和拷打漏洞是可选输入，不是独立学习任务的前置条件。
 
 ## 输入
 
-- `DIRECT/FILE_ARTIFACT + LEARNING_ONLY`：用户提供的项目材料、当前学习路径或目标主题；可选简历要点与拷打漏洞
-- `ARTIFACT/FULL_PIPELINE`：manifest 的 `current_artifacts.project_analysis`、`business_chains`，以及存在时的 `resume`
-- `claim-grill-report.md`（如存在）
-- `evidence-manifest.json`
+- `DIRECT/FILE_ARTIFACT + LEARNING_ONLY`：用户提供的项目材料、当前学习路径或目标主题；简历要点、拷打漏洞和已有分析均为可选输入，不要求 manifest
+- `ARTIFACT/FULL_PIPELINE`：有效 manifest 的 `current_artifacts.project_analysis`、`business_chains`，以及存在时的 `resume`、贡献映射或拷打报告
 
 ## 设计理念
 

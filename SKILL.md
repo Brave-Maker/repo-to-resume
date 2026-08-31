@@ -119,7 +119,7 @@ description: 将本地路径、GitHub 仓库、开源/他人项目、真实或�
 3. 若范围含简历正文生成或事实改写，从用户原话提取 `project_origin`；未明确时先完成不改变事实的文件审查，再在内容改写前进入来源检查点并停止。没有简历文件、直接请求生成新要点时仍先触发来源检查点。
 4. 列出本次会执行的阶段、明确跳过的阶段和停止点；显式“只/不要/不需要”是硬边界。
 5. 确定输出语言：用户明确指定 > 用户当前使用的语言 > 默认中文；仅在范围含代码分析时确认扫描范围与跳过目录。
-6. 单个 `*_ONLY` 默认 `DIRECT`：在对话中交付，不创建分析目录或 manifest。现有简历且 `resume_file_action=EDIT_AUTHORIZED` 时使用 `FILE_REVISION`：只创建与原文件相邻的 `-vN` 修订版，不创建分析目录或 manifest，不写 `current_artifacts`。用户要求纳入完整材料、多个阶段需共享事实状态或说“开始学习”而触发 HTML 时才切换为 `ARTIFACT`；`ARTIFACT` 中的简历仍须已确认 `project_origin`。
+6. 单个 `*_ONLY` 默认 `DIRECT`：在对话中交付，不创建分析目录或 manifest。现有简历且 `resume_file_action=EDIT_AUTHORIZED` 时使用 `FILE_REVISION`：只创建与原文件相邻的 `-vN` 修订版，不创建分析目录或 manifest，不写 `current_artifacts`。单独要求保存学习 Markdown 或生成 HTML 时使用 `FILE_ARTIFACT`：写版本化学习文件并直接报告路径，不创建 manifest。只有用户要求纳入完整材料或多个阶段需要共享事实状态时才切换为 `ARTIFACT`；`ARTIFACT` 中的简历仍须已确认 `project_origin`。
 7. `ARTIFACT` 执行才在被分析项目根目录创建 `{项目名}-analysis/`，并按 `references/evidence-manifest.schema.json` 初始化 `evidence-manifest.json`。检测到 `schema_version=1.0` 先运行 `python scripts/migrate_manifest.py <manifest> --output <临时文件>`，校验迁移结果并让用户确认差异后原子替换；其他旧版本停止并报告不支持。`1.1` 版本先运行 `python scripts/validate_manifest.py <manifest>`，通过后增量更新。校验只缺 `project_origin` 时，先询问项目来源、写入用户回答并重新校验，不得猜测。
 
 🔴 CHECKPOINT · PROJECT ORIGIN · 🛑 STOP
@@ -246,7 +246,7 @@ description: 将本地路径、GitHub 仓库、开源/他人项目、真实或�
 1. 先确定 `learning_delivery`：用户明确说“不要网页/只要学习路径”时为 `MARKDOWN_ONLY`；用户说“开始学习/进入学习/生成学习网页/交互学习/HTML”时为 `LIGHT_HTML`；其余 `LEARNING_ONLY` 默认为 `MARKDOWN_ONLY`，`FULL_PIPELINE` 默认为 `MARKDOWN_AND_HTML`。显式拒绝 HTML 的表达优先级最高。
 2. 根据“声明风险 x 面试概率 x 掌握缺口”排序学习任务，生成当前版本学习路径并更新 `current_artifacts.learning_path`。每份学习路径必须包含一个 Mermaid `flowchart` 架构图和一个 Mermaid `sequenceDiagram` 核心链路图，并为核心环节说明职责、输入、输出、上下游、关键文件、核心逻辑、设计决策、失败边界和达标标准。
 3. Mermaid 节点与连线只能来自当前项目分析、业务链路或代码证据。关系不确定时使用虚线并在边标签写“待确认”；不得为图完整而猜测中间模块、调用方向或异步关系。
-4. `LIGHT_HTML/MARKDOWN_AND_HTML` 从 `current_artifacts.learning_path` 生成版本化 `learning-interactive.html` 并更新 `current_artifacts.learning_interactive`，不得重新分析或改写事实。“开始学习”且当前学习路径缺失时，若已有项目分析则先在本 Phase 生成学习路径；连项目材料也缺失时只索取一个项目路径或学习材料。
+4. `LIGHT_HTML/MARKDOWN_AND_HTML` 只转换当前学习路径，不得重新分析或改写事实。`FILE_ARTIFACT` 使用用户点名、粘贴或本轮刚生成的学习路径，写版本化 `learning-interactive.html` 并直接报告路径，不创建 manifest；`ARTIFACT/FULL_PIPELINE` 从 `current_artifacts.learning_path` 读取并更新 `current_artifacts.learning_interactive`。“开始学习”且当前学习路径缺失时，若已有项目材料则先在本 Phase 生成学习路径；连项目材料也缺失时只索取一个项目路径或学习材料。
 5. HTML 固定浅色主题，按“系统全景 -> 核心链路 -> 相关环节详解 -> 随堂测验”组织。Mermaid 运行时加载失败时保留可读的 Mermaid 源码和文字链路，显示降级提示，不得留下空白图或静默跳过。
 6. 生成 HTML 后检查桌面和移动端：导航可达、文字不溢出、图表非空、浅色对比度可读、测验可操作。可用浏览器自动化时截图验证；工具不可用时执行静态检查并明确标记未完成视觉验证。
 7. 完成 Phase 6 后停止；不得因为用户开始学习而自动生成简历、话术、拷打或模拟面试。

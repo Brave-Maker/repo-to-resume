@@ -18,5 +18,10 @@
     "id": "direct-no-persistent-write",
     "prompt": "分析这个 Git 仓库的入口和核心链路，只在对话里回答，不要落盘。",
     "expected": "使用 DIRECT；不修改目标仓库，不创建分析目录、报告或 manifest；如需检出远程仓库，只使用并清理系统临时目录。"
+  },
+  {
+    "id": "bare-understand-project",
+    "prompt": "帮我看懂这个项目，先说清楚架构和请求是怎么走的。",
+    "expected": "裸的项目理解请求路由到 project-analyzer；只输出架构、调用链和证据，不自动生成课程式学习路径。"
   }
 ]

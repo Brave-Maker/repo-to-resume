@@ -58,7 +58,7 @@ python scripts/validate_manifest.py <分析目录>/evidence-manifest.json --anal
 
 所有 `RED/ORANGE/YELLOW` 薄弱点必须在学习路径或增强计划中有明确任务、参考位置和达标标准。学习路径还必须包含基于当前证据的 Mermaid 架构图与核心链路图；核心环节必须具备输入、输出、上下游、失败边界和达标标准。
 
-当用户说“开始学习”或明确请求交互学习时，`current_artifacts.learning_interactive` 必须指向真实存在的版本化 HTML。页面必须固定浅色主题，并包含架构图、核心链路、环节讲解和测验；Mermaid 渲染失败时必须保留源码与文字回退。缺任一项时学习门禁不通过，回退 Phase 6。
+当用户说“开始学习”或明确请求交互学习时，必须存在真实的版本化 HTML：`FILE_ARTIFACT` 直接报告文件路径，`ARTIFACT/FULL_PIPELINE` 还必须由 `current_artifacts.learning_interactive` 指向该文件。页面必须固定浅色主题，并包含架构图、核心链路、环节讲解和测验；Mermaid 渲染失败时必须保留源码与文字回退。缺任一项时学习门禁不通过，回退 Phase 6。
 
 ### Gate 7：跨产物一致性
 

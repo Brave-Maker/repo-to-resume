@@ -18,5 +18,10 @@
     "id": "negative-analysis-only",
     "prompt": "只分析仓库架构和核心业务链，不需要学习路径。",
     "expected": "自动发现时不选择 project-learning，应路由到 project-analyzer。"
+  },
+  {
+    "id": "explicit-learning-intent",
+    "prompt": "我想系统学习这个项目，请生成分模块学习路径和达标测验。",
+    "expected": "明确的课程式学习意图路由到 project-learning；生成递进学习路径，不改写简历。"
   }
 ]
