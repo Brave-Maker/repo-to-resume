@@ -1,6 +1,6 @@
 {
   "name": "repo-to-resume",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Turn project evidence into defensible resume, learning, and interview materials through independently discoverable skills.",
   "author": {
     "name": "Brave-Maker",
@@ -29,7 +29,7 @@
     ],
     "websiteURL": "https://github.com/Brave-Maker/repo-to-resume",
     "defaultPrompt": [
-      "Analyze this project and prepare defensible interview materials.",
+      "Analyze this repository architecture without writing resume content.",
       "Challenge the claims in this resume bullet one question at a time.",
       "Turn this repository into a focused learning path."
     ]

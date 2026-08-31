@@ -6,6 +6,25 @@
 
 完整流程会理解项目与业务链路，区分项目能力、个人贡献、复现成果、方案设计和叙事补全，再生成简历、学习路径、面试话术与质量报告。即使没有正式实习，也可以从自研项目、开源项目或其他项目中提炼可讲内容。
 
+## 多技能插件
+
+Codex 插件安装会发现 10 个窄入口；单一任务不再加载完整根流程：
+
+| 技能 | 负责内容 |
+|---|---|
+| `$project-analyzer` | 项目架构、模块和端到端业务链 |
+| `$contribution-mapper` | 个人角色、来源与贡献归因 |
+| `$experience-enhancer` | 可执行、可验证的经历增强任务 |
+| `$resume-writer` | 简历要点、完整项目经历和授权后的版本化修订 |
+| `$claim-grill` | 一次一问的单条声明压力验证 |
+| `$project-learning` | Mermaid 学习路径和浅色交互学习页 |
+| `$interview-script` | 15 秒、30 秒、2 分钟与深挖话术 |
+| `$mock-interview` | 一次一题模拟面试和真实回答评分 |
+| `$resume-auditor` | 只读 STAR、水项、加粗和跨产物质量审查 |
+| `$resume-pipeline` | 明确多阶段或完整流程的证据链编排 |
+
+根 `$repo-to-resume` 保留为旧式单技能安装的兼容入口。
+
 ## 三轴路由
 
 每次调用会分别判断三件事：
@@ -166,13 +185,26 @@ Phase 8  执行最终质量门禁
 
 ## 安装
 
-将仓库克隆到你的 Agent skills 目录。以 Codex 的默认 Windows 目录为例：
+### Codex 多技能插件
+
+把仓库放在个人插件目录，再通过个人 marketplace 安装 `repo-to-resume`。Windows 的默认插件源码位置为：
+
+```powershell
+git clone https://github.com/Brave-Maker/repo-to-resume.git "$env:USERPROFILE\plugins\repo-to-resume"
+codex plugin add repo-to-resume@personal
+```
+
+个人 marketplace 需要包含指向 `./plugins/repo-to-resume` 的本地条目。安装后新建会话，Codex 才会重新发现全部子技能。
+
+### 兼容单技能安装
+
+只需要旧的 `$repo-to-resume` 根入口时，可克隆到 Agent skills 目录：
 
 ```powershell
 git clone https://github.com/Brave-Maker/repo-to-resume.git "$env:USERPROFILE\.codex\skills\repo-to-resume"
 ```
 
-其他运行环境将目标路径替换为对应的 skills 目录即可。安装后重新加载 Agent 会话，使其发现 `SKILL.md`。
+其他运行环境将目标路径替换为对应的 skills 目录即可。该方式只发现根 `SKILL.md`，不会加载插件中的独立子技能。
 
 ## 使用
 
@@ -216,6 +248,8 @@ $repo-to-resume 分析 C:\work\my-project，目标岗位是 Java 后端，完整
 
 ```text
 repo-to-resume/
+|- .codex-plugin/plugin.json       # Codex 多技能插件清单
+|- skills/                         # 10 个可独立发现的插件技能
 |- SKILL.md                       # 主流程、路由与行为契约
 |- agents/openai.yaml             # 智能体展示与默认提示词
 |- references/                    # 分析、包装、拷打和质量门禁模块
