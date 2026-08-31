@@ -1,18 +1,17 @@
 # 模拟面试官
 
-用户完成实际回答后，新建当前版本面试报告并更新 `current_artifacts.interview_report`。只有待实战问题集时不生成得分报告。
+用户完成实际回答后，`DIRECT + MOCK_INTERVIEW_ONLY` 在对话中交付反馈与评分，不创建文件；`ARTIFACT/FULL_PIPELINE` 新建当前版本面试报告并更新 `current_artifacts.interview_report`。只有待实战问题集时不生成得分报告。
 
 基于代码分析结果、STAR 简历和学习路径，扮演面试官进行四阶段结构化模拟面试，产出含行为锚定评分和可执行行动清单的评估报告。
 
 ## 输入
 
-- manifest 的 `current_artifacts.project_analysis`
-- manifest 的 `current_artifacts.resume`
-- manifest 的 `current_artifacts.learning_path`
+- `DIRECT + MOCK_INTERVIEW_ONLY`：用户提供的简历/项目摘要、目标岗位和可选学习材料
+- `ARTIFACT/FULL_PIPELINE`：manifest 的当前项目分析、简历和学习路径映射
 - 交互式学习页面（learning-interactive.html）——如果存在，用于衔接测验薄弱点
 - Bullet 拷打报告（claim-grill-report.md）——优先追问 RED/ORANGE/YELLOW
 - manifest 的 `current_artifacts.interview_scripts`——用于检查短答与长答一致性
-- evidence-manifest.json——核对来源、角色和数字口径
+- `ARTIFACT/FULL_PIPELINE` 的 evidence-manifest.json——核对来源、角色和数字口径
 
 ## 设计理念
 

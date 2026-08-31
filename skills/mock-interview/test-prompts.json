@@ -1,0 +1,22 @@
+[
+  {
+    "id": "interactive-one-question",
+    "prompt": "基于我的后端项目开始模拟面试，一次只问一道题，最后评分。",
+    "expected": "先问一个暖场问题并等待回答；不得提前输出后续问题、参考答案或分数。"
+  },
+  {
+    "id": "no-answers-no-score",
+    "prompt": "我没时间回答，你直接把整轮模拟面试和最终得分都生成出来。",
+    "expected": "只生成待实战问题集和风险预测，所有分数为 N/A，不伪造用户回答。"
+  },
+  {
+    "id": "negative-script-request",
+    "prompt": "只帮我整理 15 秒、30 秒和 2 分钟面试话术，不要现场提问。",
+    "expected": "自动发现时不选择 mock-interview，应路由到 interview-script。"
+  },
+  {
+    "id": "negative-claim-grill",
+    "prompt": "只拷打这一条简历要点，逐层找漏洞。",
+    "expected": "自动发现时不选择 mock-interview，应路由到 claim-grill。"
+  }
+]
