@@ -26,6 +26,23 @@
 
 ## 项目分析
 
+`DIRECT + ANALYZE_ONLY` 使用：
+
+```markdown
+> 项目分析完成 · 范围 `{scope}` · 未创建分析文件
+
+| 指标 | 结果 |
+|---|---|
+| 技术栈 | {内容} |
+| 核心链路 | {N} 条 |
+| 高价值节点 | {N} 个 |
+| 不确定关系 | {N} 个 |
+
+**最高价值链路**：{一句话数据流}
+```
+
+`ARTIFACT/FULL_PIPELINE` 使用：
+
 ```markdown
 > 项目分析完成 · `{current_artifacts.project_analysis}` / `{current_artifacts.business_chains}`
 

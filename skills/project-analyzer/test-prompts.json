@@ -1,0 +1,17 @@
+[
+  {
+    "id": "business-chain-only",
+    "prompt": "只分析这个项目的核心业务链路，不写简历，也不要继续做贡献映射或学习路径。",
+    "expected": "读取项目材料并输出有入口、关键步骤、消费者和代码证据的链路；到分析阶段停止。"
+  },
+  {
+    "id": "scoped-large-repo",
+    "prompt": "我刚接手这个大型后端项目，只分析 src/，跳过测试和 vendor。讲清架构和两条核心调用链。",
+    "expected": "严格限制扫描范围，存在 CodeGraph 时优先使用；先模块级覆盖，再深挖两条链路并说明未分析范围。"
+  },
+  {
+    "id": "negative-resume-request",
+    "prompt": "根据这个仓库直接写三条中文简历要点，不要给项目分析报告。",
+    "expected": "自动发现时不选择 project-analyzer；应由后续 resume-writer 或根兼容入口的 RESUME_ONLY 处理。"
+  }
+]

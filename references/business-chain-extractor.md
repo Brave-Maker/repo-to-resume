@@ -9,8 +9,8 @@
 
 ## 输出
 
-- 新建当前版本的业务链路报告，并更新 `current_artifacts.business_chains`
-- `evidence-manifest.json.business_chains`
+- `DIRECT + ANALYZE_ONLY`：在对话中交付业务域、核心链路、价值节点和不确定项，不创建文件或 manifest。
+- `ARTIFACT/FULL_PIPELINE`：新建当前版本的业务链路报告，更新 `current_artifacts.business_chains` 和 `evidence-manifest.json.business_chains`。
 
 ## Step 1：选择入口策略
 
