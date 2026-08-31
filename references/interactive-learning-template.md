@@ -2,7 +2,7 @@
 
 基于当前学习路径生成单文件浅色交互式 HTML。用户在浏览器中打开即可按“系统全景 -> 核心链路 -> 相关环节详解 -> 随堂测验”学习。除固定版本的 Mermaid ESM 渲染器外，不加载其他外部资源；Mermaid 加载失败时保留源码和文字链路。
 
-写入 `learning-interactive.html` 或下一个 `learning-interactive-vN.html` 后，更新 `current_artifacts.learning_interactive`。
+写入 `learning-interactive.html` 或下一个 `learning-interactive-vN.html`。`FILE_ARTIFACT` 直接报告文件路径，不创建 manifest；`ARTIFACT/FULL_PIPELINE` 更新 `current_artifacts.learning_interactive`。
 
 ## 核心约束（强制）
 
@@ -14,7 +14,7 @@
 - 可替换的只有：HTML 注释中标注 `{占位符}` 的内容、模块数量、Mermaid 源码、测验题目和选项
 
 **内容来源：**
-- 不从零生成内容——把 manifest 的 `current_artifacts.learning_path` 指向的内容转换为 HTML
+- 不从零生成内容——`FILE_ARTIFACT` 转换用户点名或刚生成的当前学习路径；`ARTIFACT/FULL_PIPELINE` 转换 manifest 的 `current_artifacts.learning_path`
 - Mermaid 架构图与核心链路图 → `module-0` 的两个 `.mermaid-panel`
 - 系统全景图 → Mermaid 图 + 角色卡片 + 文字步骤
 - 模块详解 → 环节契约 + 代码对照块 + 设计决策卡片 + 文件树

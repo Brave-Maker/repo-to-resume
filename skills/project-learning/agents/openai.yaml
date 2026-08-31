@@ -1,0 +1,4 @@
+interface:
+  display_name: "Project Learning"
+  short_description: "生成项目架构、核心链路、模块讲解与交互学习路径"
+  default_prompt: "Use $project-learning to turn this project into an evidence-grounded learning path with Mermaid diagrams."

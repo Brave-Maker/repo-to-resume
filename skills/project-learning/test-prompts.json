@@ -1,0 +1,22 @@
+[
+  {
+    "id": "markdown-learning-path",
+    "prompt": "只帮我看懂这个后端项目并生成学习路径，架构和核心请求链路都要讲清楚，不要简历。",
+    "expected": "输出 Mermaid 架构图和时序图、模块契约、关键文件、失败边界与达标标准；不生成简历或话术。"
+  },
+  {
+    "id": "start-learning-html",
+    "prompt": "学习路径已经有了，现在开始学习，生成交互网页。",
+    "expected": "从当前学习路径转换版本化浅色 HTML，不重新分析事实；验证桌面/移动布局与 Mermaid 回退。"
+  },
+  {
+    "id": "explicit-no-html",
+    "prompt": "只给 Markdown 学习路径，不要网页，但必须有 Mermaid 架构和调用链。",
+    "expected": "显式拒绝 HTML 优先，只交付 Markdown，同时保留两类 Mermaid 图。"
+  },
+  {
+    "id": "negative-analysis-only",
+    "prompt": "只分析仓库架构和核心业务链，不需要学习路径。",
+    "expected": "自动发现时不选择 project-learning，应路由到 project-analyzer。"
+  }
+]

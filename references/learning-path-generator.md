@@ -4,9 +4,8 @@
 
 ## 输入
 
-- manifest 的 `current_artifacts.project_analysis`
-- manifest 的 `current_artifacts.business_chains`
-- manifest 的 `current_artifacts.resume`（如存在）
+- `DIRECT/FILE_ARTIFACT + LEARNING_ONLY`：用户提供的项目材料、当前学习路径或目标主题；可选简历要点与拷打漏洞
+- `ARTIFACT/FULL_PIPELINE`：manifest 的 `current_artifacts.project_analysis`、`business_chains`，以及存在时的 `resume`
 - `claim-grill-report.md`（如存在）
 - `evidence-manifest.json`
 
@@ -24,6 +23,8 @@
 ---
 
 ## 输出格式
+
+交付方式：`DIRECT` 在对话中输出 Markdown，不创建文件；`FILE_ARTIFACT` 写用户请求的版本化学习文件并直接报告路径，不创建 manifest；`ARTIFACT/FULL_PIPELINE` 写版本化文件并更新 `current_artifacts.learning_path`。
 
 ### 第一层：系统全景图
 
@@ -385,7 +386,7 @@ learning_priority = claim_risk(0-3) + interview_frequency(0-3) + mastery_gap(0-3
 ## 质量要求
 
 - 整份学习路径的总字数控制在 2500-5000 字（项目越大越接近上限）；Mermaid 源码不计入字数
-- 文件路径和数据流描述必须与 `current_artifacts.project_analysis` 指向的当前项目分析一致
+- 文件路径和数据流描述必须与当前输入的项目分析一致；`ARTIFACT/FULL_PIPELINE` 中以 `current_artifacts.project_analysis` 为唯一当前版本
 - 代码片段直接从源码复制，不要重写或简化
 - 重要度标注要敢于取舍——如果所有模块都是 ⭐⭐⭐，等于没有标注
 - 面试题的具体程度要能让用户直接拿来练习，不需要再自己翻译
@@ -395,7 +396,7 @@ learning_priority = claim_risk(0-3) + interview_frequency(0-3) + mastery_gap(0-3
 
 ## 与交互式学习模板的衔接
 
-本文件产出的当前学习路径是生成 `learning-interactive.html` 的**唯一内容来源**。写入后更新 `current_artifacts.learning_path`；HTML 生成从该映射读取，不重新分析代码，只做格式转换。以下内容块直接映射到 HTML 元素：
+本文件产出的当前学习路径是生成 `learning-interactive.html` 的**唯一内容来源**。`FILE_ARTIFACT` 直接使用刚生成或用户点名的学习路径；`ARTIFACT/FULL_PIPELINE` 从 `current_artifacts.learning_path` 读取。HTML 转换不重新分析代码或改写事实。以下内容块直接映射到 HTML 元素：
 
 | 当前学习路径内容 | HTML 元素 |
 |------------------------|-----------|

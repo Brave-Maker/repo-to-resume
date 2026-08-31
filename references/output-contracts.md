@@ -149,6 +149,26 @@
 
 ## 学习与话术
 
+学习 `DIRECT` 使用：
+
+```markdown
+> 学习路径完成 · 未创建文件
+
+- Mermaid：架构图 {N} 张 / 核心链路图 {N} 张
+- 核心环节：{N} 个
+- 待确认关系：{N} 条
+```
+
+学习 `FILE_ARTIFACT` 使用：
+
+```markdown
+> 学习材料完成 · `{learning_path}`{如生成 HTML： / `{learning_interactive}`}
+
+- 交互页面：{固定浅色 / 未请求}
+- 桌面/移动端视觉验证：{结果}
+- Mermaid 回退：{可用 / 不适用}
+```
+
 学习单步骤使用：
 
 ```markdown
