@@ -1,0 +1,4 @@
+interface:
+  display_name: "Resume Auditor"
+  short_description: "只读审查简历的 STAR、水项、加粗、版式与事实风险"
+  default_prompt: "Use $resume-auditor to review this resume file without modifying it and prioritize the highest-value fixes."

@@ -4,12 +4,12 @@
 
 ## 输入
 
-- `evidence-manifest.json`
-- manifest 的 `current_artifacts` 指向的当前产物
+- `DIRECT + QUALITY_CHECK_ONLY`：用户提供或点名的现有简历/材料，只检查该范围并列出未检查项
+- `ARTIFACT/FULL_PIPELINE`：`evidence-manifest.json` 与 `current_artifacts` 指向的当前产物
 
-运行门禁前，完整模式要求 `project_analysis`、`business_chains`、`contribution_map`、`resume`、`claim_grill_report`、`learning_path` 和 `interview_scripts`；`enhancement_plan`、`learning_interactive`、`interview_report` 按流程是否执行决定。`UNDERSTAND_ONLY` 只要求 `project_analysis`、`business_chains` 和 `learning_path`。门禁完成后写入新报告并更新 `current_artifacts.quality_gate_report`。
+运行门禁前，完整模式要求 `project_analysis`、`business_chains`、`contribution_map`、`resume`、`claim_grill_report`、`learning_path` 和 `interview_scripts`；`enhancement_plan`、`learning_interactive`、`interview_report` 按流程是否执行决定。`UNDERSTAND_ONLY` 只要求 `project_analysis`、`business_chains` 和 `learning_path`。`ARTIFACT/FULL_PIPELINE` 门禁完成后写入新报告并更新 `current_artifacts.quality_gate_report`；`DIRECT` 只在对话中交付范围化发现，不创建报告文件。
 
-映射缺失、文件不存在或路径越出分析目录时，该产物视为缺失；不要读取同名旧文件兜底。检查前必须运行：
+`ARTIFACT/FULL_PIPELINE` 中映射缺失、文件不存在或路径越出分析目录时，该产物视为缺失；不要读取同名旧文件兜底。完整检查前必须运行：
 
 ```text
 python scripts/validate_manifest.py <分析目录>/evidence-manifest.json --analysis-dir <分析目录> --require-artifacts

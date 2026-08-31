@@ -216,6 +216,20 @@
 
 ## 最终门禁
 
+`DIRECT + QUALITY_CHECK_ONLY` 使用：
+
+```markdown
+> 范围化质量检查完成 · 源文件未修改
+
+- 已检查：{范围}
+- 严重问题：{N} 项
+- 重要问题：{N} 项
+- 未检查：{范围}
+- 唯一优先动作：{动作}
+```
+
+`ARTIFACT/FULL_PIPELINE` 使用：
+
 ```markdown
 > 质量门禁完成 · `{current_artifacts.quality_gate_report}` · **{STATUS}**
 

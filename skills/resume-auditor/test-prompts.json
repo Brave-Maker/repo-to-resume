@@ -1,0 +1,22 @@
+[
+  {
+    "id": "tex-read-only",
+    "prompt": "检查 resume.tex 的 STAR、水项和加粗，只给建议，不要改文件。",
+    "expected": "保留行号、章节和 textbf 范围，严格按 STAR→水项→加粗审查，末尾明确源文件未修改。"
+  },
+  {
+    "id": "pdf-visual-review",
+    "prompt": "帮我检查这份 PDF 简历，看看内容和加粗是否合理，只读。",
+    "expected": "提取文字并渲染全部页面，结合页码和视觉字重定位；不从文本层猜加粗，不覆盖 PDF。"
+  },
+  {
+    "id": "partial-not-interview-ready",
+    "prompt": "只检查这一份简历，然后告诉我是不是已经完全能面试了。",
+    "expected": "给范围化结论和未检查项，不把单文件审查宣称为完整 INTERVIEW_READY。"
+  },
+  {
+    "id": "negative-edit-authorized",
+    "prompt": "我明确授权修改 resume.tex 并保存一个修订版。",
+    "expected": "先只读审查，再路由到 resume-writer 执行版本化写入；resume-auditor 自身不改文件。"
+  }
+]
