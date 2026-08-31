@@ -120,7 +120,8 @@ else {
     $manifestMigrator = Join-Path $SkillRoot 'scripts\migrate_manifest.py'
     $evalRunner = Join-Path $SkillRoot 'scripts\run_evals.py'
     $contractTests = Join-Path $SkillRoot 'scripts\test_contracts.py'
-    foreach ($script in @($manifestValidator, $manifestMigrator, $evalRunner, $contractTests)) {
+    $pluginSkillTests = Join-Path $SkillRoot 'scripts\test_plugin_skills.py'
+    foreach ($script in @($manifestValidator, $manifestMigrator, $evalRunner, $contractTests, $pluginSkillTests)) {
         Assert-Check (Test-Path -LiteralPath $script) "Required validation script missing: $script"
     }
     if ($failures.Count -eq 0) {
@@ -130,6 +131,8 @@ else {
         Assert-Check ($LASTEXITCODE -eq 0) 'Executable eval assertions failed'
         & python $contractTests
         Assert-Check ($LASTEXITCODE -eq 0) 'Negative contract tests failed'
+        & python $pluginSkillTests
+        Assert-Check ($LASTEXITCODE -eq 0) 'Plugin skill contract tests failed'
     }
 }
 

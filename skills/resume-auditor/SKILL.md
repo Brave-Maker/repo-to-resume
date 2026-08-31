@@ -21,7 +21,7 @@ description: 只读审查 `.tex`、PDF、DOCX 或文本简历的 STAR 完整性�
 | `DIRECT` | 一份现有简历或用户点名的材料 | 只读审查与定位建议；源文件不修改 |
 | `ARTIFACT` | 有效 Manifest 与当前产物映射 | 跨产物门禁报告并更新 `current_artifacts.quality_gate_report` |
 
-用户只说“优化、检查、看看、给建议”一律按 `DIRECT/REVIEW_ONLY`。用户明确要求修改或保存修订版时，本技能仍先完成只读审查，然后把写入工作交给 `$resume-writer`；不得自行写文件。
+用户只说“优化、检查、看看、给建议”一律按 `DIRECT/REVIEW_ONLY`。请求从一开始就明确要求修改或保存修订版时，应直接选择 `$resume-writer`，由它先执行同一只读审查契约再版本化写入；本技能不参与该路由。只有审查过程中用户新增写回要求时，本技能才停止并移交。
 
 ## 工作流
 
@@ -35,7 +35,7 @@ description: 只读审查 `.tex`、PDF、DOCX 或文本简历的 STAR 完整性�
 
 🔴 CHECKPOINT · RESUME MUTATION · STOP
 
-用户在审查后要求写回时，展示拟修改位置和必须确认的事实，再路由到 `$resume-writer`。没有明确写入授权时停止；“优化”二字不构成授权。
+用户在审查过程中新增写回要求时，展示拟修改位置和必须确认的事实，再路由到 `$resume-writer`。没有明确写入授权时停止；“优化”二字不构成授权。
 
 ## 状态边界
 

@@ -1,0 +1,22 @@
+[
+  {
+    "id": "explicit-full-pipeline",
+    "prompt": "分析这个项目并把贡献、简历、学习和面试材料全部做完。",
+    "expected": "选择 resume-pipeline，展示多阶段范围、停止点、产物和授权边界后进入完整流程。"
+  },
+  {
+    "id": "explicit-combination",
+    "prompt": "只改两条简历，并为改后的内容准备 30 秒和 2 分钟话术。",
+    "expected": "选择 resume-pipeline 编排 resume-writer 与 interview-script，不插入分析、增强、拷打或模拟面试。"
+  },
+  {
+    "id": "negative-single-analysis",
+    "prompt": "只分析当前仓库的两条核心业务链，不需要其他材料。",
+    "expected": "自动发现时不选择 resume-pipeline，应路由到 project-analyzer。"
+  },
+  {
+    "id": "negative-complete-project-block",
+    "prompt": "这是我的个人项目，根据源码写成一段完整项目经历。",
+    "expected": "“完整项目经历”描述 resume-writer 的交付格式，不代表完整流程，不选择 resume-pipeline。"
+  }
+]
