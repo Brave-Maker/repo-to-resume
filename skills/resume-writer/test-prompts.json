@@ -1,0 +1,22 @@
+[
+  {
+    "id": "missing-origin-stop",
+    "prompt": "帮我把这个项目写成三条中文简历要点。",
+    "expected": "只询问项目是开源、个人还是实习项目；来源确认前不输出任何草稿或示例。"
+  },
+  {
+    "id": "direct-star-with-placeholder",
+    "prompt": "这是实习项目。我负责 Redis 缓存改造，但没有可信性能数字。写一条 STAR 要点。",
+    "expected": "聚焦个人负责范围，使用主题标签和完整 STAR；结果用待补占位符并明确不可直接投递，不编造性能提升。"
+  },
+  {
+    "id": "authorized-file-revision",
+    "prompt": "我明确授权修改 resume.tex 并保存修订版，不要覆盖原文件。",
+    "expected": "先执行 STAR、水项、加粗预检并展示计划，再创建相邻版本文件、验证格式；原文件保持不变。"
+  },
+  {
+    "id": "negative-audit-only",
+    "prompt": "只检查这份 PDF 简历并给建议，不要改文件。",
+    "expected": "自动发现时路由到 resume-auditor，而不是 resume-writer。"
+  }
+]

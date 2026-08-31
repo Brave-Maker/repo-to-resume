@@ -104,6 +104,28 @@
 
 ## 简历
 
+`DIRECT + RESUME_ONLY` 使用：
+
+```markdown
+> 简历内容已生成 · {N} 条简历要点 · 未创建文件
+
+- 可直接投递：{N} 条
+- 待补数据：{N} 条；大于 0 时明确标记“不可直接投递”
+- 仍需确认：{一个最高风险事实或“无”}
+```
+
+`FILE_REVISION` 使用：
+
+```markdown
+> 简历修订版已生成 · `{versioned_output_path}` · 原文件未覆盖
+
+- 修改位置：{N} 处
+- 保留待确认事实：{N} 项
+- 格式/渲染验证：{结果}
+```
+
+`ARTIFACT/FULL_PIPELINE` 使用：
+
 ```markdown
 > STAR 简历已生成 · `{current_artifacts.resume}` · {N} 条简历要点
 

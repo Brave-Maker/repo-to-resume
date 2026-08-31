@@ -23,9 +23,9 @@
 
 ## 输出
 
-- 新建 `{项目名}-analysis/resume.md` 或下一个 `resume-vN.md`
-- 更新 manifest 中的 `claims[].resume_text`
-- 更新 manifest 的 `current_artifacts.resume` 为本次新文件的相对路径
+- `DIRECT + RESUME_ONLY`：在对话中交付简历要点或完整项目经历，不创建文件或 manifest。
+- `FILE_REVISION`：用户明确授权修改现有简历文件时，新建相邻的 `-vN` 修订版，不覆盖原文件，不创建 manifest。
+- `ARTIFACT/FULL_PIPELINE`：新建 `{项目名}-analysis/resume.md` 或下一个 `resume-vN.md`，更新 manifest 中的 `claims[].resume_text` 与 `current_artifacts.resume`。
 
 ## 步骤 1：校验候选池
 
