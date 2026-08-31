@@ -4,16 +4,16 @@
 
 ## 输入
 
-- manifest 的 `current_artifacts.project_analysis`
-- manifest 的 `current_artifacts.business_chains`
+- `DIRECT + CONTRIBUTION_ONLY`：用户指定的候选链路、代码位置、现有要点或工作记录；只读取完成归因所需的最小材料
+- `ARTIFACT/FULL_PIPELINE`：manifest 的 `current_artifacts.project_analysis` 与 `current_artifacts.business_chains`
 - 用户口述、现有简历或工作记录
 - 可选：提交记录、工单、测试报告、截图；提交记录只用于个人归因和演进核验
 - `references/claim-policy.md`
 
 ## 输出
 
-- 新建当前版本的贡献映射，并更新 `current_artifacts.contribution_map`
-- 更新后的 `evidence-manifest.json`
+- `DIRECT + CONTRIBUTION_ONLY`：在对话中交付贡献边界、候选排序、证据缺口和风险，不创建文件或 manifest
+- `ARTIFACT/FULL_PIPELINE`：新建当前版本的贡献映射，更新 `current_artifacts.contribution_map` 与 `evidence-manifest.json`
 
 ## Step 1：确定用户模式
 

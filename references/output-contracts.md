@@ -58,6 +58,20 @@
 
 ## 贡献映射
 
+`DIRECT + CONTRIBUTION_ONLY` 使用：
+
+```markdown
+> 贡献映射完成 · 未创建贡献文件
+
+| 可直接使用 | 需要证据 | 需要训练 | 需要补建 | 已阻断 |
+|---:|---:|---:|---:|---:|
+| {N} | {N} | {N} | {N} | {N} |
+
+**最高风险候选**：{内容和下一步}
+```
+
+`ARTIFACT/FULL_PIPELINE` 使用：
+
 ```markdown
 > 贡献映射完成 · `{current_artifacts.contribution_map}`
 

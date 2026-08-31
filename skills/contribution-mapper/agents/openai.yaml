@@ -1,0 +1,4 @@
+interface:
+  display_name: "Contribution Mapper"
+  short_description: "区分项目能力、团队成果与个人贡献并核对证据"
+  default_prompt: "Use $contribution-mapper to verify which project work I can truthfully claim as my contribution."

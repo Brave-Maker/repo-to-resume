@@ -1,0 +1,17 @@
+[
+  {
+    "id": "internship-role-boundary",
+    "prompt": "这是实习项目。只帮我确认订单链路里哪些能算我的贡献：mentor 定方案，我实现幂等和重试。不要写简历。",
+    "expected": "区分 mentor 决策与个人实现，给出来源、证据、掌握度和状态；到贡献映射停止。"
+  },
+  {
+    "id": "large-commit-not-value",
+    "prompt": "这个大提交改了 40 个文件、上万行，帮我按贡献价值排序，但不要扫描整个仓库。",
+    "expected": "提交规模只用于归因，不参与价值评分；严格使用用户给定范围并报告候选不足。"
+  },
+  {
+    "id": "negative-resume-writing",
+    "prompt": "项目来源和贡献都确认好了，直接写三条中文简历要点。",
+    "expected": "自动发现时不选择 contribution-mapper，应路由到 resume-writer。"
+  }
+]
